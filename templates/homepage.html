@@ -1,0 +1,1866 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arjun K M - Software Engineer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a192f;
+            --secondary: #112240;
+            --accent:rgb(150, 218, 226);
+            --accent-blue: #3b82f6;
+            --text-light: #8892b0;
+            --text-white: #ccd6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(10, 25, 47, 0.95) !important;
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent) !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            color: var(--text-white) !important;
+            margin: 0 1rem;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            color: var(--accent) !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(100, 255, 218, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.2s;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.4s;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.6s;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.8s;
+        }
+
+        .typing-text {
+            border-right: 3px solid var(--accent);
+            animation: blink 0.7s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1s;
+        }
+
+        .btn-custom {
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            background: transparent;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-custom:hover::before {
+            left: 0;
+        }
+
+        .btn-custom:hover {
+            color: var(--primary);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image {
+            flex: 0 0 300px;
+            position: relative;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+
+        .about-image:hover::before {
+            top: 10px;
+            left: 10px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            filter: grayscale(30%);
+            transition: all 0.3s ease;
+        }
+
+        .about-image:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+            border-color: var(--accent);
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 1rem;
+        }
+
+        .progress {
+            height: 8px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+            transition: width 1.5s ease;
+        }
+
+        /* Experience Section */
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--secondary);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -53px;
+            top: 30px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+        }
+
+        .timeline-date {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            color: var(--text-white);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            color: var(--accent-blue);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.2);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            color: var(--text-white);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            padding: 5px 15px;
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--accent);
+        }
+
+        /* Education Section */
+        .education-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .education-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .education-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.1);
+        }
+
+        .education-degree {
+            font-size: 1.4rem;
+            color: var(--text-white);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-institution {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-year {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 1;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--secondary);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+            background: rgba(100, 255, 218, 0.1);
+            color: var(--accent);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .contact-form {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            text: rgb(255, 255, 255)
+        }
+
+        .form-control {
+            background: var(--primary);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            color: var(--text-white);
+            padding: 12px;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+        }
+
+        .form-control:focus {
+            background: var(--primary);
+            border-color: var(--accent);
+            color: var(--text-white);
+            box-shadow: 0 0 0 0.2rem rgba(100, 255, 218, 0.25);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content:space-evenly;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--secondary);
+            color: var(--accent);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* AI Chatbot Styles */
+        .chat-button {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(100, 255, 218, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(100, 255, 218, 0.6);
+        }
+
+        .chat-button.active {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 400px;
+            height: 600px;
+            background: var(--secondary);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            border: 1px solid var(--accent);
+            animation: slideUp 0.3s ease;
+        }
+
+        .chat-container.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent));
+            padding: 1.2rem 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chat-close-btn {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .chat-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chat-header-info h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .chat-header-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            gap: 0.8rem;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent));
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .message.bot .message-content {
+            background: var(--primary);
+            color: var(--text-white);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-content {
+            background: var(--accent);
+            color: var(--primary);
+            border-bottom-right-radius: 4px;
+        }
+
+        .typing-indicator {
+            display: none;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 0.8rem 1rem;
+            background: var(--primary);
+            border-radius: 12px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            background: var(--primary);
+            border-top: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            background: var(--secondary);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 25px;
+            color: var(--text-white);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.1);
+        }
+
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quick-reply-btn {
+            padding: 0.5rem 1rem;
+            background: var(--secondary);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-reply-btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                right: 15px;
+                bottom: 15px;
+                width: calc(100vw - 30px);
+                height: calc(100vh - 100px);
+                max-height: 600px;
+                border-radius: 15px;
+            }
+
+            .chat-button {
+                right: 15px;
+                bottom: 15px;
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+
+            .message-content {
+                max-width: 80%;
+                font-size: 0.9rem;
+            }
+
+            .chat-header {
+                padding: 1rem;
+            }
+
+            .chat-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2rem;
+            }
+
+            .chat-header-info h4 {
+                font-size: 1rem;
+            }
+
+            .chat-header-info p {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chat-container {
+                right: 10px;
+                bottom: 10px;
+                width: calc(100vw - 20px);
+                height: calc(100vh - 80px);
+                border-radius: 15px;
+            }
+
+            .chat-button {
+                right: 10px;
+                bottom: 10px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+
+            .quick-replies {
+                flex-direction: column;
+            }
+
+            .quick-reply-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .chat-messages {
+                padding: 1rem;
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 600px) and (max-width: 900px) {
+            .chat-container {
+                height: calc(100vh - 60px);
+                bottom: 10px;
+            }
+        }
+
+        /* Tablet Landscape */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .chat-container {
+                width: 380px;
+                height: 550px;
+                right: 20px;
+                bottom: 20px;
+            }
+
+            .chat-button {
+                right: 20px;
+                bottom: 90px;
+            }
+        }
+
+        /* Large Desktop */
+        @media (min-width: 1440px) {
+            .chat-container {
+                width: 420px;
+                height: 650px;
+                right: 40px;
+                bottom: 40px;
+            }
+
+            .chat-button {
+                right: 40px;
+                bottom: 110px;
+                width: 65px;
+                height: 65px;
+            }
+        }
+
+        /* Modal */
+        .modal-content {
+            background: var(--secondary);
+            color: var(--text-light);
+            border: 1px solid var(--accent);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        .modal-title {
+            color: var(--text-white);
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">ARJUN K M</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h3>Hi, my name is</h3>
+                <h1>Arjun K M</h1>
+                <h2>I'm a <span class="typing-text" id="typingText"></span></h2>
+                <p>A passionate Software Engineer specializing in building exceptional digital experiences. Currently focused on creating innovative solutions using modern technologies and best practices.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-custom">Get In Touch</a>
+                    <a  href="{% static 'resume/Resume.pdf' %}" class="btn btn-custom" Download>Download Resume</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title fade-in">About Me</h2>
+            <div class="about-content fade-in">
+                <div class="about-text">
+                    <p>Hello! I'm Arjun K M, a dedicated Software Engineer with a passion for crafting efficient and scalable software solutions. My journey in technology began with a curiosity about how things work, which evolved into a deep commitment to building impactful applications.</p>
+                    <p>I specialize in full-stack development with expertise in modern frameworks and technologies. My experience spans across developing enterprise applications, implementing AI-driven solutions, and creating user-centric web applications.</p>
+                    <p>My career objective is to leverage my technical skills and innovative mindset to contribute to challenging projects that push the boundaries of technology. I thrive in collaborative environments where I can continuously learn and grow while delivering high-quality solutions.</p>
+                    <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community.</p>
+                </div>
+                <div class="about-image">
+                    <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-blue), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 8rem; color: white;">
+                        <img src="{% static 'images/arjun.jpg' %}" alt="My Profile" style="width: 300px; height: 300px;"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title fade-in">Skills & Technologies</h2>
+            <div class="skills-grid fade-in">
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-python"></i></div>
+                    <div class="skill-name">Python</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="90"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-java"></i></div>
+                    <div class="skill-name">Java</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="85"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-js"></i></div>
+                    <div class="skill-name">JavaScript</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="88"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-react"></i></div>
+                    <div class="skill-name">Django</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="82"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-database"></i></div>
+                    <div class="skill-name">SQL & NoSQL</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="85"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-node"></i></div>
+                    <div class="skill-name">Oracle DB</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="80"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-docker"></i></div>
+                    <div class="skill-name">Dotnet Core</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="75"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
+                    <div class="skill-name">Git & GitHub</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="90"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title fade-in">Work Experience</h2>
+            <div class="timeline fade-in">
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 - Present</div>
+                    <div class="timeline-title">Software Engineer</div>
+                    <div class="timeline-company">MACOM Solutions</div>
+                    <p>Leading development of enterprise-level applications with focus on scalability and performance. Implementing modern architectural patterns and mentoring junior developers.</p>
+                    <ul>
+                        <li>Developed and deployed multiple full-stack applications</li>
+                        <li>Optimized database queries resulting in 40% performance improvement</li>
+                        <li>Collaborated with cross-functional teams in agile environment</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2021 - 2023</div>
+                    <div class="timeline-title">Junior Software Developer</div>
+                    <div class="timeline-company">ALTOS Technologies</div>
+                    <p>Contributed to various client projects focusing on web application development and API integration. Gained hands-on experience with modern development workflows.</p>
+                    <ul>
+                        <li>Built responsive web applications using React and Vue.js</li>
+                        <li>Integrated third-party APIs and services</li>
+                        <li>Participated in code reviews and knowledge sharing sessions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title fade-in">Featured Projects</h2>
+            <div class="projects-grid fade-in">
+                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project1Modal">
+                    <div class="project-image">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">VocaVerse</h3>
+                        <p class="project-description">Word Chain Game is a culturally enriching, web-based word game that combines the fun of a traditional word chain with educational content focused on Indian names. This multiplayer game is designed to be engaging, responsive, and educational, showcasing modern web development practices.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">C#(.NET 8.0)</span>
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">Tailwind CSS</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">AJAX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project2Modal">
+                    <div class="project-image">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Automated Face Sketch Identification</h3>
+                        <p class="project-description">Deep learning system for matching hand-drawn sketches to photographs using advanced deep learning algorithms.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Autoencoder</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">CNN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project3Modal">
+                    <div class="project-image">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Question Paper Generator</h3>
+                        <p class="project-description">Intelligent system for generating customized question papers based on difficulty levels, topics, and exam patterns.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Bootstrap</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education">
+        <div class="container">
+            <h2 class="section-title fade-in">Education</h2>
+            <div class="education-grid fade-in">
+                <div class="education-card">
+                    <div class="education-degree">Master of Computer Applications (MCA)</div>
+                    <div class="education-institution">Kalam Technical University/College Of Engineering Cherthala</div>
+                    <div class="education-year">2022 - 2024</div>
+                    <p class="mt-2">Graduated with distinction. Specialized in Software Engineering and Advanced Algorithms. Completed thesis on Machine Learning applications in real-world scenarios.</p>
+                </div>
+                <div class="education-card">
+                    <div class="education-degree">B.Sc. Computer Science</div>
+                    <div class="education-institution">Calicut University/RSM SNDP College Koyilandi</div>
+                    <div class="education-year">2018 - 2021</div>
+                    <p class="mt-2">Graduated with distinction. Strong foundation in programming, data structures, algorithms, and database management systems.</p>
+                </div>
+                <div class="education-card">
+                    <div class="education-degree">Plus Two</div>
+                    <div class="education-institution">Kerala Board/Govt Higher Secondary Vatakara</div>
+                    <div class="education-year">2016 - 2018</div>
+                    <p class="mt-2">Completed higher secondary education with kerala Board/Govt</p>
+                </div>
+                <div class="education-card">
+                    <div class="education-degree">SSLC</div>
+                    <div class="education-institution">Kerala Board/Govt Technical School Vatakara</div>
+                    <div class="education-year">2015</div>
+                    <p class="mt-2">Completed technical education under kerala Board/Govt</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title fade-in">Get In Touch</h2>
+            <div class="contact-container fade-in">
+                <div class="contact-info">
+                    <a href="mailto:arjunkmvat@gmail.com" class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h4 style="color: var(--text-white); margin-bottom: 0.5rem;">Email</h4>
+                            <p style="margin: 0;">arjunkmvat@gmail.com</p>
+                        </div>
+                    </a>
+                    <a href="tel:+916282283144" class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <h4 style="color: var(--text-white); margin-bottom: 0.5rem;">Phone</h4>
+                            <p style="margin: 0;">+91 6282283144</p>
+                        </div>
+                    </a>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h4 style="color: var(--text-white); margin-bottom: 0.5rem;">Location</h4>
+                            <p style="margin: 0;"> Calicut, Kerala, India</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/arjun3031" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/arjun-k-m-12411022b" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:arjunkmvat@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                {% comment %} <div class="contact-form">
+                    <form id="contactForm">
+                        <input type="text" class="form-control" placeholder="Your Name" required>
+                        <input type="email" class="form-control" placeholder="Your Email" required>
+                        <textarea class="form-control" rows="6" placeholder="Your Message" required></textarea>
+                        <button type="submit" class="btn btn-custom w-100">Send Message</button>
+                    </form>
+                </div> {% endcomment %}
+                <div class="contact-form">
+                    <form id="contactForm" method="POST" action="{% url 'contact' %}">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" name="name" placeholder="Your Name" required>
+                        <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                        <textarea class="form-control" name="message" rows="6" placeholder="Your Message" required></textarea>
+                        <button type="submit" class="btn btn-custom w-100">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--secondary); padding: 2rem 0; text-align: center; border-top: 1px solid rgba(100, 255, 218, 0.1);">
+        <div class="container">
+            <p style="margin: 0; color: var(--text-light);">© 2025 Arjun K M</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- AI Chatbot -->
+    <button class="chat-button" id="chatButton">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-header-info">
+                    <h4>AI Assistant</h4>
+                    <p>Ask me anything about Arjun!</p>
+                </div>
+            </div>
+            <button class="chat-close-btn" id="chatCloseBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    Hi! 👋 I'm Arjun's AI assistant. I can help you learn more about his skills, experience, and projects. What would you like to know?
+                    <div class="quick-replies">
+                        <button class="quick-reply-btn" onclick="sendQuickReply('Tell me about his skills')">Skills</button>
+                        <button class="quick-reply-btn" onclick="sendQuickReply('What projects has he worked on?')">Projects</button>
+                        <button class="quick-reply-btn" onclick="sendQuickReply('What is his experience?')">Experience</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="message-avatar" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent)); color: white;">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <div class="chat-input-wrapper">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                <button class="chat-send-btn" id="chatSendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Modals -->
+    <div class="modal fade" id="project1Modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">VocaVerse - AI Voice Synthesis Platform</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                    <p>VocaVerse is an advanced AI-powered voice synthesis platform that leverages deep learning to convert text into natural-sounding speech. The platform supports multiple languages and voice personalities, making it ideal for content creators, accessibility tools, and educational applications.</p>
+                    
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                    <ul>
+                        <li>Multi-language text-to-speech conversion with 20+ languages</li>
+                        <li>Customizable voice parameters (pitch, speed, emotion)</li>
+                        <li>Real-time audio generation with low latency</li>
+                        <li>RESTful API for integration with third-party applications</li>
+                        <li>User-friendly web interface built with React</li>
+                    </ul>
+
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">TensorFlow</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                    </div>
+
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Impact</h6>
+                    <p>Successfully deployed to production serving 1000+ users daily with 99.9% uptime. Reduced text-to-speech processing time by 60% through optimization.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="project2Modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Automated Face Sketch Identification System</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                    <p>An intelligent computer vision system designed to match hand-drawn facial sketches with photographic images. This project has applications in law enforcement, forensic investigation, and security systems.</p>
+                    
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                    <ul>
+                        <li>Deep learning-based feature extraction from sketches and photos</li>
+                        <li>Advanced image preprocessing and normalization</li>
+                        <li>Similarity matching algorithm with 85% accuracy</li>
+                        <li>Batch processing capability for large databases</li>
+                        <li>Web-based interface for sketch upload and matching</li>
+                    </ul>
+
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">OpenCV</span>
+                        <span class="tech-tag">Keras</span>
+                        <span class="tech-tag">CNN</span>
+                        <span class="tech-tag">NumPy</span>
+                        <span class="tech-tag">Scikit-learn</span>
+                    </div>
+
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Achievements</h6>
+                    <p>Achieved 85% matching accuracy on test dataset. Presented research findings at a regional technology conference. System can process 100+ images per minute.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="project3Modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Intelligent Question Paper Generator</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                    <p>A comprehensive web-based application designed for educational institutions to automatically generate customized question papers based on predefined criteria such as difficulty level, topics, and exam patterns.</p>
+                    
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                    <ul>
+                        <li>Intelligent question selection based on Bloom's taxonomy</li>
+                        <li>Multi-level difficulty distribution (Easy, Medium, Hard)</li>
+                        <li>Topic-wise and chapter-wise question organization</li>
+                        <li>Template-based paper generation with custom formats</li>
+                        <li>Question bank management with CRUD operations</li>
+                        <li>Export to PDF with customizable layouts</li>
+                    </ul>
+
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Java</span>
+                        <span class="tech-tag">Spring Boot</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">Angular</span>
+                        <span class="tech-tag">Bootstrap</span>
+                        <span class="tech-tag">JasperReports</span>
+                    </div>
+
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Impact</h6>
+                    <p>Deployed in 5+ educational institutions. Reduced paper creation time from 2 hours to 5 minutes. Manages a question bank of 10,000+ questions across multiple subjects.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Typing Animation
+        const texts = ['Software Engineer', 'Full Stack Developer', 'Problem Solver', 'Tech Enthusiast'];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingElement = document.getElementById('typingText');
+
+        function type() {
+            const currentText = texts[textIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                isDeleting = true;
+                setTimeout(type, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, isDeleting ? 50 : 100);
+            }
+        }
+
+        setTimeout(type, 1000);
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse.classList.contains('show')) {
+                        navbarCollapse.classList.remove('show');
+                    }
+                }
+            });
+        });
+
+        // Fade In Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Progress Bar Animation
+        const progressObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBars = entry.target.querySelectorAll('.progress-bar');
+                    progressBars.forEach(bar => {
+                        const width = bar.getAttribute('data-width');
+                        bar.style.width = width + '%';
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const skillsSection = document.querySelector('#skills');
+        if (skillsSection) {
+            progressObserver.observe(skillsSection);
+        }
+
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Contact Form Submission
+        {% comment %} document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! I will get back to you soon.');
+            this.reset();
+        }); {% endcomment %}
+
+        // Navbar Background on Scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(10, 25, 47, 0.98)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
+            } else {
+                navbar.style.background = 'rgba(10, 25, 47, 0.95)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // AI Chatbot Functionality
+        const chatButton = document.getElementById('chatButton');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatCloseBtn = document.getElementById('chatCloseBtn');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Knowledge Base
+        const knowledgeBase = {
+            skills: {
+                keywords: ['skill', 'technology', 'tech stack', 'programming', 'languages', 'frameworks'],
+                response: "Arjun is proficient in multiple technologies including:\n\n🐍 Python & Java for backend development\n💻 JavaScript, React, Node.js for full-stack development\n🗄️ SQL & NoSQL databases\n🐳 Docker for containerization\n📦 Git & GitHub for version control\n\nHe has 90% proficiency in Python and Git, 88% in JavaScript, and strong skills across the entire stack!"
+            },
+            experience: {
+                keywords: ['experience', 'work', 'job', 'company', 'career', 'employment'],
+                response: "Arjun has impressive professional experience:\n\n🏢 Currently working as a Software Engineer at MACOM Solutions (2023-Present)\n- Leading enterprise application development\n- Achieved 40% performance improvement\n- Working Under JusSuit Department - Legal tracking on notice management and case management\n\n🏢 Previously at ALTOS Technologies\n- Built responsive web applications\n- Integrated third-party APIs\n- Worked in agile environment"
+            },
+            projects: {
+                keywords: ['project', 'built', 'created', 'developed', 'portfolio'],
+                response: "Arjun has worked on several impressive projects:\n\n🎤 VocaVerse - AI-powered voice synthesis platform with 20+ languages\n\n🔍 Automated Face Sketch Identification - Deep learning system with 85% accuracy\n\n📝 Question Paper Generator - Intelligent system deployed in 5+ institutions\n\nClick on the projects in the portfolio to see more details!"
+            },
+            education: {
+                keywords: ['education', 'degree', 'study', 'college', 'university', 'qualification'],
+                response: "Arjun's educational background:\n\n🎓 Master of Computer Applications (MCA)\n2019-2021 | Specialized in Software Engineering\n\n🎓 B.Sc. Computer Science\n2016-2019 | Graduated with distinction"
+            },
+            contact: {
+                keywords: ['contact', 'email', 'phone', 'reach', 'hire', 'connect'],
+                response: "You can reach Arjun through:\n\n📧 Email: arjunkmvat@gmail.com\n📱 Phone: +91 6282283144\n💼 LinkedIn: linkedin.com/in/arjun-k-m-12411022b\n💻 GitHub: github.com/arjun3031\n\nFeel free to scroll down to the contact section to send a message!"
+            },
+            location: {
+                keywords: ['location', 'where', 'based', 'live'],
+                response: "Arjun is based in Calicut, Kerala, India"
+            }
+        };
+
+        // Toggle Chat - Open
+        chatButton.addEventListener('click', function() {
+            chatContainer.classList.add('active');
+            chatButton.classList.add('active');
+            chatInput.focus();
+            scrollToBottom();
+        });
+
+        // Toggle Chat - Close
+        chatCloseBtn.addEventListener('click', function() {
+            chatContainer.classList.remove('active');
+            chatButton.classList.remove('active');
+        });
+
+        // Send Message
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
+
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+
+            // Show typing indicator
+            typingIndicator.classList.add('active');
+            scrollToBottom();
+
+            // Generate bot response
+            setTimeout(() => {
+                const response = generateResponse(message);
+                typingIndicator.classList.remove('active');
+                addMessage(response, 'bot');
+                scrollToBottom();
+            }, 1000 + Math.random() * 1000);
+        }
+
+        chatSendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Quick Reply Function
+        function sendQuickReply(message) {
+            chatInput.value = message;
+            sendMessage();
+        }
+
+        // Add Message to Chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.innerHTML = sender === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.innerHTML = text.replace(/\n/g, '<br>');
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            
+            chatMessages.appendChild(messageDiv);
+        }
+
+        // Generate Bot Response
+        function generateResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Check knowledge base
+            for (const [category, data] of Object.entries(knowledgeBase)) {
+                if (data.keywords.some(keyword => lowerMessage.includes(keyword))) {
+                    return data.response;
+                }
+            }
+
+            // Greeting responses
+            if (lowerMessage.match(/^(hi|hello|hey|greetings)/)) {
+                return "Hello! 👋 I'm here to help you learn more about Arjun. You can ask me about his skills, experience, projects, education, or how to contact him!";
+            }
+
+            // Thank you responses
+            if (lowerMessage.match(/(thank|thanks)/)) {
+                return "You're welcome! 😊 Is there anything else you'd like to know about Arjun?";
+            }
+
+            // Default response
+            return "I can help you with information about:\n\n• Skills & Technologies\n• Work Experience\n• Projects\n• Education\n• Contact Information\n\nWhat would you like to know?";
+        }
+
+        // Scroll to Bottom
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
