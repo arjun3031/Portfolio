@@ -637,6 +637,7 @@
 
         .chat-button.active {
             background: linear-gradient(135deg, #ef4444, #dc2626);
+            display: none;
         }
 
         .chat-container {
@@ -645,6 +646,8 @@
             right: 30px;
             width: 400px;
             height: 600px;
+            max-height: calc(100vh - 120px);
+            top: auto;
             background: var(--secondary);
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -653,7 +656,7 @@
             overflow: hidden;
             z-index: 1000;
             border: 1px solid var(--accent);
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.3s ease;   
         }
 
         .chat-container.active {
@@ -1181,10 +1184,17 @@
                     </div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-java"></i></div>
-                    <div class="skill-name">Java</div>
+                    <div class="skill-icon"><i class="fas fa-code"></i></div>
+                    <div class="skill-name">Dotnet Core</div>
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="85"></div>
+                        <div class="progress-bar" role="progressbar" data-width="75"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fab fa-python"></i></div>
+                    <div class="skill-name">Django</div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="82"></div>
                     </div>
                 </div>
                 <div class="skill-card">
@@ -1192,13 +1202,6 @@
                     <div class="skill-name">JavaScript</div>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" data-width="88"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-react"></i></div>
-                    <div class="skill-name">Django</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="82"></div>
                     </div>
                 </div>
                 <div class="skill-card">
@@ -1212,14 +1215,14 @@
                     <div class="skill-icon"><i class="fab fa-node"></i></div>
                     <div class="skill-name">Oracle DB</div>
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="80"></div>
+                        <div class="progress-bar" role="progressbar" data-width="88"></div>
                     </div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-docker"></i></div>
-                    <div class="skill-name">Dotnet Core</div>
+                    <div class="skill-icon"><i class="fab fa-java"></i></div>
+                    <div class="skill-name">Java</div>
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="75"></div>
+                        <div class="progress-bar" role="progressbar" data-width="55"></div>
                     </div>
                 </div>
                 <div class="skill-card">
@@ -1239,25 +1242,27 @@
             <h2 class="section-title fade-in">Work Experience</h2>
             <div class="timeline fade-in">
                 <div class="timeline-item">
-                    <div class="timeline-date">2023 - Present</div>
-                    <div class="timeline-title">Software Engineer</div>
+                    <div class="timeline-date">Dec 2024 – Present</div>
+                    <div class="timeline-title">.NET Developer</div>
                     <div class="timeline-company">MACOM Solutions</div>
-                    <p>Leading development of enterprise-level applications with focus on scalability and performance. Implementing modern architectural patterns and mentoring junior developers.</p>
+                    <p>Working on the <strong>JUSSUIT</strong> litigation-management platform at MACOM Solutions, handling both development and security assurance tasks. JUSSUIT helps organizations manage legal workflows, track NPAs, notices, arbitration, and supports e-court integration.</p>
                     <ul>
-                        <li>Developed and deployed multiple full-stack applications</li>
-                        <li>Optimized database queries resulting in 40% performance improvement</li>
-                        <li>Collaborated with cross-functional teams in agile environment</li>
+                        <li>Built and maintained core modules of the JUSSUIT web app using .NET technologies</li>
+                        <li>Designed and integrated secure authentication flows, APIs, backend services, and modules for NPA, notices, arbitration</li>
+                        <li>Performed VAPT (Vulnerability Assessment & Penetration Testing) and CAST (Code Analysis & Security Testing) to ensure strong security posture</li>
+                        <li>Collaborated with QA, DevOps, UI/UX teams to deploy and maintain releases and ensure smooth operation</li>
                     </ul>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-date">2021 - 2023</div>
-                    <div class="timeline-title">Junior Software Developer</div>
+                    <div class="timeline-date">Jul 2024 - Dec 2024</div>
+                    <div class="timeline-title">Python Developer</div>
                     <div class="timeline-company">ALTOS Technologies</div>
-                    <p>Contributed to various client projects focusing on web application development and API integration. Gained hands-on experience with modern development workflows.</p>
+                    <p>Worked as a Python Developer at ALTOS Technologies, focusing on backend and web application development. Collaborated with the team to design and deploy efficient client-based solutions using Python and Django.</p>
                     <ul>
-                        <li>Built responsive web applications using React and Vue.js</li>
-                        <li>Integrated third-party APIs and services</li>
-                        <li>Participated in code reviews and knowledge sharing sessions</li>
+                        <li>Developed and maintained backend modules using Python and Django</li>
+                        <li>Integrated APIs and database-driven functionalities for client projects</li>
+                        <li>Performed unit-testing, testing and debugging to enhance performance and reliability</li>
+                        <li>Worked closely with team members throughout the development cycle</li>
                     </ul>
                 </div>
             </div>
@@ -1283,6 +1288,10 @@
                             <span class="tech-tag">JavaScript</span>
                             <span class="tech-tag">AJAX</span>
                         </div>
+                        <a href="https://github.com/arjun3031/VocaVerse.git" target="_blank"
+                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
+                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
+                        </a>
                     </div>
                 </div>
 
@@ -1292,13 +1301,17 @@
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Automated Face Sketch Identification</h3>
-                        <p class="project-description">Deep learning system for matching hand-drawn sketches to photographs using advanced deep learning algorithms.</p>
+                            <p class="project-description"> This project is an advanced deep learning system designed to accurately match hand-drawn facial sketches to real-world photographs. Leveraging the power of convolutional neural networks (CNNs) and autoencoder architectures, the system is capable of extracting and encoding fine facial features. It is suitable for forensic applications.                            </p>   
                         <div class="tech-tags">
                             <span class="tech-tag">Python</span>
                             <span class="tech-tag">Autoencoder</span>
                             <span class="tech-tag">Django</span>
                             <span class="tech-tag">CNN</span>
                         </div>
+                        <a href="https://github.com/arjun3031?tab=repositories" target="_blank"
+                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
+                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
+                        </a>
                     </div>
                 </div>
 
@@ -1308,7 +1321,7 @@
                     </div>
                     <div class="project-content">
                         <h3 class="project-title">Question Paper Generator</h3>
-                        <p class="project-description">Intelligent system for generating customized question papers based on difficulty levels, topics, and exam patterns.</p>
+                        <p class="project-description">An intelligent platform that generates fully customized question papers based on selected topics, difficulty levels, and exam patterns, helping educators save time, maintain consistency, and provide students with balanced and well-structured assessments, while also supporting multiple formats for download.</p>
                         <div class="tech-tags">
                             <span class="tech-tag">Python</span>
                             <span class="tech-tag">Django</span>
@@ -1316,6 +1329,78 @@
                             <span class="tech-tag">JavaScript</span>
                             <span class="tech-tag">Bootstrap</span>
                         </div>
+                        <a href="https://github.com/arjun3031/Question-Paper" target="_blank"
+                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
+                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project4Modal">
+                    <div class="project-image">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Astrology Prediction for Entertainment</h3>
+                            <p class="project-description">
+                                A fun and interactive web app for predicting Nakshatra Falam in Malayalam. Users can select their day and Nakshatra, then click the prediction button to receive personalized and entertaining future predictions. The app leverages a comprehensive dataset to provide insights in a playful way, making astrology exploration enjoyable and engaging for everyone.
+                            </p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">.Net</span>
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">HTML/CSS</span>
+                            <span class="tech-tag">Bootstrap</span>
+                        </div>
+                        <a href="https://github.com/arjun3031/Astrology-Prediction-Web-App" target="_blank"
+                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
+                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project5Modal">
+                    <div class="project-image">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Kerala Water Authority Bill Payment</h3>
+                        <p class="project-description">
+                            A smart online platform that enables users to capture their water meter reading via image upload, automatically calculates the accurate bill amount, generates the bill digitally, and allows secure online payment, eliminating the need for physical visits to the office while ensuring accurate record-keeping and instant notifications to the authority department authorities.
+                        </p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Bootstrap</span>
+                            <span class="tech-tag">OpenCV</span>
+                        </div>
+                        <a href="" target="_blank"
+                            style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
+                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project6Modal">
+                    <div class="project-image">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">CRM Insurance Company Management System</h3>
+                        <p class="project-description">
+                            A comprehensive web-based CRM system designed to streamline insurance company operations, enabling administrators to efficiently add and manage employees, track and update insurance policies. The system ensures secure data management, simplifies day-to-day workflows, provides real-time insights, and improves productivity by reducing manual paperwork.
+                        </p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Bootstrap</span>
+                        </div>
+                        <a href="https://github.com/arjun3031/CRM-Insurance-company" target="_blank"
+                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
+                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1400,21 +1485,23 @@
                         </a>
                     </div>
                 </div>
-                {% comment %} <div class="contact-form">
-                    <form id="contactForm">
-                        <input type="text" class="form-control" placeholder="Your Name" required>
-                        <input type="email" class="form-control" placeholder="Your Email" required>
-                        <textarea class="form-control" rows="6" placeholder="Your Message" required></textarea>
-                        <button type="submit" class="btn btn-custom w-100">Send Message</button>
-                    </form>
-                </div> {% endcomment %}
                 <div class="contact-form">
-                    <form id="contactForm" method="POST" action="{% url 'contact' %}">
+                    <form id="contactForm" method="POST" action="" autocomplete="off">
                         {% csrf_token %}
-                        <input type="text" class="form-control" name="name" placeholder="Your Name" required>
-                        <input type="email" class="form-control" name="email" placeholder="Your Email" required>
-                        <textarea class="form-control" name="message" rows="6" placeholder="Your Message" required></textarea>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Your Name" autocomplete="off">
+                            <small class="text-danger" id="nameError"></small>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" autocomplete="off">
+                            <small class="text-danger" id="emailError"></small>
+                        </div>
+                        <div class="form-group mb-3">
+                            <textarea class="form-control" name="message" id="message" rows="6" placeholder="Your Message" autocomplete="off"></textarea>
+                            <small class="text-danger" id="messageError"></small>
+                        </div>
                         <button type="submit" class="btn btn-custom w-100">Send Message</button>
+                        <div id="formMessage" class="mt-3 text-success"></div>
                     </form>
                 </div>
             </div>
@@ -1489,117 +1576,354 @@
     </div>
 
     <!-- Project Modals -->
+
     <div class="modal fade" id="project1Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">VocaVerse - AI Voice Synthesis Platform</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
+                    <i class="fas fa-gamepad"></i>
                 </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>VocaVerse is an advanced AI-powered voice synthesis platform that leverages deep learning to convert text into natural-sounding speech. The platform supports multiple languages and voice personalities, making it ideal for content creators, accessibility tools, and educational applications.</p>
-                    
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
-                    <ul>
-                        <li>Multi-language text-to-speech conversion with 20+ languages</li>
-                        <li>Customizable voice parameters (pitch, speed, emotion)</li>
-                        <li>Real-time audio generation with low latency</li>
-                        <li>RESTful API for integration with third-party applications</li>
-                        <li>User-friendly web interface built with React</li>
-                    </ul>
+                <h5 class="modal-title">VocaVerse - Word Chain Game</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
 
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">TensorFlow</span>
-                        <span class="tech-tag">Flask</span>
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Docker</span>
-                        <span class="tech-tag">PostgreSQL</span>
-                    </div>
+                <!-- Project Overview -->
+                <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                <p>
+                    VocaVerse is a web-based multiplayer word chain game focused on Indian names. It combines fun gameplay with educational content and is designed to be interactive, responsive, and engaging for all players.
+                </p>
 
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Impact</h6>
-                    <p>Successfully deployed to production serving 1000+ users daily with 99.9% uptime. Reduced text-to-speech processing time by 60% through optimization.</p>
+                <!-- Key Features -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                <ul>
+                    <li>Two-player turn-based word chain gameplay</li>
+                    <li>Real-time validation of word chain rules</li>
+                    <li>Instant feedback and session-based game state</li>
+                    <li>Mobile-responsive and intuitive UI</li>
+                    <li>Automatic prevention of duplicate name submissions</li>
+                </ul>
+
+                <!-- Technologies Used -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                <div class="tech-tags">
+                    <span class="tech-tag">C# (.NET 8.0)</span>
+                    <span class="tech-tag">ASP.NET Core</span>
+                    <span class="tech-tag">Razor Pages</span>
+                    <span class="tech-tag">Tailwind CSS</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">AJAX</span>
                 </div>
+
+                <!-- Future Enhancements -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
+                <ul>
+                    <li>Expand the name database to 200+ Indian names</li>
+                    <li>Add single-player mode with AI opponent</li>
+                    <li>Introduce scoring, statistics, and game history</li>
+                    <li>Implement sound effects and animations</li>
+                    <li>Enable voice recognition for hands-free gameplay</li>
+                </ul>
+
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="project2Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Automated Face Sketch Identification System</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+
+   <div class="modal fade" id="project2Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center">
+                <div style="font-size: 2rem; margin-right: 10px; color: var(--accent);">
+                    <i class="fas fa-user-secret"></i>
                 </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>An intelligent computer vision system designed to match hand-drawn facial sketches with photographic images. This project has applications in law enforcement, forensic investigation, and security systems.</p>
-                    
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
-                    <ul>
-                        <li>Deep learning-based feature extraction from sketches and photos</li>
-                        <li>Advanced image preprocessing and normalization</li>
-                        <li>Similarity matching algorithm with 85% accuracy</li>
-                        <li>Batch processing capability for large databases</li>
-                        <li>Web-based interface for sketch upload and matching</li>
-                    </ul>
+                <h5 class="modal-title">Automated Face Sketch Identification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
 
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">OpenCV</span>
-                        <span class="tech-tag">Keras</span>
-                        <span class="tech-tag">CNN</span>
-                        <span class="tech-tag">NumPy</span>
-                        <span class="tech-tag">Scikit-learn</span>
-                    </div>
+                <!-- Project Overview -->
+                <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                <p>
+                    This project is an advanced deep learning system designed to accurately match hand-drawn facial sketches to real-world photographs. Leveraging the power of convolutional neural networks (CNNs) and autoencoder architectures, the system extracts and encodes fine facial features, making it highly suitable for forensic, law enforcement, and security applications.
+                </p>
 
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Achievements</h6>
-                    <p>Achieved 85% matching accuracy on test dataset. Presented research findings at a regional technology conference. System can process 100+ images per minute.</p>
+                <!-- Key Features -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                <ul>
+                    <li>Deep learning-based feature extraction from sketches and photographs</li>
+                    <li>Autoencoder architecture for efficient encoding of facial details</li>
+                    <li>High accuracy matching using CNNs trained on diverse datasets</li>
+                    <li>Web-based interface for sketch upload and instant matching</li>
+                    <li>Supports batch processing for large-scale forensic databases</li>
+                    <li>Real-time feedback on match confidence and similarity scores</li>
+                </ul>
+
+                <!-- Technologies Used -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Autoencoder</span>
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">CNN</span>
+                    <span class="tech-tag">OpenCV</span>
+                    <span class="tech-tag">NumPy</span>
                 </div>
+
+                <!-- Achievements -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Achievements</h6>
+                <p>
+                    Successfully achieved high matching accuracy on diverse test datasets. The system efficiently processes hundreds of sketches per minute and has potential applications in forensic investigations, law enforcement, and security operations. Demonstrated the project at academic and professional conferences, receiving positive recognition for its innovative approach.
+                </p>
+
+                <!-- Future Enhancements -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
+                <ul>
+                    <li>Integration with police and law enforcement databases for faster identification.</li>
+                    <li>Mobile app version for on-the-go sketch submission and matching.</li>
+                    <li>AI-powered similarity scoring with additional face attribute analysis (age, gender, expression).</li>
+                    <li>Expand dataset with diverse ethnicities and sketches for higher accuracy.</li>
+                    <li>Introduce real-time video sketch matching from CCTV or live footage.</li>
+                    <li>Provide a secure reporting dashboard for case management and statistics.</li>
+                    <li>Deploy on cloud platforms (AWS/GCP/Azure) for scalability and remote access.</li>
+                </ul>
+
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="project3Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Intelligent Question Paper Generator</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>A comprehensive web-based application designed for educational institutions to automatically generate customized question papers based on predefined criteria such as difficulty level, topics, and exam patterns.</p>
-                    
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
-                    <ul>
-                        <li>Intelligent question selection based on Bloom's taxonomy</li>
-                        <li>Multi-level difficulty distribution (Easy, Medium, Hard)</li>
-                        <li>Topic-wise and chapter-wise question organization</li>
-                        <li>Template-based paper generation with custom formats</li>
-                        <li>Question bank management with CRUD operations</li>
-                        <li>Export to PDF with customizable layouts</li>
-                    </ul>
 
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Java</span>
-                        <span class="tech-tag">Spring Boot</span>
-                        <span class="tech-tag">MySQL</span>
-                        <span class="tech-tag">Angular</span>
-                        <span class="tech-tag">Bootstrap</span>
-                        <span class="tech-tag">JasperReports</span>
+  <div class="modal fade" id="project3Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
+                        <i class="fas fa-file-alt"></i>
                     </div>
+                    Question Paper Generator
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
 
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Impact</h6>
-                    <p>Deployed in 5+ educational institutions. Reduced paper creation time from 2 hours to 5 minutes. Manages a question bank of 10,000+ questions across multiple subjects.</p>
+                <!-- Project Overview -->
+                <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                <p>
+                    This is an intelligent system for generating customized question papers automatically. Educators can select difficulty levels, topics, and exam patterns, enabling efficient, fair, and time-saving assessments. The system is designed to improve productivity and maintain consistency in exams.
+                </p>
+
+                <!-- Key Features -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                <ul>
+                    <li>Generate question papers based on selected difficulty levels, topics, and exam patterns</li>
+                    <li>Customizable number of questions per section</li>
+                    <li>Randomized question selection for fairness</li>
+                    <li>Supports multiple subjects and formats</li>
+                    <li>Export papers as PDF for easy printing and sharing</li>
+                    <li>User-friendly interface for educators</li>
+                </ul>
+
+                <!-- Technologies Used -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Bootstrap</span>
                 </div>
+
+                <!-- Future Enhancements -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
+                <ul>
+                    <li>Add AI-based question suggestion and difficulty prediction</li>
+                    <li>Integrate analytics to track exam performance trends</li>
+                    <li>Provide cloud storage for generated papers</li>
+                    <li>Enable collaborative paper creation for multiple teachers</li>
+                    <li>Mobile app integration for on-the-go access</li>
+                </ul>
+
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="project4Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    Astrology Prediction App
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Project Overview -->
+                <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                <p>
+                    This is a lighthearted web application for predicting Nakshatra Falam in Malayalam. Users can select their day and Nakshatra, then receive personalized predictions instantly. The app is designed for entertainment, cultural engagement, and fun astrology exploration.
+                </p>
+
+                <!-- Key Features -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                <ul>
+                    <li>Select day and Nakshatra to get a prediction</li>
+                    <li>Instant results with fun messages</li>
+                    <li>User-friendly and mobile-responsive interface</li>
+                    <li>Supports multiple Nakshatras and days</li>
+                    <li>Lightweight and fast-loading application</li>
+                </ul>
+
+                <!-- Technologies Used -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">Bootstrap</span>
+                </div>
+
+                <!-- Future Enhancements -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
+                <ul>
+                    <li>Add AI-based horoscope predictions for more personalized results</li>
+                    <li>Provide daily, weekly, and monthly Nakshatra insights</li>
+                    <li>Enable notifications for prediction updates</li>
+                    <li>Integrate social sharing options for users</li>
+                    <li>Develop a mobile app version for wider accessibility</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="project5Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
+                        <i class="fas fa-hand-holding-water"></i>
+                    </div>
+                    Kerala Water Authority - Online Bill Payment
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Project Overview -->
+                <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                <p>
+                    This web-based application allows users to capture meter readings via image, automatically calculate accurate water bills, and make online payments without visiting the office. The system also shares meter images and bills directly with the Kerala Water Authority for record keeping and verification, enhancing efficiency and reducing manual workload.
+                </p>
+
+                <!-- Key Features -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                <ul>
+                    <li>Capture and upload meter readings via image</li>
+                    <li>Automatic calculation of water consumption and billing</li>
+                    <li>Direct submission of meter images and generated bills to the authority</li>
+                    <li>Online payment integration for seamless transactions</li>
+                    <li>Secure, user-friendly, and responsive interface</li>
+                    <li>History of bills and payments for user reference</li>
+                </ul>
+
+                <!-- Technologies Used -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">OpenCV</span>
+                </div>
+
+                <!-- Future Enhancements -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
+                <ul>
+                    <li>AI-based automatic meter reading recognition for higher accuracy</li>
+                    <li>Integration with mobile apps for real-time bill notifications</li>
+                    <li>Analytics dashboard for users and the authority to track usage patterns</li>
+                    <li>Support for multiple languages to improve accessibility</li>
+                    <li>QR code scanning for faster bill payment and verification</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="project6Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    CRM Insurance Company Management
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Project Overview -->
+                <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                <p>
+                    A comprehensive web-based system for managing insurance company operations. The platform allows admins to add and manage employees, track insurance policies, update client details, and generate reports efficiently. It streamlines administrative processes and ensures accurate record keeping for clients and employees.
+                </p>
+
+                <!-- Key Features -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
+                <ul>
+                    <li>Admin panel for managing employees and assigning roles</li>
+                    <li>Maintain client profiles and insurance policy details</li>
+                    <li>Track policy status, renewals, and claims</li>
+                    <li>Generate detailed reports for employees and clients</li>
+                    <li>Secure login and role-based access control</li>
+                    <li>User-friendly interface for smooth operation</li>
+                </ul>
+
+                <!-- Technologies Used -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">Bootstrap</span>
+                </div>
+
+                <!-- Future Enhancements -->
+                <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
+                <ul>
+                    <li>Automated notifications for policy renewals and claims</li>
+                    <li>Analytics dashboard for employee performance and client engagement</li>
+                    <li>Integration with mobile apps for client self-service</li>
+                    <li>Support for document uploads and e-signatures</li>
+                    <li>AI-based fraud detection and claim verification</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -1708,12 +2032,67 @@
             });
         });
 
-        // Contact Form Submission
-        {% comment %} document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! I will get back to you soon.');
-            this.reset();
-        }); {% endcomment %}
+        document.getElementById("contactForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // prevent default form submission
+            let isValid = true;
+
+            // Clear previous messages
+            document.getElementById("nameError").innerText = "";
+            document.getElementById("emailError").innerText = "";
+            document.getElementById("messageError").innerText = "";
+            document.getElementById("formMessage").innerText = "";
+
+            // Name validation (no special chars)
+            let name = document.getElementById("name").value.trim();
+            if (!/^[a-zA-Z\s]+$/.test(name)) {
+                document.getElementById("nameError").innerText = "Name can contain only letters and spaces";
+                isValid = false;
+            }
+
+            // Email validation
+            let email = document.getElementById("email").value.trim();
+            let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById("emailError").innerText = "Enter a valid email address";
+                isValid = false;
+            }
+
+            // Message validation (max 1000 words)
+            let message = document.getElementById("message").value.trim();
+            let wordCount = message.split(/\s+/).filter(Boolean).length;
+            if (wordCount > 1000) {
+                document.getElementById("messageError").innerText = "Message cannot exceed 1000 words";
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Submit via AJAX to Django view
+                fetch("", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name, email, message })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        document.getElementById("formMessage").innerText = "Thank you! We will get back to you soon.";
+                        document.getElementById("contactForm").reset();
+                    } else {
+                        document.getElementById("formMessage").innerText = "Something went wrong. Please try again.";
+                        document.getElementById("formMessage").classList.remove("text-success");
+                        document.getElementById("formMessage").classList.add("text-danger");
+                    }
+                })
+                .catch(err => {
+                    document.getElementById("formMessage").innerText = "Something went wrong. Please try again.";
+                    document.getElementById("formMessage").classList.remove("text-success");
+                    document.getElementById("formMessage").classList.add("text-danger");
+                });
+            }
+        });
 
         // Navbar Background on Scroll
         window.addEventListener('scroll', function() {
