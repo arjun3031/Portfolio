@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'myportfolio.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'portfolio_db',       # Your database name
+        'USER': 'root',               # Default WAMP MySQL username
+        'PASSWORD': 'arjun3031',      # Default WAMP password (keep empty if none)
+        'HOST': 'localhost',          # Or 127.0.0.1
+        'PORT': '3306',               # Default MySQL port
     }
 }
 
