@@ -1531,3 +1531,229 @@
         .modal.show .modal-content {
             animation: modalFadeIn 0.3s ease;
         }
+
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #1e2d3d 0%, #152232 100%);
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+            border: 1px solid rgba(139, 180, 212, 0.2);
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            color: #8bb4d4;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .modal-header p {
+            color: #7a8fa8;
+            font-size: 14px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: #8bb4d4;
+            font-size: 28px;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(139, 180, 212, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #8bb4d4;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 45px 14px 16px;
+            background: rgba(26, 35, 50, 0.6);
+            border: 1px solid rgba(139, 180, 212, 0.3);
+            border-radius: 4px;
+            color: #e0e6ed;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8bb4d4;
+            background: rgba(26, 35, 50, 0.8);
+            box-shadow: 0 0 0 3px rgba(139, 180, 212, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #5a6f85;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #7a8fa8;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: #8bb4d4;
+        }
+
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #8bb4d4;
+            color: #1a2332;
+        }
+
+        .btn-primary:hover {
+            background: #a4c5dd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 180, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #8bb4d4;
+            border: 2px solid #8bb4d4;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(139, 180, 212, 0.1);
+        }
+
+        .password-requirements {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(139, 180, 212, 0.05);
+            border-radius: 4px;
+            border-left: 3px solid #8bb4d4;
+        }
+
+        .password-requirements h4 {
+            color: #8bb4d4;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .password-requirements ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .password-requirements li {
+            color: #7a8fa8;
+            font-size: 12px;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .password-requirements li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: #8bb4d4;
+        }
+        

@@ -46,7 +46,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#change-password">
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                                     <i class="fas fa-key"></i>
                                     <span>Change Password</span>
                                 </a>
@@ -142,6 +142,95 @@
             </div>
         </div>
     </div>
+
+   <!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePasswordModalLabel">
+          <i class="fas fa-key"></i>
+          Change Password
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Django Messages -->
+        {% if messages %}
+          <div>
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Change Password Form -->
+        <form id="changePasswordForm" action="{% url 'change_password' %}" method="POST">
+          {% csrf_token %}
+          
+          <!-- Old Password -->
+          <div class="login-form-group mb-3">
+            <label for="old_password">Current Password</label>
+            <div class="login-input-wrapper position-relative">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="old_password" 
+                name="old_password"
+                placeholder="Enter current password"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- New Password -->
+          <div class="login-form-group mb-3">
+            <label for="new_password">New Password</label>
+            <div class="login-input-wrapper position-relative">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="new_password" 
+                name="new_password"
+                placeholder="Enter new password"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="login-form-group mb-3">
+            <label for="confirm_password">Confirm New Password</label>
+            <div class="login-input-wrapper position-relative">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="confirm_password" 
+                name="confirm_password"
+                placeholder="Confirm new password"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Footer Buttons -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Change Password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <!-- Hero Section -->
     <section id="home" class="hero">
