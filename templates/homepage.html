@@ -88,7 +88,7 @@
                         </div>
                     {% endif %}
 
-                    <form id="loginForm">
+                    <form id="loginForm" action = "{% url 'admin_login' %}" method = "POST">
                         {% csrf_token %}
                         <div class="login-form-group">
                             <label for="username">Username</label>
@@ -96,7 +96,8 @@
                                 <input 
                                     type="text" 
                                     class="login-form-control" 
-                                    id="username" 
+                                    id="username"
+                                    name = "username"
                                     placeholder="Enter your username"
                                     required
                                 >
@@ -111,6 +112,7 @@
                                     type="password" 
                                     class="login-form-control" 
                                     id="password" 
+                                    name = "password"
                                     placeholder="Enter your password"
                                     required
                                 >
@@ -135,14 +137,6 @@
                                 Login
                             </span>
                         </button>
-
-                        <div class="divider">
-                            <span>OR</span>
-                        </div>
-
-                        <div class="register-link">
-                            Don't have an account? <a href="#">Register now</a>
-                        </div>
                     </form>
                 </div>
             </div>
