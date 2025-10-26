@@ -79,16 +79,16 @@
                 <div class="modal-body">
 
                     {% if messages %}
-                        <div>
-                            {% for message in messages %}
-                                <div class="alert alert-danger" role="alert">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </div>
+                        {% for message in messages %}
+                            {% if 'login' in message.tags %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
 
-                    <form id="loginForm" action = "{% url 'admin_login' %}" method = "POST">
+                    <form id="loginForm" action = "{% url 'admin_login' %}" method = "POST" autocomplete="off">
                         {% csrf_token %}
                         <div class="login-form-group">
                             <label for="username">Username</label>
@@ -99,6 +99,7 @@
                                     id="username"
                                     name = "username"
                                     placeholder="Enter your username"
+                                    autocomplete="off"
                                     required
                                 >
                                 <i class="fas fa-user"></i>
@@ -114,6 +115,7 @@
                                     id="password" 
                                     name = "password"
                                     placeholder="Enter your password"
+                                    autocomplete="off"
                                     required
                                 >
                                 <i class="fas fa-lock"></i>
@@ -162,13 +164,17 @@
 
         <!-- Django Messages -->
         {% if messages %}
-          <div>
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}" role="alert">
+        {% for message in messages %}
+            {% if 'change' in message.tags %}
+            <div class="alert alert-danger" role="alert">
                 {{ message }}
-              </div>
-            {% endfor %}
-          </div>
+            </div>
+            {% elif 'login' in message.tags %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            {% endif %}
+        {% endfor %}
         {% endif %}
 
         <!-- Change Password Form -->
@@ -231,22 +237,27 @@
   </div>
 </div>
 
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h3>Hi, my name is</h3>
-                <h1>Arjun K M</h1>
-                <h2>I'm a <span class="typing-text" id="typingText"></span></h2>
-                <p>A passionate Software Engineer specializing in building exceptional digital experiences. Currently focused on creating innovative solutions using modern technologies and best practices.</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-custom">Get In Touch</a>
-                    <a  href="{% static 'resume/Resume.pdf' %}" class="btn btn-custom" Download>Download Resume</a>
-                </div>
+<section id="home" class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h3>Hi, my name is</h3>
+            <h1 id="heroName">{{ hero.name }}</h1>
+            <h2>I'm a <span class="typing-text" id="heroSubtitle">{{ hero.subtitle }}</span></h2>
+            <p id="heroDescription">{{ hero.description }}</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-custom">Get In Touch</a>
+                
+                <!-- Auto-fetch resume from database -->
+                {% if hero.resume %}
+                    <a href="{{ hero.resume.url }}" class="btn btn-custom" download>Download Resume</a>
+                {% else %}
+                    <!-- Fallback to static file if no resume in database -->
+                    <a href="{% static 'resume/Resume.pdf' %}" class="btn btn-custom" download>Download Resume</a>
+                {% endif %}
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- About Section -->
     <section id="about">
@@ -1021,14 +1032,42 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="{% static 'js/home.js' %}"></script>   
+
 <script>
-    {% if messages %}
-        var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
-        myModal.show();
+document.addEventListener("DOMContentLoaded", function() {
+    var loginModalEl = document.getElementById('loginModal');
+    var changeModalEl = document.getElementById('changePasswordModal');
+
+    var loginModal = new bootstrap.Modal(loginModalEl);
+    var changeModal = new bootstrap.Modal(changeModalEl);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const modal = urlParams.get('modal');
+
+    if (modal === 'change') {
+        changeModal.show();
+    } else if (modal === 'login') {
+        loginModal.show();
+    }
+
+    {% if show_login_modal %}
+        loginModal.show();
     {% endif %}
+
+    [loginModalEl, changeModalEl].forEach(el => {
+        el.addEventListener('hidden.bs.modal', function () {
+            var alerts = el.querySelectorAll('.alert');
+            alerts.forEach(alert => alert.remove());
+            var inputs = el.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+        });
+    });
+});
 </script>
+
 
 </body>
 </html>

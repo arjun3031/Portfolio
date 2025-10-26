@@ -1,0 +1,247 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Content - Arjun K M</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/managecontent.css' %}">
+    
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-name">ARJUN K M</div>
+            <div class="admin-role">Administrator</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="{% url 'adminhome' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Admin Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'managecontent' %}" class="nav-link active">
+                    <i class="fas fa-edit"></i>
+                    <span>Manage Content</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-code"></i>
+                    <span>Manage Skills</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Manage Experience</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Manage Projects</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Update Resume</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_logout' %}" class="nav-link logout-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">
+                <i class="fas fa-edit me-2"></i>Manage Hero Content
+            </h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editHeroModal">
+                <i class="fas fa-plus me-2"></i>Edit Hero Section
+            </button>
+        </div>
+
+        {% if messages %}
+        <div class="alert-container mb-3">
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="background: rgba(67, 233, 123, 0.2); border: 1px solid var(--success-color); color: var(--success-color);">
+                <i class="fas fa-check-circle me-2"></i>{{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Hero Preview Card -->
+        <div class="content-preview-card">
+            <div class="preview-header">
+                <h3><i class="fas fa-eye me-2"></i>Hero Section Preview</h3>
+                <span class="badge bg-success">Active</span>
+            </div>
+            
+            <section class="hero-preview">
+                <div class="hero-content">
+                    <h3 class="hero-greeting">Hi, my name is</h3>
+                    <h1 class="hero-name" id="heroName">{{ hero.name }}</h1>
+                    <h2 class="hero-subtitle">
+                        I'm a <span class="typing-text" id="heroSubtitle">{{ hero.subtitle }}</span>
+                    </h2>
+                    <p class="hero-description" id="heroDescription">{{ hero.description }}</p>
+                    
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn-preview btn-contact">
+                            <i class="fas fa-envelope me-2"></i>Get In Touch
+                        </a>
+                        {% if hero.resume %}
+                            <a href="{{ hero.resume.url }}" class="btn-preview btn-resume" download>
+                                <i class="fas fa-download me-2"></i>Download Resume
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <div class="preview-actions">
+                <button class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editHeroModal">
+                    <i class="fas fa-edit me-2"></i>Edit Content
+                </button>
+                <button class="btn btn-info">
+                    <i class="fas fa-eye me-2"></i>Preview Live
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+       <div class="quick-stats">
+    <div class="stat-item">
+        <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Last Updated</span>
+            <span class="stat-value">
+                {% if hero.updated_at %}
+                    {{ hero.updated_at|date:"F d, Y" }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="stat-item">
+        <div class="stat-icon">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Updated By</span>
+            <span class="stat-value">
+                {% if hero.updated_by %}
+                    {{ hero.updated_by.username }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="stat-item">
+        <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-label">Status</span>
+            <span class="stat-value">Published</span>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editHeroModal" tabindex="-1" aria-labelledby="editHeroModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+                <form id="heroEditForm" method="POST" enctype="multipart/form-data" action="{% url 'update_content' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editHeroModalLabel">
+                            <i class="fas fa-edit me-2"></i>Edit Hero Section
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-floating mb-4">
+                            <input type="text" name="name" class="form-control custom-input" id="modalName" 
+                                value="{{ hero.name }}" placeholder="Your Name" required>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="text" name="subtitle" class="form-control custom-input" id="modalSubtitle" 
+                                value="{{ hero.subtitle }}" placeholder="Your Title" required>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <textarea name="description" class="form-control custom-input" id="modalDescription"
+                                    placeholder="Description" style="height: 120px" required>{{ hero.description }}</textarea>
+                        </div>
+
+                        <div class="file-upload-wrapper mb-4">
+                            <label class="file-upload-label">
+                                <i class="fas fa-file-pdf me-2"></i>Resume Upload (Optional)
+                            </label>
+                            <div class="file-upload-box">
+                                <input type="file" name="resume" class="form-control custom-file-input" id="resumeInput" accept=".pdf">
+                            </div>
+                            {% if hero.resume %}
+                            <div class="current-file mt-2">
+                                <i class="fas fa-file-pdf me-2"></i>
+                                <span>Current: <a href="{{ hero.resume.url }}" target="_blank">{{ hero.resume.name }}</a></span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/managecontent.js' %}"></script>   
+</body>
+</html>
