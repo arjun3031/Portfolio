@@ -247,11 +247,9 @@
             <div class="hero-buttons">
                 <a href="#contact" class="btn btn-custom">Get In Touch</a>
                 
-                <!-- Auto-fetch resume from database -->
                 {% if hero.resume %}
                     <a href="{{ hero.resume.url }}" class="btn btn-custom" download>Download Resume</a>
                 {% else %}
-                    <!-- Fallback to static file if no resume in database -->
                     <a href="{% static 'resume/Resume.pdf' %}" class="btn btn-custom" download>Download Resume</a>
                 {% endif %}
             </div>
@@ -265,15 +263,19 @@
             <h2 class="section-title fade-in">About Me</h2>
             <div class="about-content fade-in">
                 <div class="about-text">
-                    <p>Hello! I'm Arjun K M, a dedicated Software Engineer with a passion for crafting efficient and scalable software solutions. My journey in technology began with a curiosity about how things work, which evolved into a deep commitment to building impactful applications.</p>
-                    <p>I specialize in full-stack development with expertise in modern frameworks and technologies. My experience spans across developing enterprise applications, implementing AI-driven solutions, and creating user-centric web applications.</p>
-                    <p>My career objective is to leverage my technical skills and innovative mindset to contribute to challenging projects that push the boundaries of technology. I thrive in collaborative environments where I can continuously learn and grow while delivering high-quality solutions.</p>
-                    <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community.</p>
+                     <p>{{ hero.about }}</p>
                 </div>
                 <div class="about-image">
-                    <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-blue), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 8rem; color: white;">
+                    {% comment %} <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-blue), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 8rem; color: white;">
                         <img src="{% static 'images/arjun.jpg' %}" alt="My Profile" style="width: 300px; height: 300px;"
-                    </div>
+                    </div> {% endcomment %}
+                    {% if hero.image %}
+                    <img src="{{ hero.image.url }}" alt="My Profile" style="width:300px; height:300px; border-radius:10px;">
+                    {% else %}
+                        <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-blue), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                            No Image
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

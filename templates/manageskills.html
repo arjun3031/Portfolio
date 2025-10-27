@@ -1,0 +1,376 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Skills - Arjun K M</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/manageskills.css' %}">
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-name">ARJUN K M</div>
+            <div class="admin-role">Administrator</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="{% url 'adminhome' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Admin Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'managecontent' %}" class="nav-link">
+                    <i class="fas fa-edit"></i>
+                    <span>Manage Content</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'manageskills' %}" class="nav-link active">
+                    <i class="fas fa-code"></i>
+                    <span>Manage Skills</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Manage Experience</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Manage Projects</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Update Resume</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_logout' %}" class="nav-link logout-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">
+                <i class="fas fa-code me-2"></i>Manage Skills & Languages
+            </h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSkillModal">
+                <i class="fas fa-plus me-2"></i>Add New Skill
+            </button>
+        </div>
+
+        {% if messages %}
+        <div class="alert-container mb-3">
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="background: rgba(67, 233, 123, 0.2); border: 1px solid var(--success-color); color: var(--success-color);">
+                <i class="fas fa-check-circle me-2"></i>{{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Skills Overview Stats -->
+        <div class="quick-stats">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Skills</span>
+                    <span class="stat-value">{{ skills.count }}</span>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Categories</span>
+                    <span class="stat-value">{{ categories.count }}</span>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Average Proficiency</span>
+                    <span class="stat-value">{{ average_proficiency|floatformat:0 }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="content-preview-card mt-4">
+            <div class="preview-header">
+                <h3><i class="fas fa-list me-2"></i>All Skills</h3>
+                <span class="badge bg-success">{{ skills.count }} Active</span>
+            </div>
+
+            <div class="skills-grid">
+                {% for skill in skills %}
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-icon">
+                            <i class="{{ skill.icon }}"></i>
+                        </div>
+                        <div class="skill-actions">
+                            <button class="btn-icon btn-edit-skill" data-bs-toggle="modal" data-bs-target="#editSkillModal"
+                                    data-id="{{ skill.id }}"
+                                    data-name="{{ skill.name }}"
+                                    data-category="{{ skill.category }}"
+                                    data-proficiency="{{ skill.proficiency }}"
+                                    data-icon="{{ skill.icon }}"
+                                    data-description="{{ skill.description }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-delete-skill" data-bs-toggle="modal" data-bs-target="#deleteSkillModal"
+                                    data-id="{{ skill.id }}"
+                                    data-name="{{ skill.name }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="skill-body">
+                        <h4 class="skill-name">{{ skill.name }}</h4>
+                        <span class="skill-category">{{ skill.category }}</span>
+                        
+                        {% if skill.description %}
+                        <p class="skill-description">{{ skill.description }}</p>
+                        {% endif %}
+
+                        <div class="skill-proficiency">
+                            <div class="proficiency-label">
+                                <span>Proficiency</span>
+                                <span class="proficiency-value">{{ skill.proficiency }}%</span>
+                            </div>
+                            <div class="proficiency-bar">
+                                <div class="proficiency-fill" style="width: {{ skill.proficiency }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-code"></i>
+                    <h3>No Skills Added Yet</h3>
+                    <p>Start by adding your first skill using the button above</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSkillModal">
+                        <i class="fas fa-plus me-2"></i>Add Your First Skill
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Skill Modal -->
+    <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal">
+                <form method="POST" action="{% url 'add_skill' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addSkillModalLabel">
+                            <i class="fas fa-plus me-2"></i>Add New Skill
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-floating mb-3">
+                            <input type="text" name="name" class="form-control custom-input" id="skillName" 
+                                placeholder="Skill Name" required>
+                            <label>Skill Name</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select name="category" class="form-control custom-input" id="skillCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="Programming Languages">Programming Languages</option>
+                                <option value="Frontend Development">Frontend Development</option>
+                                <option value="Backend Development">Backend Development</option>
+                                <option value="Database">Database</option>
+                                <option value="DevOps & Tools">DevOps & Tools</option>
+                                <option value="Design">Design</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" name="icon" class="form-control custom-input" id="skillIcon" 
+                                placeholder="Font Awesome Icon Class" value="fas fa-code">
+                            <small class="form-text text-muted">Example: fas fa-python, fab fa-js, fas fa-database</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="skillProficiency" class="form-label">
+                                Proficiency: <span id="proficiencyValue">50</span>%
+                            </label>
+                            <input type="range" name="proficiency" class="form-range custom-range" 
+                                id="skillProficiency" min="0" max="100" value="50" step="5">
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <textarea name="description" class="form-control custom-input" id="skillDescription"
+                                    placeholder="Description (Optional)" style="height: 100px"></textarea>
+                            <label for="skillDescription">Description (Optional)</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-plus me-2"></i>Add Skill
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Skill Modal -->
+    <div class="modal fade" id="editSkillModal" tabindex="-1" aria-labelledby="editSkillModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal">
+                <form method="POST" action="{% url 'update_skill' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="skill_id" id="editSkillId">
+                    
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSkillModalLabel">
+                            <i class="fas fa-edit me-2"></i>Edit Skill
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-floating mb-3">
+                            <input type="text" name="name" class="form-control custom-input" id="editSkillName" 
+                                placeholder="Skill Name" required>
+                            <label for="editSkillName">Skill Name</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select name="category" class="form-control custom-input" id="editSkillCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="Programming Languages">Programming Languages</option>
+                                <option value="Frontend Development">Frontend Development</option>
+                                <option value="Backend Development">Backend Development</option>
+                                <option value="Database">Database</option>
+                                <option value="DevOps & Tools">DevOps & Tools</option>
+                                <option value="Design">Design</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <label for="editSkillCategory">Category</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" name="icon" class="form-control custom-input" id="editSkillIcon" 
+                                placeholder="Font Awesome Icon Class">
+                            <label for="editSkillIcon">Icon (Font Awesome Class)</label>
+                            <small class="form-text text-muted">Example: fas fa-python, fab fa-js, fas fa-database</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editSkillProficiency" class="form-label">
+                                Proficiency: <span id="editProficiencyValue">50</span>%
+                            </label>
+                            <input type="range" name="proficiency" class="form-range custom-range" 
+                                id="editSkillProficiency" min="0" max="100" value="50" step="5">
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <textarea name="description" class="form-control custom-input" id="editSkillDescription"
+                                    placeholder="Description (Optional)" style="height: 100px"></textarea>
+                            <label for="editSkillDescription">Description (Optional)</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Skill Modal -->
+    <div class="modal fade" id="deleteSkillModal" tabindex="-1" aria-labelledby="deleteSkillModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal">
+                <form method="POST" action="{% url 'delete_skill' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="skill_id" id="deleteSkillId">
+                    
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteSkillModalLabel">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Delete Skill
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="delete-confirmation">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <h4>Are you sure?</h4>
+                            <p>Do you really want to delete <strong id="deleteSkillName"></strong>?</p>
+                            <p class="warning-text">This action cannot be undone.</p>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-danger-custom">
+                            <i class="fas fa-trash me-2"></i>Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/manageskills.js' %}"></script>
+</body>
+</html>
