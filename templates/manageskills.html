@@ -48,8 +48,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-briefcase"></i>
+                    <a href="{% url 'manage_experience' %}">  
+                     <i class="fas fa-briefcase"></i>
                     <span>Manage Experience</span>
                 </a>
             </li>
@@ -280,7 +280,6 @@
                         <div class="form-floating mb-3">
                             <input type="text" name="name" class="form-control custom-input" id="editSkillName" 
                                 placeholder="Skill Name" required>
-                            <label for="editSkillName">Skill Name</label>
                         </div>
 
                         <div class="form-floating mb-3">
@@ -294,13 +293,11 @@
                                 <option value="Design">Design</option>
                                 <option value="Other">Other</option>
                             </select>
-                            <label for="editSkillCategory">Category</label>
                         </div>
 
                         <div class="form-floating mb-3">
                             <input type="text" name="icon" class="form-control custom-input" id="editSkillIcon" 
                                 placeholder="Font Awesome Icon Class">
-                            <label for="editSkillIcon">Icon (Font Awesome Class)</label>
                             <small class="form-text text-muted">Example: fas fa-python, fab fa-js, fas fa-database</small>
                         </div>
 
@@ -315,7 +312,6 @@
                         <div class="form-floating mb-3">
                             <textarea name="description" class="form-control custom-input" id="editSkillDescription"
                                     placeholder="Description (Optional)" style="height: 100px"></textarea>
-                            <label for="editSkillDescription">Description (Optional)</label>
                         </div>
                     </div>
 

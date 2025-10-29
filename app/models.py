@@ -86,3 +86,40 @@ class Skill(models.Model):
             return "Beginner"
         else:
             return "Learning"
+
+class WorkExperience(models.Model):
+    company_name = models.CharField(max_length=200)
+    job_title = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    is_current = models.BooleanField(default=False)
+    description = models.TextField()
+    technologies = models.CharField(max_length=500, help_text="Comma-separated technologies")
+    company_logo = models.ImageField(upload_to='experience_logos/', null=True, blank=True)
+    order = models.IntegerField(default=0, help_text="Display order (lower numbers appear first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        ordering = ['order', '-start_date']
+        verbose_name = 'Work Experience'
+        verbose_name_plural = 'Work Experiences'
+
+    def __str__(self):
+        return f"{self.job_title} at {self.company_name}"
+
+    def get_duration(self):
+        from datetime import date
+        end = self.end_date if self.end_date else date.today()
+        duration = end - self.start_date
+        years = duration.days // 365
+        months = (duration.days % 365) // 30
+        
+        if years > 0 and months > 0:
+            return f"{years} year{'s' if years > 1 else ''} {months} month{'s' if months > 1 else ''}"
+        elif years > 0:
+            return f"{years} year{'s' if years > 1 else ''}"
+        else:
+            return f"{months} month{'s' if months > 1 else ''}"

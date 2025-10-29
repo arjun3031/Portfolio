@@ -266,9 +266,6 @@
                      <p>{{ hero.about }}</p>
                 </div>
                 <div class="about-image">
-                    {% comment %} <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-blue), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 8rem; color: white;">
-                        <img src="{% static 'images/arjun.jpg' %}" alt="My Profile" style="width: 300px; height: 300px;"
-                    </div> {% endcomment %}
                     {% if hero.image %}
                     <img src="{{ hero.image.url }}" alt="My Profile" style="width:300px; height:300px; border-radius:10px;">
                     {% else %}
@@ -286,62 +283,21 @@
         <div class="container">
             <h2 class="section-title fade-in">Skills & Technologies</h2>
             <div class="skills-grid fade-in">
+                {% for skill in skills %}
                 <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-python"></i></div>
-                    <div class="skill-name">Python</div>
+                    <div class="skill-icon">
+                        <i class="{{ skill.icon }}"></i>
+                    </div>
+                    <div class="skill-name">{{ skill.name }}</div>
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="90"></div>
+                        <div class="progress-bar" role="progressbar" data-width="{{ skill.proficiency }}"></div>
                     </div>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-code"></i></div>
-                    <div class="skill-name">Dotnet Core</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="75"></div>
-                    </div>
+                {% empty %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">No skills added yet. Add your first skill!</p>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-python"></i></div>
-                    <div class="skill-name">Django</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="82"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-js"></i></div>
-                    <div class="skill-name">JavaScript</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="88"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-database"></i></div>
-                    <div class="skill-name">SQL & NoSQL</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="85"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-node"></i></div>
-                    <div class="skill-name">Oracle DB</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="88"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-java"></i></div>
-                    <div class="skill-name">Java</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="55"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
-                    <div class="skill-name">Git & GitHub</div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="90"></div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -351,30 +307,30 @@
         <div class="container">
             <h2 class="section-title fade-in">Work Experience</h2>
             <div class="timeline fade-in">
+                {% for exp in experiences %}
                 <div class="timeline-item">
-                    <div class="timeline-date">Dec 2024 – Present</div>
-                    <div class="timeline-title">.NET Developer</div>
-                    <div class="timeline-company">MACOM Solutions</div>
-                    <p>Working on the <strong>JUSSUIT</strong> litigation-management platform at MACOM Solutions, handling both development and security assurance tasks. JUSSUIT helps organizations manage legal workflows, track NPAs, notices, arbitration, and supports e-court integration.</p>
-                    <ul>
-                        <li>Built and maintained core modules of the JUSSUIT web app using .NET technologies</li>
-                        <li>Designed and integrated secure authentication flows, APIs, backend services, and modules for NPA, notices, arbitration</li>
-                        <li>Performed VAPT (Vulnerability Assessment & Penetration Testing) and CAST (Code Analysis & Security Testing) to ensure strong security posture</li>
-                        <li>Collaborated with QA, DevOps, UI/UX teams to deploy and maintain releases and ensure smooth operation</li>
-                    </ul>
+                    <div class="timeline-date">
+                        {{ exp.start_date|date:"M Y" }} – {% if exp.is_current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}
+                    </div>
+                    <div class="timeline-title">{{ exp.job_title }}</div>
+                    <div class="timeline-company">
+                        {% if exp.company_logo %}
+                            <img src="{{ exp.company_logo.url }}" alt="{{ exp.company_name }}" style="width: 24px; height: 24px; object-fit: contain; vertical-align: middle; margin-right: 8px; border-radius: 4px;">
+                        {% endif %}
+                        {{ exp.company_name }}
+                    </div>
+                    <p>{{ exp.description }}</p>
+                    {% if exp.technologies %}
+                    <div class="technologies-used">
+                        <strong>Technologies:</strong> {{ exp.technologies }}
+                    </div>
+                    {% endif %}
                 </div>
+                {% empty %}
                 <div class="timeline-item">
-                    <div class="timeline-date">Jul 2024 - Dec 2024</div>
-                    <div class="timeline-title">Python Developer</div>
-                    <div class="timeline-company">ALTOS Technologies</div>
-                    <p>Worked as a Python Developer at ALTOS Technologies, focusing on backend and web application development. Collaborated with the team to design and deploy efficient client-based solutions using Python and Django.</p>
-                    <ul>
-                        <li>Developed and maintained backend modules using Python and Django</li>
-                        <li>Integrated APIs and database-driven functionalities for client projects</li>
-                        <li>Performed unit-testing, testing and debugging to enhance performance and reliability</li>
-                        <li>Worked closely with team members throughout the development cycle</li>
-                    </ul>
+                    <p style="text-align: center; color: #888;">No work experience available yet.</p>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </section>

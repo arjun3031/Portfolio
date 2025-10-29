@@ -12,17 +12,113 @@ import os
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.db.models import Avg, Count
+from datetime import datetime
 
 
 # Create your views here.
 
 def homepage(request):
     hero = HeroContent.objects.last()
-    return render(request, 'homepage.html', {'hero': hero})
+    skills = Skill.objects.filter(is_active=True)
+    experiences = WorkExperience.objects.all().order_by('order')
+    
+    skills_list = []
+    skills_by_category = {}
+    
+    for skill in skills:
+        skills_list.append({
+            'name': skill.name,
+            'category': skill.category,
+            'proficiency': skill.proficiency,
+            'icon': skill.icon
+        })
+        
+        if skill.category not in skills_by_category:
+            skills_by_category[skill.category] = []
+        skills_by_category[skill.category].append(skill.name)
+    
+    experiences_list = []
+    for exp in experiences:
+        experiences_list.append({
+            'company': exp.company_name,
+            'title': exp.job_title,
+            'location': exp.location,
+            'start_date': exp.start_date.strftime('%b %Y'),
+            'end_date': exp.end_date.strftime('%b %Y') if exp.end_date else 'Present',
+            'is_current': exp.is_current,
+            'description': exp.description,
+            'technologies': exp.technologies
+        })
+    
+    context = {
+        'hero': hero,
+        'skills': skills,
+        'experiences': experiences,
+        'chatbot_skills': skills_list,
+        'chatbot_skills_by_category': skills_by_category,
+        'chatbot_experiences': experiences_list,
+    }
+    return render(request, 'homepage.html', context)
 
 @login_required(login_url='admin_login')
 def adminhome(request):
-    return render(request,'adminhome.html')
+    from datetime import date
+    
+    skills_count = Skill.objects.filter(is_active=True).count()
+    experiences_count = WorkExperience.objects.all().count()
+    projects_count = 0 
+    top_skills = Skill.objects.filter(is_active=True).order_by('-proficiency')[:5]
+    
+    recent_experiences = WorkExperience.objects.all().order_by('-start_date')[:5]
+    
+    skills_by_category = Skill.objects.filter(is_active=True).values('category').annotate(count=Count('id'))
+    
+    avg_prof = Skill.objects.filter(is_active=True).aggregate(Avg('proficiency'))
+    average_proficiency = avg_prof['proficiency__avg'] or 0
+    
+    current_experience = WorkExperience.objects.filter(is_current=True).first()
+    current_company = current_experience.company_name if current_experience else None
+    
+    total_months = 0
+    for exp in WorkExperience.objects.all():
+        start = exp.start_date
+        end = exp.end_date if exp.end_date else date.today()
+        
+        months_diff = (end.year - start.year) * 12 + (end.month - start.month)
+        total_months += months_diff
+    
+    years = total_months // 12
+    months = total_months % 12
+    
+    if years > 0 and months > 0:
+        total_duration = f"{years}y {months}m"
+    elif years > 0:
+        total_duration = f"{years} year{'s' if years > 1 else ''}"
+    elif months > 0:
+        total_duration = f"{months} month{'s' if months > 1 else ''}"
+    else:
+        total_duration = "0 months"
+    
+    last_updated = None
+    hero = HeroContent.objects.last()
+    if hero and hero.updated_at:
+        last_updated = hero.updated_at
+    
+    context = {
+        'skills_count': skills_count,
+        'experiences_count': experiences_count,
+        'projects_count': projects_count,
+        'top_skills': top_skills,
+        'recent_experiences': recent_experiences,
+        'skills_by_category': skills_by_category,
+        'average_proficiency': average_proficiency,
+        'current_company': current_company,
+        'total_duration': total_duration,
+        'last_updated': last_updated,
+        'total_views': 0,
+    }
+    
+    return render(request, 'adminhome.html', context)
 
 def admin_login(request):
     if request.method == "POST":
@@ -39,6 +135,7 @@ def admin_login(request):
             return render(request, 'homepage.html', {'show_login_modal': True})
     return render(request, 'homepage.html')
 
+@login_required
 def admin_logout(request):
     auth.logout(request)
     return redirect('homepage')
@@ -76,10 +173,12 @@ def change_password(request):
 
     return render(request, 'homepage.html')
 
+@login_required
 def managecontent(request):
     hero, created = HeroContent.objects.get_or_create(id=1)
     return render(request, 'managecontent.html', {'hero': hero})
 
+@login_required
 def update_content(request):
     if request.method == 'POST':
         hero = HeroContent.objects.first()
@@ -106,9 +205,6 @@ def update_content(request):
         return redirect('managecontent')
     else:
         return redirect('managecontent')
-
-# def manageskills(request):
-#     return render(request, 'manageskills.html')
 
 @login_required
 def manageskills(request):
@@ -153,7 +249,6 @@ def add_skill(request):
             messages.error(request, f'Error adding skill: {str(e)}')
     
     return redirect('manageskills')
-
 
 @login_required
 def update_skill(request):
@@ -205,3 +300,97 @@ def delete_skill(request):
             messages.error(request, f'Error deleting skill: {str(e)}')
     
     return redirect('manageskills')
+
+@login_required
+def manage_experience(request):
+    experiences = WorkExperience.objects.all()
+    context = {
+        'experiences': experiences
+    }
+    return render(request, 'manageexperience.html', context)
+
+@login_required
+def add_experience(request):
+    if request.method == 'POST':
+        try:
+            # Handle the checkbox for current job
+            is_current = request.POST.get('is_current') == 'on'
+            
+            # Parse dates
+            start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d').date()
+            end_date = None
+            if not is_current and request.POST.get('end_date'):
+                end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').date()
+            
+            # Create new experience
+            experience = WorkExperience(
+                company_name=request.POST.get('company_name'),
+                job_title=request.POST.get('job_title'),
+                location=request.POST.get('location'),
+                start_date=start_date,
+                end_date=end_date,
+                is_current=is_current,
+                description=request.POST.get('description'),
+                technologies=request.POST.get('technologies'),
+                order=int(request.POST.get('order', 0)),
+                updated_by=request.user
+            )
+            
+            # Handle logo upload
+            if request.FILES.get('company_logo'):
+                experience.company_logo = request.FILES['company_logo']
+            
+            experience.save()
+            messages.success(request, 'Work experience added successfully!')
+            
+        except Exception as e:
+            messages.error(request, f'Error adding experience: {str(e)}')
+    
+    return redirect('manage_experience')
+
+@login_required
+def update_experience(request, pk):
+    if request.method == 'POST':
+        try:
+            experience = get_object_or_404(WorkExperience, pk=pk)
+            
+            is_current = request.POST.get('is_current') == 'on'
+            
+            start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d').date()
+            end_date = None
+            if not is_current and request.POST.get('end_date'):
+                end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').date()
+            
+            experience.company_name = request.POST.get('company_name')
+            experience.job_title = request.POST.get('job_title')
+            experience.location = request.POST.get('location')
+            experience.start_date = start_date
+            experience.end_date = end_date
+            experience.is_current = is_current
+            experience.description = request.POST.get('description')
+            experience.technologies = request.POST.get('technologies')
+            experience.order = int(request.POST.get('order', 0))
+            experience.updated_by = request.user
+            
+            if request.FILES.get('company_logo'):
+                experience.company_logo = request.FILES['company_logo']
+            
+            experience.save()
+            messages.success(request, 'Work experience updated successfully!')
+            
+        except Exception as e:
+            messages.error(request, f'Error updating experience: {str(e)}')
+    
+    return redirect('manage_experience')
+
+@login_required
+def delete_experience(request, pk):
+    if request.method == 'POST':
+        try:
+            experience = get_object_or_404(WorkExperience, pk=pk)
+            experience.delete()
+            messages.success(request, 'Work experience deleted successfully!')
+        except Exception as e:
+            messages.error(request, f'Error deleting experience: {str(e)}')
+    
+    return redirect('manage_experience')

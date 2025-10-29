@@ -49,7 +49,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#">
+                <a href="{% url 'manage_experience' %}">
                     <i class="fas fa-briefcase"></i>
                     <span>Manage Experience</span>
                 </a>
@@ -88,10 +88,10 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon earning">
-                    <i class="fas fa-dollar-sign"></i>
+                    <i class="fas fa-eye"></i>
                 </div>
-                <div class="stat-label">Total Views</div>
-                <div class="stat-value">No Data Found</div>
+                <div class="stat-label">Total Enquiries</div>
+                <div class="stat-value">{{ total_views|default:"0" }}</div>
             </div>
 
             <div class="stat-card">
@@ -99,7 +99,7 @@
                     <i class="fas fa-project-diagram"></i>
                 </div>
                 <div class="stat-label">Projects</div>
-                <div class="stat-value">6</div>
+                <div class="stat-value">{{ projects_count|default:"0" }}</div>
             </div>
 
             <div class="stat-card">
@@ -107,15 +107,15 @@
                     <i class="fas fa-code"></i>
                 </div>
                 <div class="stat-label">Skills</div>
-                <div class="stat-value">10</div>
+                <div class="stat-value">{{ skills_count }}</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-icon experience">
                     <i class="fas fa-briefcase"></i>
                 </div>
-                <div class="stat-label">Experience</div>
-                <div class="stat-value">1.6 Years</div>
+                <div class="stat-label">Experiences</div>
+                <div class="stat-value">{{ experiences_count }}</div>
             </div>
         </div>
 
@@ -123,77 +123,100 @@
         <div class="chart-container">
             <div class="chart-card">
                 <h3 class="chart-title">Skills Proficiency</h3>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Python</span>
-                        <span>85%</span>
+                {% if top_skills %}
+                    {% for skill in top_skills %}
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span><i class="{{ skill.icon }} me-2"></i>{{ skill.name }}</span>
+                            <span>{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
                     </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Node.js</span>
-                        <span>90%</span>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 90%"></div>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Django</span>
-                        <span>80%</span>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 80%"></div>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>MySQL</span>
-                        <span>78%</span>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 78%"></div>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>UI/UX Design</span>
-                        <span>80%</span>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 80%"></div>
-                    </div>
-                </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center py-4">No skills added yet</p>
+                {% endif %}
             </div>
 
             <div class="chart-card">
-                <h3 class="chart-title">Recent Activity</h3>
+                <h3 class="chart-title">Work Experience Timeline</h3>
+                {% if recent_experiences %}
                 <ul class="activity-list">
+                    {% for exp in recent_experiences %}
                     <li class="activity-item">
-                        <div class="activity-title">New project added</div>
-                        <div class="activity-time">2 hours ago</div>
+                        <div class="activity-title">
+                            <i class="fas fa-briefcase me-2"></i>
+                            <strong>{{ exp.job_title }}</strong> at {{ exp.company_name }}
+                        </div>
+                        <div class="activity-time">
+                            {{ exp.start_date|date:"M Y" }} - {% if exp.is_current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}
+                        </div>
                     </li>
-                    <li class="activity-item">
-                        <div class="activity-title">Skills updated</div>
-                        <div class="activity-time">5 hours ago</div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-title">Resume uploaded</div>
-                        <div class="activity-time">1 day ago</div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-title">Experience added</div>
-                        <div class="activity-time">2 days ago</div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-title">Content published</div>
-                        <div class="activity-time">3 days ago</div>
-                    </li>
+                    {% endfor %}
                 </ul>
+                {% else %}
+                    <p class="text-muted text-center py-4">No experience added yet</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Skills by Category -->
+        <div class="chart-container mt-4">
+            <div class="chart-card">
+                <h3 class="chart-title">Skills by Category</h3>
+                {% if skills_by_category %}
+                <div class="row">
+                    {% for category in skills_by_category %}
+                    <div class="col-md-4 mb-3">
+                        <div class="category-card" style="background: rgba(67, 233, 123, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid var(--primary-color);">
+                            <h5 style="color: var(--primary-color); margin-bottom: 10px;">{{ category.category }}</h5>
+                            <p style="font-size: 24px; font-weight: bold; margin: 0;">{{ category.count }} Skill{{ category.count|pluralize }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <p class="text-muted text-center py-4">No skills categorized yet</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="chart-container mt-4">
+            <div class="chart-card">
+                <h3 class="chart-title">Quick Statistics</h3>
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <div style="padding: 20px;">
+                            <i class="fas fa-star" style="font-size: 2rem; color: #FFD700; margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0; color: var(--text-color);">{{ average_proficiency|floatformat:0 }}%</h4>
+                            <p style="margin: 0; color: var(--text-muted);">Avg Proficiency</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div style="padding: 20px;">
+                            <i class="fas fa-clock" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0; color: var(--text-color);">{{ total_duration }}</h4>
+                            <p style="margin: 0; color: var(--text-muted);">Total Experience</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div style="padding: 20px;">
+                            <i class="fas fa-building" style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0; color: var(--text-color);">{{ current_company|default:"Not Working" }}</h4>
+                            <p style="margin: 0; color: var(--text-muted);">Current Company</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div style="padding: 20px;">
+                            <i class="fas fa-calendar" style="font-size: 2rem; color: #FF6B6B; margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0; color: var(--text-color);">{{ last_updated|date:"M d, Y"|default:"N/A" }}</h4>
+                            <p style="margin: 0; color: var(--text-muted);">Last Updated</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

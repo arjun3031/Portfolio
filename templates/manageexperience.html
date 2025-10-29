@@ -1,0 +1,372 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Experience - Arjun K M</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/manageexperience.css' %}">
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-name">ARJUN K M</div>
+            <div class="admin-role">Administrator</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="{% url 'adminhome' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Admin Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'managecontent' %}" class="nav-link">
+                    <i class="fas fa-edit"></i>
+                    <span>Manage Content</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'manageskills' %}" class="nav-link">
+                    <i class="fas fa-code"></i>
+                    <span>Manage Skills</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'manage_experience' %}" class="nav-link active">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Manage Experience</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Manage Projects</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Update Resume</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_logout' %}" class="nav-link logout-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">
+                <i class="fas fa-briefcase me-2"></i>Manage Work Experience
+            </h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addExperienceModal">
+                <i class="fas fa-plus me-2"></i>Add Experience
+            </button>
+        </div>
+
+        {% if messages %}
+        <div class="alert-container mb-3">
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="background: rgba(67, 233, 123, 0.2); border: 1px solid var(--success-color); color: var(--success-color);">
+                <i class="fas fa-check-circle me-2"></i>{{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Experience Cards -->
+        <div class="experience-grid">
+            {% for exp in experiences %}
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div class="company-info">
+                        {% if exp.company_logo %}
+                        <img src="{{ exp.company_logo.url }}" alt="{{ exp.company_name }}" class="company-logo">
+                        {% else %}
+                        <div class="company-logo-placeholder">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <h3 class="company-name">{{ exp.company_name }}</h3>
+                            <p class="job-title">{{ exp.job_title }}</p>
+                        </div>
+                    </div>
+                    {% if exp.is_current %}
+                    <span class="badge bg-success">Current</span>
+                    {% endif %}
+                </div>
+
+                <div class="experience-details">
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ exp.location }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>{{ exp.start_date|date:"M Y" }} - {% if exp.is_current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ exp.get_duration }}</span>
+                    </div>
+                </div>
+
+                <p class="experience-description">{{ exp.description|truncatewords:30 }}</p>
+
+                <div class="card-actions">
+                    <button class="btn btn-edit" onclick="openEditModal({{ exp.id }}, '{{ exp.company_name|escapejs }}', '{{ exp.job_title|escapejs }}', '{{ exp.location|escapejs }}', '{{ exp.start_date|date:'Y-m-d' }}', '{% if exp.end_date %}{{ exp.end_date|date:'Y-m-d' }}{% endif %}', {{ exp.is_current|lower }}, '{{ exp.description|escapejs }}', '{{ exp.technologies|escapejs }}', {{ exp.order }}, '{% if exp.company_logo %}{{ exp.company_logo.url }}{% endif %}')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-delete" onclick="confirmDelete({{ exp.id }}, '{{ exp.company_name|escapejs }}')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-briefcase"></i>
+                <h3>No Work Experience Added</h3>
+                <p>Start by adding your first work experience</p>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addExperienceModal">
+                    <i class="fas fa-plus me-2"></i>Add Experience
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Add Experience Modal -->
+    <div class="modal fade" id="addExperienceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+                <form method="POST" enctype="multipart/form-data" action="{% url 'add_experience' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-plus me-2"></i>Add Work Experience
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Company Name *</label>
+                                <input type="text" name="company_name" class="form-control custom-input" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Job Title *</label>
+                                <input type="text" name="job_title" class="form-control custom-input" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Location *</label>
+                                <input type="text" name="location" class="form-control custom-input" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Display Order</label>
+                                <input type="number" name="order" class="form-control custom-input" value="0">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Start Date *</label>
+                                <input type="date" name="start_date" class="form-control custom-input" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">End Date</label>
+                                <input type="date" name="end_date" class="form-control custom-input" id="addEndDate">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_current" id="addIsCurrent" onchange="toggleEndDate('add')">
+                                <label class="form-check-label" for="addIsCurrent">
+                                    Currently working here
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" class="form-control custom-input" rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Technologies (comma-separated) *</label>
+                            <input type="text" name="technologies" class="form-control custom-input" placeholder="Python, Django, React" required>
+                        </div>
+
+                        <div class="file-upload-wrapper">
+                            <label class="file-upload-label">
+                                <i class="fas fa-image me-2"></i>Company Logo (Optional)
+                            </label>
+                            <div class="file-upload-box">
+                                <input type="file" name="company_logo" class="form-control custom-file-input" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Add Experience
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Experience Modal -->
+    <div class="modal fade" id="editExperienceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+                <form id="editForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-edit me-2"></i>Edit Work Experience
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Company Name *</label>
+                                <input type="text" name="company_name" id="editCompanyName" class="form-control custom-input" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Job Title *</label>
+                                <input type="text" name="job_title" id="editJobTitle" class="form-control custom-input" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Location *</label>
+                                <input type="text" name="location" id="editLocation" class="form-control custom-input" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Display Order</label>
+                                <input type="number" name="order" id="editOrder" class="form-control custom-input">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Start Date *</label>
+                                <input type="date" name="start_date" id="editStartDate" class="form-control custom-input" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">End Date</label>
+                                <input type="date" name="end_date" id="editEndDate" class="form-control custom-input">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_current" id="editIsCurrent" onchange="toggleEndDate('edit')">
+                                <label class="form-check-label" for="editIsCurrent">
+                                    Currently working here
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" id="editDescription" class="form-control custom-input" rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Technologies (comma-separated) *</label>
+                            <input type="text" name="technologies" id="editTechnologies" class="form-control custom-input" required>
+                        </div>
+
+                        <div class="file-upload-wrapper">
+                            <label class="file-upload-label">
+                                <i class="fas fa-image me-2"></i>Company Logo (Optional)
+                            </label>
+                            <div class="file-upload-box">
+                                <input type="file" name="company_logo" class="form-control custom-file-input" accept="image/*">
+                            </div>
+                            <div id="currentLogoPreview" class="current-file mt-2" style="display: none;">
+                                <img id="currentLogoImg" src="" alt="Current Logo" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Update Experience
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal">
+                <form id="deleteForm" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete the experience at <strong id="deleteCompanyName"></strong>?</p>
+                        <p class="text-danger">This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/manageexperience.js' %}"></script>
+</body>
+</html>

@@ -12,9 +12,13 @@ urlpatterns = [
     path('managecontent/',views.managecontent, name = 'managecontent'),
     path('update_content/', views.update_content, name='update_content'),
     path('manageskills/', views.manageskills, name='manageskills'),
-    path('admin/skills/add/', views.add_skill, name='add_skill'),
-    path('admin/skills/update/', views.update_skill, name='update_skill'),
-    path('admin/skills/delete/', views.delete_skill, name='delete_skill'),
+    path('manageskills/add/', views.add_skill, name='add_skill'),
+    path('manageskills/update/', views.update_skill, name='update_skill'),
+    path('manageskills/delete/', views.delete_skill, name='delete_skill'),
+    path('manage-experience/', views.manage_experience, name='manage_experience'),
+    path('add-experience/', views.add_experience, name='add_experience'),
+    path('update-experience/<int:pk>/', views.update_experience, name='update_experience'),
+    path('delete-experience/<int:pk>/', views.delete_experience, name='delete_experience'),
 ]
 
 
