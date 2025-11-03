@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/adminhome.css' %}">
-    
 </head>
 <body>
     <!-- Mobile Menu Toggle -->
@@ -22,8 +21,21 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="admin-avatar">
-                <i class="fas fa-user-shield"></i>
+            <div class="admin-avatar-wrapper">
+                <div class="admin-avatar" id="adminAvatar">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#" class="dropdown-item-custom" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <i class="fas fa-key"></i>
+                        <span>Change Password</span>
+                    </a>
+                    <a href="#" class="dropdown-item-custom" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                        <i class="fas fa-unlock-alt"></i>
+                        <span>Forgot Password</span>
+                    </a>
+                </div>
             </div>
             <div class="admin-name">ARJUN K M</div>
             <div class="admin-role">Administrator</div>
@@ -73,6 +85,123 @@
                 </a>
             </li>
         </ul>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">
+                        <i class="fas fa-key"></i>
+                        Change Password
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if messages %}
+                    {% for message in messages %}
+                        {% if 'change' in message.tags %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                        {% elif 'login' in message.tags %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% endif %}
+
+                    <form id="changePasswordForm" action="{% url 'change_password' %}" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="old_password" class="form-label">Current Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="old_password" 
+                                name="old_password"
+                                placeholder="Enter current password"
+                                required
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="new_password" class="form-label">New Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="new_password" 
+                                name="new_password"
+                                placeholder="Enter new password"
+                                required
+                            >
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Confirm New Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="confirm_password" 
+                                name="confirm_password"
+                                placeholder="Confirm new password"
+                                required
+                            >
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Change Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordModalLabel">
+                        <i class="fas fa-unlock-alt"></i>
+                        Forgot Password
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="forgotPasswordForm" action="" method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="alert alert-info" style="background: rgba(74, 144, 226, 0.1); color: #4a90e2; border-left: 4px solid #4a90e2;">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Enter your email address and we'll send you instructions to reset your password.
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="email" 
+                                name="email"
+                                placeholder="Enter your email address"
+                                required
+                            >
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -170,8 +299,8 @@
                 <div class="row">
                     {% for category in skills_by_category %}
                     <div class="col-md-4 mb-3">
-                        <div class="category-card" style="background: rgba(67, 233, 123, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid var(--primary-color);">
-                            <h5 style="color: var(--primary-color); margin-bottom: 10px;">{{ category.category }}</h5>
+                        <div class="category-card" style="background: rgba(67, 233, 123, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid var(--accent-color);">
+                            <h5 style="color: var(--accent-color); margin-bottom: 10px;">{{ category.category }}</h5>
                             <p style="font-size: 24px; font-weight: bold; margin: 0;">{{ category.count }} Skill{{ category.count|pluralize }}</p>
                         </div>
                     </div>
@@ -191,29 +320,29 @@
                     <div class="col-md-3 mb-3">
                         <div style="padding: 20px;">
                             <i class="fas fa-star" style="font-size: 2rem; color: #FFD700; margin-bottom: 10px;"></i>
-                            <h4 style="margin: 0; color: var(--text-color);">{{ average_proficiency|floatformat:0 }}%</h4>
-                            <p style="margin: 0; color: var(--text-muted);">Avg Proficiency</p>
+                            <h4 style="margin: 0; color: var(--text-white);">{{ average_proficiency|floatformat:0 }}%</h4>
+                            <p style="margin: 0; color: var(--text-light);">Avg Proficiency</p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div style="padding: 20px;">
-                            <i class="fas fa-clock" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
-                            <h4 style="margin: 0; color: var(--text-color);">{{ total_duration }}</h4>
-                            <p style="margin: 0; color: var(--text-muted);">Total Experience</p>
+                            <i class="fas fa-clock" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0; color: var(--text-white);">{{ total_duration }}</h4>
+                            <p style="margin: 0; color: var(--text-light);">Total Experience</p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div style="padding: 20px;">
-                            <i class="fas fa-building" style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 10px;"></i>
-                            <h4 style="margin: 0; color: var(--text-color);">{{ current_company|default:"Not Working" }}</h4>
-                            <p style="margin: 0; color: var(--text-muted);">Current Company</p>
+                            <i class="fas fa-building" style="font-size: 2rem; color: #4a90e2; margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0; color: var(--text-white);">{{ current_company|default:"Not Working" }}</h4>
+                            <p style="margin: 0; color: var(--text-light);">Current Company</p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div style="padding: 20px;">
                             <i class="fas fa-calendar" style="font-size: 2rem; color: #FF6B6B; margin-bottom: 10px;"></i>
-                            <h4 style="margin: 0; color: var(--text-color);">{{ last_updated|date:"M d, Y"|default:"N/A" }}</h4>
-                            <p style="margin: 0; color: var(--text-muted);">Last Updated</p>
+                            <h4 style="margin: 0; color: var(--text-white);">{{ last_updated|date:"M d, Y"|default:"N/A" }}</h4>
+                            <p style="margin: 0; color: var(--text-light);">Last Updated</p>
                         </div>
                     </div>
                 </div>
@@ -229,12 +358,10 @@
         const sidebar = document.querySelector('.sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-        // Toggle sidebar on button click
         mobileMenuToggle.addEventListener('click', function() {
             sidebar.classList.toggle('active');
             sidebarOverlay.classList.toggle('active');
             
-            // Toggle icon between bars and times
             const icon = this.querySelector('i');
             if (sidebar.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
@@ -245,7 +372,6 @@
             }
         });
 
-        // Close sidebar when clicking overlay
         sidebarOverlay.addEventListener('click', function() {
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
@@ -254,7 +380,6 @@
             icon.classList.add('fa-bars');
         });
 
-        // Close sidebar when clicking a nav link on mobile
         const navLinks = document.querySelectorAll('.sidebar .nav-menu a');
         navLinks.forEach(link => {
             link.addEventListener('click', function() {
@@ -268,6 +393,30 @@
             });
         });
 
+        // Profile dropdown toggle
+        const adminAvatar = document.getElementById('adminAvatar');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        adminAvatar.addEventListener('click', function(e) {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!adminAvatar.contains(e.target) && !profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+
+        // Close dropdown when clicking a menu item
+        const dropdownItems = document.querySelectorAll('.dropdown-item-custom');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function() {
+                profileDropdown.classList.remove('active');
+            });
+        });
+
         // Animate progress bars on page load
         window.addEventListener('load', () => {
             document.querySelectorAll('.progress-bar').forEach(bar => {
@@ -276,6 +425,33 @@
                 setTimeout(() => {
                     bar.style.width = width;
                 }, 100);
+            });
+        });
+
+        // Modal handling
+        document.addEventListener("DOMContentLoaded", function() {
+            var changeModalEl = document.getElementById('changePasswordModal');
+            var changeModal = new bootstrap.Modal(changeModalEl);
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const modal = urlParams.get('modal');
+
+            if (modal === 'change') {
+                changeModal.show();
+            }
+
+            // Clear alerts and form when modal closes
+            changeModalEl.addEventListener('hidden.bs.modal', function () {
+                var alerts = changeModalEl.querySelectorAll('.alert');
+                alerts.forEach(alert => alert.remove());
+                var form = document.getElementById('changePasswordForm');
+                if (form) form.reset();
+            });
+
+            var forgotModalEl = document.getElementById('forgotPasswordModal');
+            forgotModalEl.addEventListener('hidden.bs.modal', function () {
+                var form = document.getElementById('forgotPasswordForm');
+                if (form) form.reset();
             });
         });
     </script>

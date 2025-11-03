@@ -631,3 +631,122 @@ function togglePasswordField(fieldId) {
         input.setAttribute('type', type);
     }
 }
+
+// Account Locked Modal Countdown Timer
+document.addEventListener('DOMContentLoaded', function() {
+    const accountLockedModal = document.getElementById('accountLockedModal');
+    
+    if (accountLockedModal) {
+        // Start countdown when modal is shown
+        accountLockedModal.addEventListener('shown.bs.modal', function() {
+            startCompactCountdown();
+        });
+        
+        // Prevent modal from being dismissed by clicking backdrop or pressing ESC
+        accountLockedModal.addEventListener('hide.bs.modal', function(e) {
+            const countdownElement = document.getElementById('compactCountdown');
+            // Only allow closing if unlocked or user clicks the button
+            if (countdownElement && !countdownElement.classList.contains('unlocked')) {
+                // Check if it's a button click
+                if (!e.target.closest('.btn-custom-locked')) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+    }
+});
+
+function startCompactCountdown() {
+    let timeLeft = 3600; // 1 hour in seconds
+    const countdownElement = document.getElementById('compactCountdown');
+    const lockIcon = document.querySelector('.locked-icon');
+    const modalBody = document.querySelector('#accountLockedModal .modal-body');
+    
+    function updateCountdown() {
+        const hours = Math.floor(timeLeft / 3600);
+        const minutes = Math.floor((timeLeft % 3600) / 60);
+        const seconds = timeLeft % 60;
+        
+        let display = '';
+        if (hours > 0) {
+            display = `${hours.toString().padStart(2, '0')}:`;
+        }
+        display += `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (countdownElement) {
+            countdownElement.textContent = display;
+        }
+        
+        if (timeLeft > 0) {
+            timeLeft--;
+            setTimeout(updateCountdown, 1000);
+        } else {
+            // Unlocked state
+            if (countdownElement) {
+                countdownElement.textContent = '✓ Unlocked!';
+                countdownElement.classList.add('unlocked');
+            }
+            if (lockIcon) {
+                lockIcon.classList.remove('fa-lock');
+                lockIcon.classList.add('fa-lock-open', 'unlocked');
+            }
+            
+            // Update modal content
+            if (modalBody) {
+                const lockedTitle = modalBody.querySelector('.locked-title');
+                const lockedMessage = modalBody.querySelector('.locked-message');
+                if (lockedTitle) {
+                    lockedTitle.textContent = 'Account Unlocked';
+                }
+                if (lockedMessage) {
+                    lockedMessage.textContent = 'You can now try logging in again.';
+                }
+            }
+            
+            // Auto close and redirect after 3 seconds
+            setTimeout(() => {
+                const modal = bootstrap.Modal.getInstance(accountLockedModal);
+                if (modal) {
+                    modal.hide();
+                }
+                // Refresh the page to allow login attempt
+                window.location.href = '/';
+            }, 3000);
+        }
+    }
+    
+    updateCountdown();
+}
+
+// Login Modal Error Handling
+document.addEventListener('DOMContentLoaded', function() {
+    // Show login modal if there's an error
+    const loginModalElement = document.getElementById('loginModal');
+    if (loginModalElement) {
+        loginModalElement.addEventListener('hidden.bs.modal', function () {
+            const errorAlert = document.getElementById('loginErrorAlert');
+            if (errorAlert) {
+                errorAlert.remove();
+            }
+        });
+    }
+});
+
+// Password toggle for login
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordInput && toggleIcon) {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+}

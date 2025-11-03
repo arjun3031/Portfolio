@@ -1742,3 +1742,117 @@
             color: #8bb4d4;
         }
         
+
+        .locked-modal {
+    background: var(--secondary);
+    border: 2px solid #dc3545;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(220, 53, 69, 0.3);
+}
+
+.locked-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.locked-icon {
+    font-size: 3.5rem;
+    color: #dc3545;
+    animation: lockShake 0.5s ease-in-out infinite;
+}
+
+@keyframes lockShake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+}
+
+.locked-title {
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.locked-message {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.countdown-wrapper {
+    background: var(--primary);
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.countdown-timer {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #dc3545;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+}
+
+.countdown-wrapper small {
+    color: var(--text-light);
+    font-size: 0.75rem;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.locked-info {
+    background: rgba(220, 53, 69, 0.1);
+    padding: 0.75rem;
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    border-left: 3px solid #dc3545;
+}
+
+.locked-info i {
+    color: #dc3545;
+}
+
+.btn-custom-locked {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-custom-locked:hover {
+    background: linear-gradient(135deg, #c82333, #bd2130);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    color: white;
+}
+
+/* Animation when unlocked */
+.locked-icon.unlocked {
+    color: #28a745;
+    animation: none;
+}
+
+.countdown-timer.unlocked {
+    color: #28a745;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .locked-icon {
+        font-size: 3rem;
+    }
+    
+    .countdown-timer {
+        font-size: 1.75rem;
+    }
+    
+    .locked-title {
+        font-size: 1.2rem;
+    }
+}

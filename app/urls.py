@@ -19,6 +19,7 @@ urlpatterns = [
     path('add-experience/', views.add_experience, name='add_experience'),
     path('update-experience/<int:pk>/', views.update_experience, name='update_experience'),
     path('delete-experience/<int:pk>/', views.delete_experience, name='delete_experience'),
+    path('locked/', views.account_locked, name='account_locked'),
 ]
 
 
