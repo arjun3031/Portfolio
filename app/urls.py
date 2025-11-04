@@ -20,6 +20,9 @@ urlpatterns = [
     path('update-experience/<int:pk>/', views.update_experience, name='update_experience'),
     path('delete-experience/<int:pk>/', views.delete_experience, name='delete_experience'),
     path('locked/', views.account_locked, name='account_locked'),
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+    path('reset-password/<str:token>/', views.reset_password, name='reset_password'),
+    
 ]
 
 

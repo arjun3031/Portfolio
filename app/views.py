@@ -17,42 +17,29 @@ import re
 import logging
 from django.db import models
 from datetime import timedelta
-
-# Django Axes imports for login tracking
 from axes.decorators import axes_dispatch
 from axes.helpers import get_client_ip_address, get_failure_limit
 from axes.models import AccessAttempt
-
 from .models import *
+from django.contrib.auth.models import User
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
+from django.urls import reverse
+from axes.helpers import get_client_ip_address
 
-# Setup logging
 logger = logging.getLogger('app')
 
-
-# ============================================
-# HELPER FUNCTIONS
-# ============================================
-
 def sanitize_input(text, max_length=150):
-    """
-    Sanitize user input to prevent SQL injection and XSS
-    """
     if not text:
         return ""
     
-    # Remove potential SQL injection patterns
     text = text.strip()
-    text = re.sub(r'[;\'"\\]', '', text)  # Remove dangerous SQL characters
-    text = text[:max_length]  # Limit length
-    
+    text = re.sub(r'[;\'"\\]', '', text)
+    text = text[:max_length] 
     return text
 
-
 def get_homepage_context():
-    """
-    Returns all context data needed for homepage
-    Prevents code duplication and ensures consistency
-    """
     try:
         hero = HeroContent.objects.last()
     except Exception as e:
@@ -71,7 +58,6 @@ def get_homepage_context():
         logger.error(f"Error fetching experiences: {str(e)}")
         experiences = []
     
-    # Prepare chatbot data
     skills_list = []
     skills_by_category = {}
     
@@ -108,13 +94,7 @@ def get_homepage_context():
         'chatbot_skills_by_category': skills_by_category,
         'chatbot_experiences': experiences_list,
     }
-    
     return context
-
-
-# ============================================
-# PUBLIC VIEWS
-# ============================================
 
 @never_cache
 def homepage(request):
@@ -133,19 +113,15 @@ def admin_login(request):
     from datetime import timedelta
     from django.utils import timezone
     
-    # Get client IP address
     ip_address = get_client_ip_address(request)
     
-    # Check if already logged in
     if request.user.is_authenticated:
         return redirect('adminhome')
     
     if request.method == "POST":
-        # Get and sanitize input
         username = request.POST.get("username", "").strip()
         password = request.POST.get("password", "")
         
-        # Input validation
         if not username or not password:
             messages.error(
                 request, 
@@ -157,10 +133,8 @@ def admin_login(request):
             context['show_login_modal'] = True
             return render(request, 'homepage.html', context)
         
-        # Sanitize username (prevent SQL injection)
         username = sanitize_input(username, max_length=150)
         
-        # Additional validation
         if len(username) < 3:
             messages.error(
                 request,
@@ -171,10 +145,8 @@ def admin_login(request):
             context['show_login_modal'] = True
             return render(request, 'homepage.html', context)
         
-        # Log login attempt
         logger.info(f"Login attempt for username: {username} from IP: {ip_address}")
         
-        # Authenticate user
         try:
             user = authenticate(request, username=username, password=password)
         except Exception as e:
@@ -189,7 +161,6 @@ def admin_login(request):
             return render(request, 'homepage.html', context)
         
         if user is not None:
-            # Check if user is superuser
             if not user.is_superuser:
                 logger.warning(f"Non-superuser login attempt: {username} from IP: {ip_address}")
                 messages.error(
@@ -201,7 +172,6 @@ def admin_login(request):
                 context['show_login_modal'] = True
                 return render(request, 'homepage.html', context)
             
-            # Check if user is active
             if not user.is_active:
                 logger.warning(f"Inactive user login attempt: {username} from IP: {ip_address}")
                 messages.error(
@@ -213,39 +183,28 @@ def admin_login(request):
                 context['show_login_modal'] = True
                 return render(request, 'homepage.html', context)
             
-            # Successful login
             login(request, user)
             
-            # Store security information in session
             request.session['login_ip'] = ip_address
             request.session['user_agent'] = request.META.get('HTTP_USER_AGENT', '')
             request.session['login_time'] = str(timezone.now())
-            
-            # Set session to expire after 1 hour of inactivity
             request.session.set_expiry(3600)
-            
-            # Regenerate session ID to prevent session fixation
             request.session.cycle_key()
             
-            # Log successful login
             logger.info(f"✓ Successful login: {username} from IP: {ip_address}")
             
             messages.success(request, f"Welcome back, {user.first_name or user.username}!")
             return redirect('adminhome')
         
         else:
-            # Failed login - Calculate remaining attempts AFTER the failure
             try:
-                # Get the cooloff time from settings (1 hour)
                 cooloff_time = timezone.now() - timedelta(hours=1)
                 
-                # Count recent failed attempts for this IP
                 attempts = AccessAttempt.objects.filter(
                     ip_address=ip_address,
                     attempt_time__gte=cooloff_time
                 ).aggregate(total_failures=models.Sum('failures_since_start'))
                 
-                # Add 1 to account for the current failed attempt
                 current_attempts = (attempts['total_failures'] or 0) + 1
                 
             except Exception as e:
@@ -287,11 +246,7 @@ def admin_login(request):
     return redirect('homepage')
 
 
-# Add this view for the account_locked route (in case it's used elsewhere)
 def account_locked(request):
-    """
-    Account locked page - redirects to homepage with locked modal
-    """
     context = get_homepage_context()
     context['show_locked_modal'] = True
     return render(request, 'homepage.html', context)
@@ -300,23 +255,13 @@ def account_locked(request):
 @login_required(login_url='admin_login')
 @never_cache
 def admin_logout(request):
-    """
-    Secure logout that:
-    - Clears all session data
-    - Logs the logout event
-    - Prevents session reuse
-    - Redirects to homepage
-    """
     username = request.user.username
     ip_address = get_client_ip_address(request)
     
-    # Log logout
     logger.info(f"User logout: {username} from IP: {ip_address}")
     
-    # Clear all session data
     request.session.flush()
     
-    # Logout user
     auth.logout(request)
     
     messages.success(request, "You have been successfully logged out.")
@@ -325,66 +270,15 @@ def admin_logout(request):
 
 @never_cache
 def csrf_failure(request, reason=""):
-    """
-    Custom CSRF failure view
-    Logs CSRF failures and provides user-friendly message
-    """
     ip_address = get_client_ip_address(request)
     logger.warning(f"CSRF failure: {reason} from IP: {ip_address}")
     
     messages.error(request, "Security token expired. Please refresh the page and try again.")
     return redirect('homepage')
 
-
-# @never_cache
-# def account_locked(request):
-#     """
-#     View for locked accounts
-#     Shows countdown timer and information
-#     """
-#     ip_address = get_client_ip_address(request)
-    
-#     # Check if account is still locked
-#     try:
-#         from datetime import timedelta
-#         from django.utils import timezone
-        
-#         cooloff_time = timezone.now() - timedelta(hours=1)
-        
-#         # Get recent failed attempts
-#         attempts = AccessAttempt.objects.filter(
-#             ip_address=ip_address,
-#             attempt_time__gte=cooloff_time
-#         ).aggregate(total_failures=models.Sum('failures_since_start'))
-        
-#         current_failures = attempts['total_failures'] or 0
-        
-#     except Exception as e:
-#         logger.error(f"Error checking lockout status: {str(e)}")
-#         current_failures = 0
-    
-#     failure_limit = 5  # From settings
-#     is_locked = current_failures >= failure_limit
-    
-#     # If not locked, redirect to homepage
-#     if not is_locked:
-#         messages.info(request, "Your account has been unlocked. You can now try logging in again.")
-#         return redirect('homepage')
-    
-#     context = {
-#         'is_locked': is_locked,
-#         'cooloff_time': 1,  # 1 hour
-#         'failure_limit': failure_limit,
-#     }
-    
-#     return render(request, 'account_locked.html', context)
-
-
 @login_required(login_url='admin_login')
 @never_cache
 def adminhome(request):
-    """Admin dashboard with statistics"""
-    
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to access this area.")
         return redirect('homepage')
@@ -509,11 +403,6 @@ def change_password(request):
         return redirect('admin_login')
     
     return redirect('adminhome')
-
-
-# ============================================
-# CONTENT MANAGEMENT VIEWS (SECURED)
-# ============================================
 
 @login_required(login_url='admin_login')
 @never_cache
@@ -785,7 +674,6 @@ def add_experience(request):
 @login_required(login_url='admin_login')
 @csrf_protect
 def update_experience(request, pk):
-    """Update work experience with input validation"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to perform this action.")
         return redirect('homepage')
@@ -849,3 +737,222 @@ def delete_experience(request, pk):
         except Exception as e:
             logger.error(f"Error deleting experience: {str(e)}")
             messages.error(request, f'Error deleting experience: {str(e)}')
+
+
+@never_cache
+@csrf_protect
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip().lower()
+        ip_address = get_client_ip_address(request)
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        
+        if not email:
+            messages.error(request, 'Please enter your email address.', extra_tags='forgot')
+            context = get_homepage_context()
+            context['show_forgot_modal'] = True
+            return render(request, 'homepage.html', context)
+        
+        success_message = (
+            'If an account exists with this email, '
+            'you will receive password reset instructions shortly.'
+        )
+        
+        try:
+            user = User.objects.get(email=email)
+            
+            if not user.is_active:
+                logger.warning(f"Password reset requested for inactive user: {email} from IP: {ip_address}")
+                messages.success(request, success_message, extra_tags='forgot')
+                return redirect('homepage')
+            
+            if not user.is_superuser:
+                logger.warning(f"Password reset requested for non-superuser: {email} from IP: {ip_address}")
+                messages.success(request, success_message, extra_tags='forgot')
+                return redirect('homepage')
+            
+            token, reset_token = PasswordResetToken.create_token(
+                user=user,
+                ip_address=ip_address,
+                user_agent=user_agent
+            )
+            
+            reset_url = request.build_absolute_uri(
+                reverse('reset_password', kwargs={'token': token})
+            )
+            
+            try:
+                context = {
+                    'user': user,
+                    'reset_url': reset_url,
+                    'valid_hours': 1,
+                    'ip_address': ip_address,
+                }
+                
+                html_message = render_to_string('emails/password_reset.html', context)
+                plain_message = strip_tags(html_message)
+                
+                send_mail(
+                    subject='Password Reset Request - Portfolio Admin',
+                    message=plain_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    html_message=html_message,
+                    fail_silently=False,
+                )
+                
+                logger.info(f"✓ Password reset email sent to: {email} from IP: {ip_address}")
+                
+            except Exception as e:
+                logger.error(f"Failed to send password reset email to {email}: {str(e)}")
+                messages.error(
+                    request,
+                    'Failed to send reset email. Please try again later.',
+                    extra_tags='forgot'
+                )
+                context = get_homepage_context()
+                context['show_forgot_modal'] = True
+                return render(request, 'homepage.html', context)
+            
+        except User.DoesNotExist:
+            logger.info(f"Password reset requested for non-existent email: {email} from IP: {ip_address}")
+        
+        except Exception as e:
+            logger.error(f"Error in forgot_password: {str(e)}")
+            messages.error(
+                request,
+                'An error occurred. Please try again later.',
+                extra_tags='forgot'
+            )
+            context = get_homepage_context()
+            context['show_forgot_modal'] = True
+            return render(request, 'homepage.html', context)
+        
+        messages.success(request, success_message, extra_tags='forgot')
+        return redirect('homepage')
+    return redirect('homepage')
+
+
+@never_cache
+def reset_password(request, token):
+    reset_token = PasswordResetToken.verify_token(token)
+    
+    if not reset_token:
+        messages.error(
+            request,
+            'Invalid or expired password reset link. Please request a new one.',
+            extra_tags='reset'
+        )
+        logger.warning(f"Invalid reset token attempted from IP: {get_client_ip_address(request)}")
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
+        ip_address = get_client_ip_address(request)
+        
+        # Validation
+        if not new_password or not confirm_password:
+            messages.error(request, 'All fields are required.', extra_tags='reset')
+            return render(request, 'reset_password.html', {'token': token})
+        
+        if new_password != confirm_password:
+            messages.error(request, 'Passwords do not match.', extra_tags='reset')
+            return render(request, 'reset_password.html', {'token': token})
+        
+        if len(new_password) < 10:
+            messages.error(
+                request,
+                'Password must be at least 10 characters long.',
+                extra_tags='reset'
+            )
+            return render(request, 'reset_password.html', {'token': token})
+        
+        # Password strength validation
+        if not any(char.isdigit() for char in new_password):
+            messages.error(
+                request,
+                'Password must contain at least one number.',
+                extra_tags='reset'
+            )
+            return render(request, 'reset_password.html', {'token': token})
+        
+        if not any(char.isupper() for char in new_password):
+            messages.error(
+                request,
+                'Password must contain at least one uppercase letter.',
+                extra_tags='reset'
+            )
+            return render(request, 'reset_password.html', {'token': token})
+        
+        if not any(char.islower() for char in new_password):
+            messages.error(
+                request,
+                'Password must contain at least one lowercase letter.',
+                extra_tags='reset'
+            )
+            return render(request, 'reset_password.html', {'token': token})
+        
+        # Check if new password is different from old password
+        user = reset_token.user
+        if user.check_password(new_password):
+            messages.error(
+                request,
+                'New password must be different from your current password.',
+                extra_tags='reset'
+            )
+            return render(request, 'reset_password.html', {'token': token})
+        
+        try:
+            # Update password
+            user.set_password(new_password)
+            user.save()
+            
+            # Mark token as used
+            reset_token.mark_as_used()
+            
+            # Log password reset
+            logger.info(f"✓ Password reset successful for user: {user.username} from IP: {ip_address}")
+            
+            # Send confirmation email
+            try:
+                context = {
+                    'user': user,
+                    'ip_address': ip_address,
+                    'timestamp': timezone.now(),
+                }
+                
+                html_message = render_to_string('emails/password_reset_confirmation.html', context)
+                plain_message = strip_tags(html_message)
+                
+                send_mail(
+                    subject='Password Changed Successfully - Portfolio Admin',
+                    message=plain_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    html_message=html_message,
+                    fail_silently=True,
+                )
+            except Exception as e:
+                logger.error(f"Failed to send confirmation email: {str(e)}")
+            
+            messages.success(
+                request,
+                'Password has been reset successfully! Please login with your new password.',
+                extra_tags='login'
+            )
+            return redirect('homepage')
+            
+        except Exception as e:
+            logger.error(f"Error resetting password: {str(e)}")
+            messages.error(
+                request,
+                'An error occurred while resetting your password. Please try again.',
+                extra_tags='reset'
+            )
+            return render(request, 'reset_password.html', {'token': token})
+    
+    return render(request, 'reset_password.html', {
+        'token': token,
+        'user': reset_token.user
+    })
