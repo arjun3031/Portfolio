@@ -204,7 +204,7 @@
         </div>
     </div> {% endcomment %}
 
-    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+   <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -215,21 +215,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="forgotPasswordForm" action="{% url 'forgot_password' %}" method="POST">
+                <!-- Display messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if 'forgot' in message.tags %}
+                            <div class="alert alert-{% if 'success' in message.tags %}success{% elif 'error' in message.tags or 'danger' in message.tags %}danger{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                                <i class="fas fa-{% if 'success' in message.tags %}check-circle{% elif 'error' in message.tags or 'danger' in message.tags %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <form id="forgotPasswordForm" action="" method="POST">
                     {% csrf_token %}
-                    
-                    <!-- Success/Error Messages -->
-                    {% if messages %}
-                        {% for message in messages %}
-                            {% if 'forgot' in message.tags %}
-                                <div class="alert alert-{{ message.tags|cut:'forgot '|default:'info' }} alert-dismissible fade show" role="alert">
-                                    <i class="fas fa-{{ message.tags|cut:'forgot '|default:'info' }}-circle me-2"></i>
-                                    {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
                     
                     <div class="alert alert-info" style="background: rgba(74, 144, 226, 0.1); color: #4a90e2; border-left: 4px solid #4a90e2;">
                         <i class="fas fa-info-circle me-2"></i>
@@ -248,11 +248,13 @@
                             placeholder="Enter your email address"
                             required
                             autocomplete="email"
-                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                         >
                         <div class="form-text">
                             <i class="fas fa-shield-alt me-1"></i>
                             We'll never share your email with anyone else.
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address.
                         </div>
                     </div>
 
@@ -520,66 +522,7 @@
                 if (form) form.reset();
             });
         });
-           document.addEventListener('DOMContentLoaded', function() {
-        // Reset form when modal is closed
-        var forgotModalEl = document.getElementById('forgotPasswordModal');
-        if (forgotModalEl) {
-            forgotModalEl.addEventListener('hidden.bs.modal', function () {
-                var form = document.getElementById('forgotPasswordForm');
-                if (form) {
-                    form.reset();
-                    // Remove any existing alerts
-                    var alerts = form.querySelectorAll('.alert');
-                    alerts.forEach(function(alert) {
-                        if (!alert.classList.contains('alert-info')) {
-                            alert.remove();
-                        }
-                    });
-                }
-            });
-        }
-        
-        // Auto-show forgot password modal if flagged
-        {% if show_forgot_modal %}
-        var forgotModal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
-        forgotModal.show();
-        {% endif %}
-        
-        // Form submission with loading state
-        var forgotForm = document.getElementById('forgotPasswordForm');
-        if (forgotForm) {
-            forgotForm.addEventListener('submit', function(e) {
-                var btn = document.getElementById('sendResetBtn');
-                var originalHtml = btn.innerHTML;
-                
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-                
-                // Re-enable after 3 seconds (in case of slow server response)
-                setTimeout(function() {
-                    if (btn.disabled) {
-                        btn.disabled = false;
-                        btn.innerHTML = originalHtml;
-                    }
-                }, 3000);
-            });
-        }
-        
-        // Email validation
-        var emailInput = document.getElementById('forgot_email');
-        if (emailInput) {
-            emailInput.addEventListener('input', function() {
-                var email = this.value;
-                var isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-                
-                if (email && !isValid) {
-                    this.classList.add('is-invalid');
-                } else {
-                    this.classList.remove('is-invalid');
-                }
-            });
-        }
-    });
+          
     </script>
 </body>
 </html>
