@@ -1,5 +1,3 @@
-
-
 // Typing Animation
 const texts = ['Software Engineer', 'Full Stack Developer', 'Problem Solver', 'Tech Enthusiast'];
 let textIndex = 0;
@@ -177,6 +175,45 @@ window.addEventListener('scroll', function() {
         navbar.style.background = 'rgba(10, 25, 47, 0.95)';
         navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.1)';
     }
+});
+
+// ==================== PROJECT MODAL FIX ====================
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all project card click handlers
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Don't open modal if clicking on a link
+            if (e.target.closest('a')) {
+                e.stopPropagation();
+                return;
+            }
+            
+            // Get the modal ID from data-bs-target
+            const modalId = this.getAttribute('data-bs-target');
+            
+            if (modalId) {
+                const modalElement = document.querySelector(modalId);
+                if (modalElement) {
+                    // Create and show the modal
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+        });
+        
+        // Add hover effect
+        card.style.cursor = 'pointer';
+    });
+    
+    // Prevent links inside project cards from triggering the card click
+    const projectLinks = document.querySelectorAll('.project-card a');
+    projectLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
 });
 
 // ==================== AI CHATBOT FUNCTIONALITY ====================
@@ -579,6 +616,12 @@ function generateResponse(message) {
            "Type 'help' for more options!";
 }
 
+// Quick Reply Handler
+function sendQuickReply(message) {
+    chatInput.value = message;
+    sendMessage();
+}
+
 // Password toggle
 function togglePassword() {
     const passwordInput = document.getElementById('password');
@@ -732,21 +775,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
-// Password toggle for login
-function togglePassword() {
-    const passwordInput = document.getElementById('password');
-    const toggleIcon = document.getElementById('toggleIcon');
-    
-    if (passwordInput && toggleIcon) {
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleIcon.classList.remove('fa-eye');
-            toggleIcon.classList.add('fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            toggleIcon.classList.remove('fa-eye-slash');
-            toggleIcon.classList.add('fa-eye');
-        }
-    }
-}

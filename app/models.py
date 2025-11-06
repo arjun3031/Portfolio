@@ -125,3 +125,47 @@ class WorkExperience(models.Model):
             return f"{years} year{'s' if years > 1 else ''}"
         else:
             return f"{months} month{'s' if months > 1 else ''}"
+
+
+class Project(models.Model):
+    PROJECT_STATUS = [
+        ('completed', 'Completed'),
+        ('in_progress', 'In Progress'),
+        ('planned', 'Planned'),
+    ]
+    
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    detailed_description = models.TextField(blank=True, null=True, help_text="Detailed project information for modal")
+    technologies = models.CharField(max_length=500, help_text="Comma-separated technologies")
+    project_url = models.URLField(blank=True, null=True, help_text="GitHub or live demo URL")
+    github_url = models.URLField(blank=True, null=True)
+    demo_url = models.URLField(blank=True, null=True)
+    image = models.ImageField(upload_to='project_images/', blank=True, null=True)
+    icon_class = models.CharField(max_length=100, default='fas fa-project-diagram', help_text="FontAwesome icon class")
+    status = models.CharField(max_length=20, choices=PROJECT_STATUS, default='completed')
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    order = models.IntegerField(default=0, help_text="Display order (lower numbers appear first)")
+    is_featured = models.BooleanField(default=False, help_text="Show on homepage")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='updated_projects'
+    )
+
+    class Meta:
+        ordering = ['order', '-created_at']
+        verbose_name = 'Project'
+        verbose_name_plural = 'Projects'
+
+    def __str__(self):
+        return self.title
+
+    def get_tech_list(self):
+        return [tech.strip() for tech in self.technologies.split(',') if tech.strip()]

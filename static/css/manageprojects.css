@@ -1,0 +1,347 @@
+/* Project Management Specific Styles */
+
+.project-management-card {
+    background: var(--card-bg, #1e293b);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-management-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent, #64ffda);
+}
+
+.project-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.project-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.project-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-edit {
+    background: rgba(74, 144, 226, 0.2);
+    color: #4a90e2;
+}
+
+.btn-edit:hover {
+    background: rgba(74, 144, 226, 0.3);
+    transform: scale(1.1);
+}
+
+.btn-delete {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.btn-delete:hover {
+    background: rgba(239, 68, 68, 0.3);
+    transform: scale(1.1);
+}
+
+.project-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-white, #e2e8f0);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.project-description {
+    color: var(--text-light, #94a3b8);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.project-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bg-completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+.bg-in_progress {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+}
+
+.bg-planned {
+    background: rgba(147, 197, 253, 0.2);
+    color: #93c5fd;
+}
+
+.tech-tags-compact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.tech-tag-small {
+    background: rgba(100, 255, 218, 0.1);
+    color: var(--accent, #64ffda);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.project-links {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.project-link {
+    color: var(--accent, #64ffda);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.project-link:hover {
+    color: var(--accent-blue, #4a90e2);
+    transform: scale(1.2);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--card-bg, #1e293b);
+    border-radius: 12px;
+    border: 2px dashed rgba(100, 255, 218, 0.2);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: rgba(100, 255, 218, 0.3);
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    color: var(--text-white, #e2e8f0);
+    margin-bottom: 0.75rem;
+}
+
+.empty-state p {
+    color: var(--text-light, #94a3b8);
+    margin-bottom: 1.5rem;
+}
+
+/* Modal Customization */
+.modal-content {
+    background: var(--card-bg, #1e293b);
+    color: var(--text-white, #e2e8f0);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.form-label {
+    color: var(--text-white, #e2e8f0);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    color: var(--text-white, #e2e8f0);
+    padding: 0.6rem 0.75rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: var(--accent, #64ffda);
+    box-shadow: 0 0 0 0.2rem rgba(100, 255, 218, 0.25);
+    color: var(--text-white, #e2e8f0);
+}
+
+.form-control::placeholder {
+    color: rgba(148, 163, 184, 0.6);
+}
+
+.form-text {
+    color: var(--text-light, #94a3b8);
+    font-size: 0.85rem;
+}
+
+.form-check-input {
+    background-color: rgba(30, 41, 59, 0.8);
+    border-color: rgba(100, 255, 218, 0.3);
+}
+
+.form-check-input:checked {
+    background-color: var(--accent, #64ffda);
+    border-color: var(--accent, #64ffda);
+}
+
+.form-check-label {
+    color: var(--text-white, #e2e8f0);
+}
+
+.btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.5;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
+.btn-close-white {
+    filter: brightness(0) invert(1);
+}
+
+.current-image img {
+    border: 2px solid rgba(100, 255, 218, 0.2);
+    padding: 0.25rem;
+}
+
+/* Alert Customization */
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.25rem;
+}
+
+.alert-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border-left: 4px solid #22c55e;
+}
+
+.alert-danger,
+.alert-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border-left: 4px solid #ef4444;
+}
+
+.alert-info {
+    background: rgba(74, 144, 226, 0.15);
+    color: #4a90e2;
+    border-left: 4px solid #4a90e2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .project-management-card {
+        padding: 1rem;
+    }
+
+    .project-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .project-title {
+        font-size: 1.1rem;
+    }
+
+    .project-description {
+        font-size: 0.9rem;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+
+    .empty-state {
+        padding: 3rem 1.5rem;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+    }
+}
+
+/* Additional utility classes */
+.text-muted {
+    color: var(--text-light, #94a3b8) !important;
+}
+
+.text-danger {
+    color: #ef4444 !important;
+}
+
+.text-warning {
+    color: #fbbf24 !important;
+}
+
+.fw-bold {
+    font-weight: 600 !important;
+}
+
+.small {
+    font-size: 0.875rem;
+}

@@ -57,6 +57,12 @@ def get_homepage_context():
     except Exception as e:
         logger.error(f"Error fetching experiences: {str(e)}")
         experiences = []
+
+    try:
+        projects = Project.objects.filter(is_active=True, is_featured=True).order_by('order')
+    except Exception as e:
+        logger.error(f"Error fetching projects: {str(e)}")
+        projects = []
     
     skills_list = []
     skills_by_category = {}
@@ -86,19 +92,31 @@ def get_homepage_context():
             'technologies': exp.technologies
         })
     
+    projects_list = []
+    for project in projects:
+        projects_list.append({
+            'title': project.title,
+            'description': project.description,
+            'technologies': project.get_tech_list(),
+            'status': project.get_status_display(),
+            'github_url': project.github_url,
+            'demo_url': project.demo_url,
+        })
+
     context = {
         'hero': hero,
         'skills': skills,
         'experiences': experiences,
+        'projects': projects,
         'chatbot_skills': skills_list,
         'chatbot_skills_by_category': skills_by_category,
         'chatbot_experiences': experiences_list,
+        'chatbot_projects': projects_list,
     }
     return context
 
 @never_cache
 def homepage(request):
-    """Main homepage view"""
     context = get_homepage_context()
     return render(request, 'homepage.html', context)
 
@@ -107,9 +125,6 @@ def homepage(request):
 @csrf_protect
 @axes_dispatch
 def admin_login(request):
-    """
-    Secure admin login with comprehensive security measures
-    """
     from datetime import timedelta
     from django.utils import timezone
     
@@ -237,12 +252,10 @@ def admin_login(request):
                     f"⚠ ACCOUNT LOCKED: {username} from IP: {ip_address} "
                     f"after {failure_limit} failed attempts"
                 )
-                # Return to homepage with locked modal flag
                 context = get_homepage_context()
                 context['show_locked_modal'] = True
                 return render(request, 'homepage.html', context)
     
-    # GET request - redirect to homepage
     return redirect('homepage')
 
 
@@ -285,10 +298,11 @@ def adminhome(request):
     
     skills_count = Skill.objects.filter(is_active=True).count()
     experiences_count = WorkExperience.objects.all().count()
-    projects_count = 0 
+    projects_count = Project.objects.filter(is_active=True).count()
     top_skills = Skill.objects.filter(is_active=True).order_by('-proficiency')[:5]
     
     recent_experiences = WorkExperience.objects.all().order_by('-start_date')[:5]
+    recent_projects = Project.objects.filter(is_active=True).order_by('-created_at')[:5]
     
     skills_by_category = Skill.objects.filter(is_active=True).values('category').annotate(count=Count('category'))
     
@@ -330,6 +344,7 @@ def adminhome(request):
         'projects_count': projects_count,
         'top_skills': top_skills,
         'recent_experiences': recent_experiences,
+        'recent_projects': recent_projects,
         'skills_by_category': skills_by_category,
         'average_proficiency': average_proficiency,
         'current_company': current_company,
@@ -399,7 +414,6 @@ def change_password(request):
 @login_required(login_url='admin_login')
 @never_cache
 def managecontent(request):
-    """Manage hero content"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to access this area.")
         return redirect('homepage')
@@ -412,7 +426,6 @@ def managecontent(request):
 @never_cache
 @csrf_protect
 def update_content(request):
-    """Update hero content with security logging"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to perform this action.")
         return redirect('homepage')
@@ -420,7 +433,6 @@ def update_content(request):
     if request.method == 'POST':
         hero = HeroContent.objects.first()
         if hero:
-            # Sanitize inputs
             hero.name = sanitize_input(request.POST.get('name', ''), 200)
             hero.subtitle = sanitize_input(request.POST.get('subtitle', ''), 300)
             hero.description = request.POST.get('description', '')[:1000]
@@ -446,15 +458,9 @@ def update_content(request):
     else:
         return redirect('managecontent')
 
-
-# ============================================
-# SKILLS MANAGEMENT VIEWS (SECURED)
-# ============================================
-
 @login_required(login_url='admin_login')
 @never_cache
 def manageskills(request):
-    """Manage skills"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to access this area.")
         return redirect('homepage')
@@ -474,14 +480,12 @@ def manageskills(request):
 @login_required(login_url='admin_login')
 @csrf_protect
 def add_skill(request):
-    """Add new skill with input validation"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to perform this action.")
         return redirect('homepage')
     
     if request.method == 'POST':
         try:
-            # Sanitize inputs
             name = sanitize_input(request.POST.get('name', ''), 100)
             category = sanitize_input(request.POST.get('category', ''), 50)
             icon = request.POST.get('icon', 'fas fa-code')[:100]
@@ -520,7 +524,6 @@ def add_skill(request):
 @login_required(login_url='admin_login')
 @csrf_protect
 def update_skill(request):
-    """Update skill with input validation"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to perform this action.")
         return redirect('homepage')
@@ -528,9 +531,7 @@ def update_skill(request):
     if request.method == 'POST':
         try:
             skill_id = request.POST.get('skill_id')
-            skill = get_object_or_404(Skill, id=skill_id)
-            
-            # Sanitize inputs
+            skill = get_object_or_404(Skill, id=skill_id)           
             skill.name = sanitize_input(request.POST.get('name', ''), 100)
             skill.category = sanitize_input(request.POST.get('category', ''), 50)
             skill.icon = request.POST.get('icon', 'fas fa-code')[:100]
@@ -561,7 +562,6 @@ def update_skill(request):
 @login_required(login_url='admin_login')
 @csrf_protect
 def delete_skill(request):
-    """Delete (soft delete) skill"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to perform this action.")
         return redirect('homepage')
@@ -590,7 +590,6 @@ def delete_skill(request):
 @login_required(login_url='admin_login')
 @never_cache
 def manage_experience(request):
-    """Manage work experience"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to access this area.")
         return redirect('homepage')
@@ -605,7 +604,6 @@ def manage_experience(request):
 @login_required(login_url='admin_login')
 @csrf_protect
 def add_experience(request):
-    """Add new work experience with input validation"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to perform this action.")
         return redirect('homepage')
@@ -618,7 +616,6 @@ def add_experience(request):
             if not is_current and request.POST.get('end_date'):
                 end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').date()
             
-            # Sanitize inputs
             company_name = sanitize_input(request.POST.get('company_name', ''), 200)
             job_title = sanitize_input(request.POST.get('job_title', ''), 200)
             location = sanitize_input(request.POST.get('location', ''), 200)
@@ -676,7 +673,6 @@ def update_experience(request, pk):
             if not is_current and request.POST.get('end_date'):
                 end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').date()
             
-            # Sanitize inputs
             experience.company_name = sanitize_input(request.POST.get('company_name', ''), 200)
             experience.job_title = sanitize_input(request.POST.get('job_title', ''), 200)
             experience.location = sanitize_input(request.POST.get('location', ''), 200)
@@ -708,7 +704,6 @@ def update_experience(request, pk):
 @login_required(login_url='admin_login')
 @csrf_protect
 def delete_experience(request, pk):
-    """Delete work experience"""
     if not request.user.is_superuser:
         messages.error(request, "You do not have permission to perform this action.")
         return redirect('homepage')
@@ -724,3 +719,144 @@ def delete_experience(request, pk):
         except Exception as e:
             logger.error(f"Error deleting experience: {str(e)}")
             messages.error(request, f'Error deleting experience: {str(e)}')
+
+@login_required(login_url='admin_login')
+@never_cache
+def manage_projects(request):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to access this area.")
+        return redirect('homepage')
+    
+    projects = Project.objects.filter(is_active=True)
+    context = {
+        'projects': projects
+    }
+    return render(request, 'manageprojects.html', context)
+
+
+@login_required(login_url='admin_login')
+@csrf_protect
+def add_project(request):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to perform this action.")
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        try:
+            title = sanitize_input(request.POST.get('title', ''), 200)
+            description = request.POST.get('description', '')[:1000]
+            detailed_description = request.POST.get('detailed_description', '')[:5000]
+            technologies = request.POST.get('technologies', '')[:500]
+            icon_class = request.POST.get('icon_class', 'fas fa-project-diagram')[:100]
+            status = request.POST.get('status', 'completed')
+            
+            if not title:
+                messages.error(request, 'Project title is required.')
+                return redirect('manage_projects')
+            
+            project = Project(
+                title=title,
+                description=description,
+                detailed_description=detailed_description,
+                technologies=technologies,
+                project_url=request.POST.get('project_url', ''),
+                github_url=request.POST.get('github_url', ''),
+                demo_url=request.POST.get('demo_url', ''),
+                icon_class=icon_class,
+                status=status,
+                order=int(request.POST.get('order', 0)),
+                is_featured=request.POST.get('is_featured') == 'on',
+                updated_by=request.user
+            )
+            
+            if request.POST.get('start_date'):
+                project.start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d').date()
+            if request.POST.get('end_date'):
+                project.end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').date()
+            
+            if request.FILES.get('image'):
+                project.image = request.FILES['image']
+            
+            project.save()
+            
+            logger.info(f"Project added: {title} by {request.user.username}")
+            messages.success(request, f'Project "{title}" has been added successfully!')
+            
+        except ValueError as e:
+            messages.error(request, f'Invalid date format: {str(e)}')
+        except Exception as e:
+            logger.error(f"Error adding project: {str(e)}")
+            messages.error(request, f'Error adding project: {str(e)}')
+    
+    return redirect('manage_projects')
+
+
+@login_required(login_url='admin_login')
+@csrf_protect
+def update_project(request, pk):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to perform this action.")
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        try:
+            project = get_object_or_404(Project, pk=pk)
+            
+            project.title = sanitize_input(request.POST.get('title', ''), 200)
+            project.description = request.POST.get('description', '')[:1000]
+            project.detailed_description = request.POST.get('detailed_description', '')[:5000]
+            project.technologies = request.POST.get('technologies', '')[:500]
+            project.project_url = request.POST.get('project_url', '')
+            project.github_url = request.POST.get('github_url', '')
+            project.demo_url = request.POST.get('demo_url', '')
+            project.icon_class = request.POST.get('icon_class', 'fas fa-project-diagram')[:100]
+            project.status = request.POST.get('status', 'completed')
+            project.order = int(request.POST.get('order', 0))
+            project.is_featured = request.POST.get('is_featured') == 'on'
+            project.updated_by = request.user
+            
+            if request.POST.get('start_date'):
+                project.start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d').date()
+            if request.POST.get('end_date'):
+                project.end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').date()
+            
+            if request.FILES.get('image'):
+                project.image = request.FILES['image']
+            
+            project.save()
+            
+            logger.info(f"Project updated: {project.title} by {request.user.username}")
+            messages.success(request, f'Project "{project.title}" has been updated successfully!')
+            
+        except ValueError as e:
+            messages.error(request, f'Invalid date format: {str(e)}')
+        except Exception as e:
+            logger.error(f"Error updating project: {str(e)}")
+            messages.error(request, f'Error updating project: {str(e)}')
+    
+    return redirect('manage_projects')
+
+
+@login_required(login_url='admin_login')
+@csrf_protect
+def delete_project(request, pk):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to perform this action.")
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        try:
+            project = get_object_or_404(Project, pk=pk)
+            project_title = project.title
+            
+            project.is_active = False
+            project.updated_by = request.user
+            project.save()
+            
+            logger.info(f"Project deleted: {project_title} by {request.user.username}")
+            messages.success(request, f'Project "{project_title}" has been deleted successfully!')
+        except Exception as e:
+            logger.error(f"Error deleting project: {str(e)}")
+            messages.error(request, f'Error deleting project: {str(e)}')
+    
+    return redirect('manage_projects')

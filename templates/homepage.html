@@ -167,32 +167,26 @@
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content locked-modal">
             <div class="modal-body text-center p-4">
-                <!-- Lock Icon with Animation -->
                 <div class="locked-icon-wrapper mb-3">
                     <i class="fas fa-lock locked-icon"></i>
                 </div>
                 
-                <!-- Title -->
                 <h5 class="locked-title mb-3">Account Locked</h5>
                 
-                <!-- Message -->
                 <p class="locked-message mb-3">
                     Too many failed login attempts detected. Please wait before trying again.
                 </p>
                 
-                <!-- Countdown Timer -->
                 <div class="countdown-wrapper mb-3">
                     <div class="countdown-timer" id="compactCountdown">60:00</div>
                     <small class="text-muted">Time remaining</small>
                 </div>
                 
-                <!-- Info Badge -->
                 <div class="locked-info mb-3">
                     <i class="fas fa-info-circle me-2"></i>
                     <span>Lockout duration: 1 hour</span>
                 </div>
                 
-                <!-- Close Button -->
                 <button type="button" class="btn btn-custom-locked w-100" data-bs-dismiss="modal">
                     <i class="fas fa-home me-2"><a style="color: white;text-decoration: none;" href="{% url 'homepage' %}"></i>Return to Homepage
                 </button>
@@ -279,143 +273,101 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects">
-        <div class="container">
-            <h2 class="section-title fade-in">Featured Projects</h2>
-            <div class="projects-grid fade-in">
-                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project1Modal">
-                    <div class="project-image">
-                        <i class="fas fa-microphone"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">VocaVerse</h3>
-                        <p class="project-description">Word Chain Game is a culturally enriching, web-based word game that combines the fun of a traditional word chain with educational content focused on Indian names. This multiplayer game is designed to be engaging, responsive, and educational, showcasing modern web development practices.</p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">C#(.NET 8.0)</span>
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">Tailwind CSS</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">AJAX</span>
-                        </div>
-                        <a href="https://github.com/arjun3031/VocaVerse.git" target="_blank"
-                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
-                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
-                        </a>
-                    </div>
+    <div class="container">
+        <h2 class="section-title fade-in">Featured Projects</h2>
+        <div class="projects-grid fade-in">
+            {% for project in projects %}
+            <div class="project-card" data-bs-toggle="modal" data-bs-target="#projectModal{{ project.id }}">
+                <div class="project-image">
+                    {% if project.image %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                    {% else %}
+                        <i class="{{ project.icon_class }}"></i>
+                    {% endif %}
                 </div>
-
-                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project2Modal">
-                    <div class="project-image">
-                        <i class="fas fa-user-secret"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Automated Face Sketch Identification</h3>
-                            <p class="project-description"> This project is an advanced deep learning system designed to accurately match hand-drawn facial sketches to real-world photographs. Leveraging the power of convolutional neural networks (CNNs) and autoencoder architectures, the system is capable of extracting and encoding fine facial features. It is suitable for forensic applications.                            </p>   
-                        <div class="tech-tags">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Autoencoder</span>
-                            <span class="tech-tag">Django</span>
-                            <span class="tech-tag">CNN</span>
-                        </div>
-                        <a href="https://github.com/arjun3031?tab=repositories" target="_blank"
-                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
-                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
-                        </a>
-                    </div>
-                </div>
-
-                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project3Modal">
-                    <div class="project-image">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Question Paper Generator</h3>
-                        <p class="project-description">An intelligent platform that generates fully customized question papers based on selected topics, difficulty levels, and exam patterns, helping educators save time, maintain consistency, and provide students with balanced and well-structured assessments, while also supporting multiple formats for download.</p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Django</span>
-                            <span class="tech-tag">MySQL</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Bootstrap</span>
-                        </div>
-                        <a href="https://github.com/arjun3031/Question-Paper" target="_blank"
-                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
-                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
-                        </a>
-                    </div>
-                </div>
-                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project4Modal">
-                    <div class="project-image">
-                        <i class="fas fa-moon"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Astrology Prediction for Entertainment</h3>
-                            <p class="project-description">
-                                A fun and interactive web app for predicting Nakshatra Falam in Malayalam. Users can select their day and Nakshatra, then click the prediction button to receive personalized and entertaining future predictions. The app leverages a comprehensive dataset to provide insights in a playful way, making astrology exploration enjoyable and engaging for everyone.
-                            </p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">.Net</span>
-                            <span class="tech-tag">C#</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">HTML/CSS</span>
-                            <span class="tech-tag">Bootstrap</span>
-                        </div>
-                        <a href="https://github.com/arjun3031/Astrology-Prediction-Web-App" target="_blank"
-                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
-                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
-                        </a>
-                    </div>
-                </div>
-                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project5Modal">
-                    <div class="project-image">
-                        <i class="fas fa-water"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Kerala Water Authority Bill Payment</h3>
-                        <p class="project-description">
-                            A smart online platform that enables users to capture their water meter reading via image upload, automatically calculates the accurate bill amount, generates the bill digitally, and allows secure online payment, eliminating the need for physical visits to the office while ensuring accurate record-keeping and instant notifications to the authority department authorities.
-                        </p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Django</span>
-                            <span class="tech-tag">MySQL</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Bootstrap</span>
-                            <span class="tech-tag">OpenCV</span>
-                        </div>
-                        <a href="" target="_blank"
-                            style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
-                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
-                        </a>
-                    </div>
-                </div>
-
-                <div class="project-card" data-bs-toggle="modal" data-bs-target="#project6Modal">
-                    <div class="project-image">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">CRM Insurance Company Management System</h3>
-                        <p class="project-description">
-                            A comprehensive web-based CRM system designed to streamline insurance company operations, enabling administrators to efficiently add and manage employees, track and update insurance policies. The system ensures secure data management, simplifies day-to-day workflows, provides real-time insights, and improves productivity by reducing manual paperwork.
-                        </p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Django</span>
-                            <span class="tech-tag">MySQL</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Bootstrap</span>
-                        </div>
-                        <a href="https://github.com/arjun3031/CRM-Insurance-company" target="_blank"
-                        style="display:block; width:max-content; margin:20px auto 0; padding:8px 20px; background-color:#24292f; color:#ffffff; border-radius:5px; text-decoration:none; font-weight:bold; transition:0.3s; text-align:center;">
-                            <i class="fab fa-github" style="margin-right:8px;"></i> Explore More
-                        </a>
+                <div class="project-content">
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description }}</p>
+                    <div class="tech-tags">
+                        {% for tech in project.get_tech_list %}
+                        <span class="tech-tag">{{ tech }}</span>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No featured projects available yet.</p>
+            </div>
+            {% endfor %}
         </div>
-    </section>
+    </div>
+
+    <!-- Project Modals (Outside the grid) -->
+    {% for project in projects %}
+    <div class="modal fade" id="projectModal{{ project.id }}" tabindex="-1" aria-labelledby="projectModalLabel{{ project.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectModalLabel{{ project.id }}">
+                        <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
+                            <i class="{{ project.icon_class }}"></i>
+                        </div>
+                        {{ project.title }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if project.image %}
+                    <div class="mb-3">
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" 
+                             style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px;">
+                    </div>
+                    {% endif %}
+
+                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
+                    <p style="color: var(--text-light); line-height: 1.8;">{{ project.detailed_description|default:project.description }}</p>
+
+                    {% if project.start_date or project.end_date %}
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Timeline</h6>
+                    <p style="color: var(--text-light);">
+                        {% if project.start_date %}{{ project.start_date|date:"M Y" }}{% endif %}
+                        {% if project.end_date %} - {{ project.end_date|date:"M Y" }}{% elif project.status == 'in_progress' %} - Present{% endif %}
+                    </p>
+                    {% endif %}
+
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
+                    <div class="tech-tags">
+                        {% for tech in project.get_tech_list %}
+                        <span class="tech-tag">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+
+                    {% if project.github_url or project.demo_url %}
+                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Links</h6>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank" class="btn btn-custom" onclick="event.stopPropagation();">
+                            <i class="fab fa-github me-2"></i>View on GitHub
+                        </a>
+                        {% endif %}
+                        {% if project.demo_url %}
+                        <a href="{{ project.demo_url }}" target="_blank" class="btn btn-custom" onclick="event.stopPropagation();">
+                            <i class="fas fa-external-link-alt me-2"></i>Live Demo
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
 
     <!-- Education Section -->
     <section id="education">
@@ -585,229 +537,11 @@
         </div>
     </div>
 
-    <!-- Project Modals -->
-    <div class="modal fade" id="project1Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h5 class="modal-title">VocaVerse - Word Chain Game</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>
-                        VocaVerse is a web-based multiplayer word chain game focused on Indian names. It combines fun gameplay with educational content and is designed to be interactive, responsive, and engaging for all players.
-                    </p>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
-                    <ul>
-                        <li>Two-player turn-based word chain gameplay</li>
-                        <li>Real-time validation of word chain rules</li>
-                        <li>Instant feedback and session-based game state</li>
-                        <li>Mobile-responsive and intuitive UI</li>
-                        <li>Automatic prevention of duplicate name submissions</li>
-                    </ul>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">C# (.NET 8.0)</span>
-                        <span class="tech-tag">ASP.NET Core</span>
-                        <span class="tech-tag">Razor Pages</span>
-                        <span class="tech-tag">Tailwind CSS</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">AJAX</span>
-                    </div>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
-                    <ul>
-                        <li>Expand the name database to 200+ Indian names</li>
-                        <li>Add single-player mode with AI opponent</li>
-                        <li>Introduce scoring, statistics, and game history</li>
-                        <li>Implement sound effects and animations</li>
-                        <li>Enable voice recognition for hands-free gameplay</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="project2Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-                    <div style="font-size: 2rem; margin-right: 10px; color: var(--accent);">
-                        <i class="fas fa-user-secret"></i>
-                    </div>
-                    <h5 class="modal-title">Automated Face Sketch Identification</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>
-                        This project is an advanced deep learning system designed to accurately match hand-drawn facial sketches to real-world photographs. Leveraging the power of convolutional neural networks (CNNs) and autoencoder architectures, the system extracts and encodes fine facial features, making it highly suitable for forensic, law enforcement, and security applications.
-                    </p>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
-                    <ul>
-                        <li>Deep learning-based feature extraction from sketches and photographs</li>
-                        <li>Autoencoder architecture for efficient encoding of facial details</li>
-                        <li>High accuracy matching using CNNs trained on diverse datasets</li>
-                        <li>Web-based interface for sketch upload and instant matching</li>
-                        <li>Supports batch processing for large-scale forensic databases</li>
-                        <li>Real-time feedback on match confidence and similarity scores</li>
-                    </ul>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Autoencoder</span>
-                        <span class="tech-tag">Django</span>
-                        <span class="tech-tag">CNN</span>
-                        <span class="tech-tag">OpenCV</span>
-                        <span class="tech-tag">NumPy</span>
-                    </div>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Future Enhancements</h6>
-                    <ul>
-                        <li>Integration with police and law enforcement databases</li>
-                        <li>Mobile app version for on-the-go sketch submission</li>
-                        <li>AI-powered similarity scoring with facial attribute analysis</li>
-                        <li>Expand dataset with diverse ethnicities</li>
-                        <li>Real-time video sketch matching from CCTV footage</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="project3Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        Question Paper Generator
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>
-                        This is an intelligent system for generating customized question papers automatically. Educators can select difficulty levels, topics, and exam patterns, enabling efficient, fair, and time-saving assessments.
-                    </p>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Key Features</h6>
-                    <ul>
-                        <li>Generate question papers based on difficulty levels and topics</li>
-                        <li>Customizable number of questions per section</li>
-                        <li>Randomized question selection for fairness</li>
-                        <li>Supports multiple subjects and formats</li>
-                        <li>Export papers as PDF</li>
-                    </ul>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Django</span>
-                        <span class="tech-tag">MySQL</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Bootstrap</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="project4Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        Astrology Prediction App
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>
-                        A lighthearted web application for predicting Nakshatra Falam in Malayalam. Users select their day and Nakshatra for personalized predictions.
-                    </p>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">.Net</span>
-                        <span class="tech-tag">C#</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Bootstrap</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="project5Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
-                            <i class="fas fa-hand-holding-water"></i>
-                        </div>
-                        Kerala Water Authority Bill Payment
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>
-                        Web-based application for capturing meter readings via image, automatic bill calculation, and online payments.
-                    </p>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Django</span>
-                        <span class="tech-tag">MySQL</span>
-                        <span class="tech-tag">OpenCV</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="project6Modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <div style="font-size: 2rem; margin-right: 10px; color: var(--accent); display:inline-block;">
-                            <i class="fas fa-hand-holding-usd"></i>
-                        </div>
-                        CRM Insurance Company Management
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
-                    <p>
-                        Comprehensive web-based system for managing insurance company operations, employees, and policies.
-                    </p>
-                    <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Django</span>
-                        <span class="tech-tag">MySQL</span>
-                        <span class="tech-tag">Bootstrap</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/home.js' %}"></script>
     
     <script>
          document.addEventListener('DOMContentLoaded', function() {
-        // Show login modal if there's an error
         {% if show_login_modal %}
             var loginModalElement = document.getElementById('loginModal');
             if (loginModalElement) {
@@ -817,7 +551,6 @@
             }
         {% endif %}
         
-        // Show account locked modal
         {% if show_locked_modal %}
             var lockedModalElement = document.getElementById('accountLockedModal');
             if (lockedModalElement) {
@@ -830,7 +563,6 @@
             }
         {% endif %}
         
-        // Handle messages for locked accounts
         {% if messages %}
             {% for message in messages %}
                 {% if 'locked' in message.tags %}
@@ -846,7 +578,6 @@
             {% endfor %}
         {% endif %}
         
-        // Clear login error alerts when modal is hidden
         var loginModalElement = document.getElementById('loginModal');
         if (loginModalElement) {
             loginModalElement.addEventListener('hidden.bs.modal', function () {
