@@ -1,4 +1,3 @@
-// Typing Animation
 const texts = ['Software Engineer', 'Full Stack Developer', 'Problem Solver', 'Tech Enthusiast'];
 let textIndex = 0;
 let charIndex = 0;
@@ -30,7 +29,6 @@ function type() {
 
 setTimeout(type, 1000);
 
-// Smooth Scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -40,7 +38,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 behavior: 'smooth',
                 block: 'start'
             });
-            // Close mobile menu if open
             const navbarCollapse = document.querySelector('.navbar-collapse');
             if (navbarCollapse.classList.contains('show')) {
                 navbarCollapse.classList.remove('show');
@@ -49,7 +46,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Fade In Animation on Scroll
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -67,7 +63,6 @@ document.querySelectorAll('.fade-in').forEach(element => {
     observer.observe(element);
 });
 
-// Progress Bar Animation
 const progressObserver = new IntersectionObserver(function(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -85,7 +80,6 @@ if (skillsSection) {
     progressObserver.observe(skillsSection);
 }
 
-// Back to Top Button
 const backToTopButton = document.getElementById('backToTop');
 
 window.addEventListener('scroll', function() {
@@ -103,25 +97,21 @@ backToTopButton.addEventListener('click', function() {
     });
 });
 
-// Contact Form Validation
 document.getElementById("contactForm").addEventListener("submit", function(e) {
     e.preventDefault();
     let isValid = true;
 
-    // Clear previous messages
     document.getElementById("nameError").innerText = "";
     document.getElementById("emailError").innerText = "";
     document.getElementById("messageError").innerText = "";
     document.getElementById("formMessage").innerText = "";
 
-    // Name validation
     let name = document.getElementById("name").value.trim();
     if (!/^[a-zA-Z\s]+$/.test(name)) {
         document.getElementById("nameError").innerText = "Name can contain only letters and spaces";
         isValid = false;
     }
 
-    // Email validation
     let email = document.getElementById("email").value.trim();
     let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
@@ -129,7 +119,6 @@ document.getElementById("contactForm").addEventListener("submit", function(e) {
         isValid = false;
     }
 
-    // Message validation
     let message = document.getElementById("message").value.trim();
     let wordCount = message.split(/\s+/).filter(Boolean).length;
     if (wordCount > 1000) {
@@ -165,7 +154,6 @@ document.getElementById("contactForm").addEventListener("submit", function(e) {
     }
 });
 
-// Navbar Background on Scroll
 window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
@@ -177,48 +165,6 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// ==================== PROJECT MODAL FIX ====================
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all project card click handlers
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    projectCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Don't open modal if clicking on a link
-            if (e.target.closest('a')) {
-                e.stopPropagation();
-                return;
-            }
-            
-            // Get the modal ID from data-bs-target
-            const modalId = this.getAttribute('data-bs-target');
-            
-            if (modalId) {
-                const modalElement = document.querySelector(modalId);
-                if (modalElement) {
-                    // Create and show the modal
-                    const modal = new bootstrap.Modal(modalElement);
-                    modal.show();
-                }
-            }
-        });
-        
-        // Add hover effect
-        card.style.cursor = 'pointer';
-    });
-    
-    // Prevent links inside project cards from triggering the card click
-    const projectLinks = document.querySelectorAll('.project-card a');
-    projectLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    });
-});
-
-// ==================== AI CHATBOT FUNCTIONALITY ====================
-
-// Enhanced Knowledge Base
 const knowledgeBase = {
     greeting: {
         keywords: ['hi', 'hello', 'hey', 'hola', 'namaste', 'greetings', 'good morning', 'good evening', 
@@ -239,7 +185,6 @@ const knowledgeBase = {
                    "What would you like to know?";
         }
     },
-
     skills: {
         keywords: ['skill', 'technology', 'tech stack', 'programming', 'languages', 'frameworks', 
                    'tools', 'what do you know', 'what can you do', 'expertise', 'technical skills',
@@ -263,7 +208,6 @@ const knowledgeBase = {
             return response + "Want to know more about a specific technology? Just ask!";
         }
     },
-    
     skillCategory: {
         keywords: ['frontend', 'backend', 'database', 'devops', 'tools', 'design', 'ui', 'ux'],
         response: function(message) {
@@ -282,7 +226,6 @@ const knowledgeBase = {
             return null;
         }
     },
-    
     experience: {
         keywords: ['experience', 'work', 'job', 'company', 'career', 'employment', 'worked', 
                    'working', 'professional', 'position', 'role'],
@@ -309,7 +252,6 @@ const knowledgeBase = {
             return response;
         }
     },
-    
     currentJob: {
         keywords: ['current job', 'currently working', 'present job', 'where work now', 
                    'current company', 'working now', 'current position'],
@@ -329,7 +271,6 @@ const knowledgeBase = {
                    `${currentExp.description}`;
         }
     },
-    
     specificSkill: {
         keywords: ['python', 'javascript', 'java', 'react', 'django', 'node', 'sql', 'git', 
                    'docker', 'html', 'css', 'mongodb', 'express', 'angular', 'vue', 'typescript'],
@@ -347,7 +288,6 @@ const knowledgeBase = {
             return null;
         }
     },
-    
     projects: {
         keywords: ['project', 'built', 'created', 'developed', 'portfolio', 'work samples', 
                    'what have you built', 'showcase', 'demos'],
@@ -358,7 +298,6 @@ const knowledgeBase = {
                  "• Detailed descriptions 📝\n\n" +
                  "Scroll down to explore the complete portfolio!"
     },
-    
     education: {
         keywords: ['education', 'degree', 'study', 'college', 'university', 'qualification', 
                    'academic', 'graduated', 'studied', 'school'],
@@ -372,7 +311,6 @@ const knowledgeBase = {
                    "   Graduated with distinction";
         }
     },
-    
     contact: {
         keywords: ['contact', 'email', 'phone', 'reach', 'hire', 'connect', 'message', 
                    'get in touch', 'call', 'mail', 'how to contact'],
@@ -385,7 +323,6 @@ const knowledgeBase = {
                    "💡 Tip: Scroll down to the contact section to send a direct message!";
         }
     },
-    
     about: {
         keywords: ['about', 'who are you', 'tell me about', 'introduction', 'bio', 
                    'describe yourself', 'who is', 'info about you'],
@@ -399,7 +336,6 @@ const knowledgeBase = {
                    `• Always learning and growing 🚀`;
         }
     },
-    
     location: {
         keywords: ['location', 'where', 'based', 'live', 'from', 'home', 'city', 'place', 
                    'residence', 'hometown'],
@@ -410,7 +346,6 @@ const knowledgeBase = {
                    "A beautiful place with great tech opportunities! 🌴";
         }
     },
-    
     technologies: {
         keywords: ['tech', 'technology stack', 'what technologies', 'programming languages', 
                    'tech used', 'stack'],
@@ -433,7 +368,6 @@ const knowledgeBase = {
                    `\n\n✨ Check the skills section for detailed proficiency levels!`;
         }
     },
-    
     hire: {
         keywords: ['hire', 'available', 'freelance', 'contract', 'full time', 'part time', 
                    'looking for work', 'open to opportunities', 'recruiting'],
@@ -449,7 +383,6 @@ const knowledgeBase = {
                    "Let's build something amazing together! 🚀";
         }
     },
-    
     thanks: {
         keywords: ['thank', 'thanks', 'appreciate', 'grateful', 'thx', 'ty'],
         response: function() {
@@ -461,7 +394,6 @@ const knowledgeBase = {
             return responses[Math.floor(Math.random() * responses.length)];
         }
     },
-    
     goodbye: {
         keywords: ['bye', 'goodbye', 'see you', 'take care', 'later', 'cya', 'catch you later'],
         response: function() {
@@ -473,7 +405,6 @@ const knowledgeBase = {
             return goodbyes[Math.floor(Math.random() * goodbyes.length)];
         }
     },
-    
     help: {
         keywords: ['help', 'what can you do', 'how to use', 'commands', 'options'],
         response: function() {
@@ -487,10 +418,15 @@ const knowledgeBase = {
                    "📍 Location: 'Where are you based?'\n\n" +
                    "Just ask naturally - I'll understand! 😊";
         }
+    },
+    theri: {
+        keywords: ['fuck you', 'bitch', 'nayinte mone', 'kunne', 'patti', 'chette', 'thendi', 'poda', 'shotte'],
+        response: function() {
+            return `Your Dad`
+        }
     }
 };
 
-// AI Chatbot Elements
 const chatButton = document.getElementById('chatButton');
 const chatContainer = document.getElementById('chatContainer');
 const chatCloseBtn = document.getElementById('chatCloseBtn');
@@ -499,21 +435,18 @@ const chatSendBtn = document.getElementById('chatSendBtn');
 const chatMessages = document.getElementById('chatMessages');
 const typingIndicator = document.getElementById('typingIndicator');
 
-// Scroll to bottom function
 function scrollToBottom() {
     if (chatMessages) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
 
-// Toggle Chat - Open
 if (chatButton) {
     chatButton.addEventListener('click', function() {
         chatContainer.classList.add('active');
         chatButton.classList.add('active');
         chatInput.focus();
         
-        // Add welcome message if chat is empty
         if (chatMessages.children.length === 0) {
             addMessage(`Hello! 👋 I'm here to help you learn more about ${chatbotData.heroData.name}.\n\nYou can ask me about skills, experience, projects, education, or contact information!\n\nType 'help' to see all available commands.`, 'bot');
         }
@@ -521,7 +454,6 @@ if (chatButton) {
     });
 }
 
-// Toggle Chat - Close
 if (chatCloseBtn) {
     chatCloseBtn.addEventListener('click', function() {
         chatContainer.classList.remove('active');
@@ -529,22 +461,18 @@ if (chatCloseBtn) {
     });
 }
 
-// Send Message
 function sendMessage() {
     const message = chatInput.value.trim();
     if (message === '') return;
 
-    // Add user message
     addMessage(message, 'user');
     chatInput.value = '';
 
-    // Show typing indicator
     if (typingIndicator) {
         typingIndicator.classList.add('active');
     }
     scrollToBottom();
 
-    // Generate bot response
     setTimeout(() => {
         const response = generateResponse(message);
         if (typingIndicator) {
@@ -567,7 +495,6 @@ if (chatInput) {
     });
 }
 
-// Add Message to Chat
 function addMessage(text, sender) {
     if (!chatMessages) return;
     
@@ -588,11 +515,9 @@ function addMessage(text, sender) {
     chatMessages.appendChild(messageDiv);
 }
 
-// Generate Bot Response
 function generateResponse(message) {
     const lowerMessage = message.toLowerCase().trim();
     
-    // Check knowledge base
     for (const [category, data] of Object.entries(knowledgeBase)) {
         if (data.keywords.some(keyword => lowerMessage.includes(keyword))) {
             const response = typeof data.response === 'function' ? data.response(message) : data.response;
@@ -600,7 +525,6 @@ function generateResponse(message) {
         }
     }
 
-    // Default response with suggestions
     return `I'm not sure I understood that. 🤔\n\n` +
            `I can help you with:\n\n` +
            "• Skills & Technologies 💻\n" +
@@ -616,13 +540,11 @@ function generateResponse(message) {
            "Type 'help' for more options!";
 }
 
-// Quick Reply Handler
 function sendQuickReply(message) {
     chatInput.value = message;
     sendMessage();
 }
 
-// Password toggle
 function togglePassword() {
     const passwordInput = document.getElementById('password');
     const toggleIcon = document.getElementById('toggleIcon');
@@ -640,7 +562,6 @@ function togglePassword() {
     }
 }
 
-// Change Password Modal
 function openModal() {
     const modalOverlay = document.getElementById('modalOverlay');
     if (modalOverlay) {
@@ -675,22 +596,17 @@ function togglePasswordField(fieldId) {
     }
 }
 
-// Account Locked Modal Countdown Timer
 document.addEventListener('DOMContentLoaded', function() {
     const accountLockedModal = document.getElementById('accountLockedModal');
     
     if (accountLockedModal) {
-        // Start countdown when modal is shown
         accountLockedModal.addEventListener('shown.bs.modal', function() {
             startCompactCountdown();
         });
         
-        // Prevent modal from being dismissed by clicking backdrop or pressing ESC
         accountLockedModal.addEventListener('hide.bs.modal', function(e) {
             const countdownElement = document.getElementById('compactCountdown');
-            // Only allow closing if unlocked or user clicks the button
             if (countdownElement && !countdownElement.classList.contains('unlocked')) {
-                // Check if it's a button click
                 if (!e.target.closest('.btn-custom-locked')) {
                     e.preventDefault();
                     return false;
@@ -698,10 +614,45 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    const loginModalElement = document.getElementById('loginModal');
+    if (loginModalElement) {
+        loginModalElement.addEventListener('hidden.bs.modal', function () {
+            const errorAlert = document.getElementById('loginErrorAlert');
+            if (errorAlert) {
+                errorAlert.remove();
+            }
+        });
+    }
+
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' || e.target.closest('a')) {
+                return;
+            }
+            const modalId = this.getAttribute('data-modal-target');
+            if (modalId) {
+                const modalElement = document.querySelector(modalId);
+                if (modalElement) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                }
+            }
+        });
+    });
+
+    const projectLinks = document.querySelectorAll('.project-card a');
+    projectLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
 });
 
 function startCompactCountdown() {
-    let timeLeft = 3600; // 1 hour in seconds
+    let timeLeft = 3600;
     const countdownElement = document.getElementById('compactCountdown');
     const lockIcon = document.querySelector('.locked-icon');
     const modalBody = document.querySelector('#accountLockedModal .modal-body');
@@ -725,7 +676,6 @@ function startCompactCountdown() {
             timeLeft--;
             setTimeout(updateCountdown, 1000);
         } else {
-            // Unlocked state
             if (countdownElement) {
                 countdownElement.textContent = '✓ Unlocked!';
                 countdownElement.classList.add('unlocked');
@@ -735,7 +685,6 @@ function startCompactCountdown() {
                 lockIcon.classList.add('fa-lock-open', 'unlocked');
             }
             
-            // Update modal content
             if (modalBody) {
                 const lockedTitle = modalBody.querySelector('.locked-title');
                 const lockedMessage = modalBody.querySelector('.locked-message');
@@ -747,13 +696,11 @@ function startCompactCountdown() {
                 }
             }
             
-            // Auto close and redirect after 3 seconds
             setTimeout(() => {
                 const modal = bootstrap.Modal.getInstance(accountLockedModal);
                 if (modal) {
                     modal.hide();
                 }
-                // Refresh the page to allow login attempt
                 window.location.href = '/';
             }, 3000);
         }
@@ -761,17 +708,3 @@ function startCompactCountdown() {
     
     updateCountdown();
 }
-
-// Login Modal Error Handling
-document.addEventListener('DOMContentLoaded', function() {
-    // Show login modal if there's an error
-    const loginModalElement = document.getElementById('loginModal');
-    if (loginModalElement) {
-        loginModalElement.addEventListener('hidden.bs.modal', function () {
-            const errorAlert = document.getElementById('loginErrorAlert');
-            if (errorAlert) {
-                errorAlert.remove();
-            }
-        });
-    }
-});

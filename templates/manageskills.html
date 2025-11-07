@@ -10,15 +10,12 @@
     <link rel="stylesheet" href="{% static 'css/manageskills.css' %}">
 </head>
 <body>
-    <!-- Mobile Menu Toggle -->
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="admin-avatar">
@@ -54,15 +51,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{% url 'manage_projects' %}">
                     <i class="fas fa-project-diagram"></i>
                     <span>Manage Projects</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-file-pdf"></i>
-                    <span>Update Resume</span>
+                <a href="{% url 'manage_education' %}" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Manage Education</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -74,7 +71,6 @@
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <div class="top-bar">
             <h1 class="page-title">
@@ -96,7 +92,6 @@
         </div>
         {% endif %}
 
-        <!-- Skills Overview Stats -->
         <div class="quick-stats">
             <div class="stat-item">
                 <div class="stat-icon">
@@ -129,7 +124,6 @@
             </div>
         </div>
 
-        <!-- Skills Grid -->
         <div class="content-preview-card mt-4">
             <div class="preview-header">
                 <h3><i class="fas fa-list me-2"></i>All Skills</h3>
@@ -194,7 +188,6 @@
         </div>
     </div>
 
-    <!-- Add Skill Modal -->
     <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content custom-modal">
@@ -261,7 +254,6 @@
         </div>
     </div>
 
-    <!-- Edit Skill Modal -->
     <div class="modal fade" id="editSkillModal" tabindex="-1" aria-labelledby="editSkillModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content custom-modal">
@@ -328,7 +320,6 @@
         </div>
     </div>
 
-    <!-- Delete Skill Modal -->
     <div class="modal fade" id="deleteSkillModal" tabindex="-1" aria-labelledby="deleteSkillModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content custom-modal">

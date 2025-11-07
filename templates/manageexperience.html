@@ -10,15 +10,12 @@
     <link rel="stylesheet" href="{% static 'css/manageexperience.css' %}">
 </head>
 <body>
-    <!-- Mobile Menu Toggle -->
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="admin-avatar">
@@ -54,15 +51,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{% url 'manage_projects' %}">
                     <i class="fas fa-project-diagram"></i>
                     <span>Manage Projects</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-file-pdf"></i>
-                    <span>Update Resume</span>
+                <a href="{% url 'manage_education' %}" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Manage Education</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -74,7 +71,6 @@
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <div class="top-bar">
             <h1 class="page-title">
@@ -96,7 +92,6 @@
         </div>
         {% endif %}
 
-        <!-- Experience Cards -->
         <div class="experience-grid">
             {% for exp in experiences %}
             <div class="experience-card">
@@ -158,7 +153,6 @@
         </div>
     </div>
 
-    <!-- Add Experience Modal -->
     <div class="modal fade" id="addExperienceModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content custom-modal">
@@ -247,7 +241,6 @@
         </div>
     </div>
 
-    <!-- Edit Experience Modal -->
     <div class="modal fade" id="editExperienceModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content custom-modal">
@@ -339,7 +332,6 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content custom-modal">

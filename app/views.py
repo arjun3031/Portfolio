@@ -63,6 +63,12 @@ def get_homepage_context():
     except Exception as e:
         logger.error(f"Error fetching projects: {str(e)}")
         projects = []
+
+    try:
+        educations = Education.objects.all().order_by('order')
+    except Exception as e:
+        logger.error(f"Error fetching education: {str(e)}")
+        educations = []
     
     skills_list = []
     skills_by_category = {}
@@ -108,6 +114,7 @@ def get_homepage_context():
         'skills': skills,
         'experiences': experiences,
         'projects': projects,
+        'educations': educations,
         'chatbot_skills': skills_list,
         'chatbot_skills_by_category': skills_by_category,
         'chatbot_experiences': experiences_list,
@@ -312,7 +319,6 @@ def adminhome(request):
     current_experience = WorkExperience.objects.filter(is_current=True).first()
     current_company = current_experience.company_name if current_experience else None
     
-    # Calculate total experience duration
     total_months = 0
     for exp in WorkExperience.objects.all():
         start = exp.start_date
@@ -860,3 +866,110 @@ def delete_project(request, pk):
             messages.error(request, f'Error deleting project: {str(e)}')
     
     return redirect('manage_projects')
+
+@login_required(login_url='admin_login')
+@never_cache
+def manage_education(request):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to access this area.")
+        return redirect('homepage')
+    
+    educations = Education.objects.all().order_by('order')
+    context = {
+        'educations': educations
+    }
+    return render(request, 'manageeducation.html', context)
+
+
+@login_required(login_url='admin_login')
+@csrf_protect
+def add_education(request):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to perform this action.")
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        try:
+            degree = sanitize_input(request.POST.get('degree', ''), 100)
+            institution = sanitize_input(request.POST.get('institution', ''), 200)
+            board_or_university = sanitize_input(request.POST.get('board_or_university', ''), 200)
+            
+            if not degree or not institution:
+                messages.error(request, 'Degree and institution are required.')
+                return redirect('manage_education')
+            
+            education = Education(
+                degree=degree,
+                institution=institution,
+                board_or_university=board_or_university,
+                start_year=request.POST.get('start_year', '')[:10],
+                end_year=request.POST.get('end_year', '')[:10],
+                description=request.POST.get('description', '')[:1000],
+                order=int(request.POST.get('order', 0)),
+                updated_by=request.user
+            )
+            
+            education.save()
+            
+            logger.info(f"Education added: {degree} by {request.user.username}")
+            messages.success(request, f'Education "{degree}" has been added successfully!')
+            
+        except Exception as e:
+            logger.error(f"Error adding education: {str(e)}")
+            messages.error(request, f'Error adding education: {str(e)}')
+    
+    return redirect('manage_education')
+
+
+@login_required(login_url='admin_login')
+@csrf_protect
+def update_education(request, pk):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to perform this action.")
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        try:
+            education = get_object_or_404(Education, pk=pk)
+            
+            education.degree = sanitize_input(request.POST.get('degree', ''), 100)
+            education.institution = sanitize_input(request.POST.get('institution', ''), 200)
+            education.board_or_university = sanitize_input(request.POST.get('board_or_university', ''), 200)
+            education.start_year = request.POST.get('start_year', '')[:10]
+            education.end_year = request.POST.get('end_year', '')[:10]
+            education.description = request.POST.get('description', '')[:1000]
+            education.order = int(request.POST.get('order', 0))
+            education.updated_by = request.user
+            
+            education.save()
+            
+            logger.info(f"Education updated: {education.degree} by {request.user.username}")
+            messages.success(request, f'Education "{education.degree}" has been updated successfully!')
+            
+        except Exception as e:
+            logger.error(f"Error updating education: {str(e)}")
+            messages.error(request, f'Error updating education: {str(e)}')
+    
+    return redirect('manage_education')
+
+
+@login_required(login_url='admin_login')
+@csrf_protect
+def delete_education(request, pk):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to perform this action.")
+        return redirect('homepage')
+    
+    if request.method == 'POST':
+        try:
+            education = get_object_or_404(Education, pk=pk)
+            degree_name = education.degree
+            education.delete()
+            
+            logger.info(f"Education deleted: {degree_name} by {request.user.username}")
+            messages.success(request, f'Education "{degree_name}" has been deleted successfully!')
+        except Exception as e:
+            logger.error(f"Error deleting education: {str(e)}")
+            messages.error(request, f'Error deleting education: {str(e)}')
+    
+    return redirect('manage_education')

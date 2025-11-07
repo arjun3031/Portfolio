@@ -10,22 +10,18 @@
     <link rel="stylesheet" href="{% static 'css/adminhome.css' %}">
 </head>
 <body>
-    <!-- Mobile Menu Toggle -->
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="admin-avatar-wrapper">
                 <div class="admin-avatar" id="adminAvatar">
                     <i class="fas fa-user-shield"></i>
                 </div>
-                <!-- Profile Dropdown -->
                 <div class="profile-dropdown" id="profileDropdown">
                     <a href="#" class="dropdown-item-custom" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                         <i class="fas fa-key"></i>
@@ -73,9 +69,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#">
-                    <i class="fas fa-file-pdf"></i>
-                    <span>Update Resume</span>
+                <a href="{% url 'manage_education' %}" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Manage Education</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -87,7 +83,6 @@
         </ul>
     </div>
 
-    <!-- Change Password Modal -->
     <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -173,7 +168,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Display messages -->
                 {% if messages %}
                     {% for message in messages %}
                         {% if 'forgot' in message.tags %}
@@ -230,7 +224,6 @@
     </div>
 </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <div class="top-bar">
             <h1 class="page-title">Dashboard Overview</h1>
@@ -239,7 +232,6 @@
             </button>
         </div>
 
-        <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon earning">
@@ -274,7 +266,6 @@
             </div>
         </div>
 
-        <!-- Charts Section -->
         <div class="chart-container">
             <div class="chart-card">
                 <h3 class="chart-title">Skills Proficiency</h3>
@@ -317,7 +308,6 @@
             </div>
         </div>
 
-        <!-- Skills by Category -->
         <div class="chart-container mt-4">
             <div class="chart-card">
                 <h3 class="chart-title">Skills by Category</h3>
@@ -338,7 +328,6 @@
             </div>
         </div>
 
-        <!-- Quick Stats -->
         <div class="chart-container mt-4">
             <div class="chart-card">
                 <h3 class="chart-title">Quick Statistics</h3>
@@ -375,140 +364,8 @@
             </div>
         </div>
     </div>
-{% comment %} 
-<!-- Recent Projects Section -->
-<div class="chart-container mt-4">
-    <div class="chart-card">
-        <h3 class="chart-title">Recent Projects</h3>
-        {% if recent_projects %}
-        <ul class="activity-list">
-            {% for project in recent_projects %}
-            <li class="activity-item">
-                <div class="activity-title">
-                    <i class="{{ project.icon_class }} me-2"></i>
-                    <strong>{{ project.title }}</strong>
-                    <span class="badge bg-{{ project.status }} ms-2">{{ project.get_status_display }}</span>
-                </div>
-                <div class="activity-time">
-                    {% if project.is_featured %}
-                    <i class="fas fa-star text-warning me-1"></i>Featured
-                    {% endif %}
-                    - {{ project.created_at|date:"M d, Y" }}
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-            <p class="text-muted text-center py-4">No projects added yet</p>
-        {% endif %}
-    </div>
-</div> {% endcomment %}
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        // Mobile menu toggle functionality
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
+    <script src="{% static 'js/adminhome.js' %}"></script>
 
-        mobileMenuToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
-            sidebarOverlay.classList.toggle('active');
-            
-            const icon = this.querySelector('i');
-            if (sidebar.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-
-        sidebarOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('active');
-            sidebarOverlay.classList.remove('active');
-            const icon = mobileMenuToggle.querySelector('i');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        });
-
-        const navLinks = document.querySelectorAll('.sidebar .nav-menu a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('active');
-                    sidebarOverlay.classList.remove('active');
-                    const icon = mobileMenuToggle.querySelector('i');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-        });
-
-        // Profile dropdown toggle
-        const adminAvatar = document.getElementById('adminAvatar');
-        const profileDropdown = document.getElementById('profileDropdown');
-
-        adminAvatar.addEventListener('click', function(e) {
-            e.stopPropagation();
-            profileDropdown.classList.toggle('active');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!adminAvatar.contains(e.target) && !profileDropdown.contains(e.target)) {
-                profileDropdown.classList.remove('active');
-            }
-        });
-
-        // Close dropdown when clicking a menu item
-        const dropdownItems = document.querySelectorAll('.dropdown-item-custom');
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function() {
-                profileDropdown.classList.remove('active');
-            });
-        });
-
-        // Animate progress bars on page load
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.progress-bar').forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
-            });
-        });
-
-        // Modal handling
-        document.addEventListener("DOMContentLoaded", function() {
-            var changeModalEl = document.getElementById('changePasswordModal');
-            var changeModal = new bootstrap.Modal(changeModalEl);
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const modal = urlParams.get('modal');
-
-            if (modal === 'change') {
-                changeModal.show();
-            }
-
-            // Clear alerts and form when modal closes
-            changeModalEl.addEventListener('hidden.bs.modal', function () {
-                var alerts = changeModalEl.querySelectorAll('.alert');
-                alerts.forEach(alert => alert.remove());
-                var form = document.getElementById('changePasswordForm');
-                if (form) form.reset();
-            });
-
-            var forgotModalEl = document.getElementById('forgotPasswordModal');
-            forgotModalEl.addEventListener('hidden.bs.modal', function () {
-                var form = document.getElementById('forgotPasswordForm');
-                if (form) form.reset();
-            });
-        });
-          
-    </script>
 </body>
 </html>

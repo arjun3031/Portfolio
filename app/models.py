@@ -169,3 +169,31 @@ class Project(models.Model):
 
     def get_tech_list(self):
         return [tech.strip() for tech in self.technologies.split(',') if tech.strip()]
+    
+
+class Education(models.Model):
+    DEGREE_LEVELS = [
+        ('SSLC', 'SSLC'),
+        ('PLUS_TWO', 'Plus Two'),
+        ('BACHELOR', 'Bachelor'),
+        ('MASTER', 'Master'),
+        ('DOCTORATE', 'Doctorate'),
+        ('OTHER', 'Other'),
+    ]
+
+    degree = models.CharField(max_length=100)
+    institution = models.CharField(max_length=200)
+    board_or_university = models.CharField(max_length=200, blank=True, null=True)
+    start_year = models.CharField(max_length=10, blank=True, null=True)
+    end_year = models.CharField(max_length=10, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    order = models.PositiveIntegerField(default=0, help_text="Display order")
+
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.degree} - {self.institution}"

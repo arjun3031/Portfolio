@@ -1,4 +1,3 @@
-/* Project Management Specific Styles */
 
 .project-management-card {
     background: var(--card-bg, #1e293b);
@@ -161,7 +160,6 @@
     transform: scale(1.2);
 }
 
-/* Empty State */
 .empty-state {
     text-align: center;
     padding: 4rem 2rem;
@@ -186,7 +184,6 @@
     margin-bottom: 1.5rem;
 }
 
-/* Modal Customization */
 .modal-content {
     background: var(--card-bg, #1e293b);
     color: var(--text-white, #e2e8f0);
@@ -264,7 +261,6 @@
     padding: 0.25rem;
 }
 
-/* Alert Customization */
 .alert {
     border-radius: 8px;
     border: none;
@@ -290,7 +286,6 @@
     border-left: 4px solid #4a90e2;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .project-management-card {
         padding: 1rem;
@@ -325,7 +320,6 @@
     }
 }
 
-/* Additional utility classes */
 .text-muted {
     color: var(--text-light, #94a3b8) !important;
 }

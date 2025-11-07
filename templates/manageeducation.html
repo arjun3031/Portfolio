@@ -1,0 +1,338 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Education - Arjun K M</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/manageeducation.css' %}">
+</head>
+<body>
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-name">ARJUN K M</div>
+            <div class="admin-role">Administrator</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="{% url 'adminhome' %}" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Admin Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'managecontent' %}" class="nav-link">
+                    <i class="fas fa-edit"></i>
+                    <span>Manage Content</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'manageskills' %}" class="nav-link">
+                    <i class="fas fa-code"></i>
+                    <span>Manage Skills</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'manage_experience' %}" class="nav-link">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Manage Experience</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'manage_projects' %}" class="nav-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Manage Projects</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'manage_education' %}" class="nav-link active">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Manage Education</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'admin_logout' %}" class="nav-link logout-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">
+                <i class="fas fa-graduation-cap me-2"></i>Manage Education
+            </h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEducationModal">
+                <i class="fas fa-plus me-2"></i>Add Education
+            </button>
+        </div>
+
+        {% if messages %}
+        <div class="alert-container mb-3">
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="background: rgba(67, 233, 123, 0.2); border: 1px solid var(--success-color); color: var(--success-color);">
+                <i class="fas fa-check-circle me-2"></i>{{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row">
+            {% for education in educations %}
+            <div class="col-md-6 mb-4">
+                <div class="content-preview-card">
+                    <div class="preview-header">
+                        <div>
+                            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-graduation-cap me-2"></i>{{ education.degree }}
+                            </h3>
+                            <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                                <i class="fas fa-university me-2"></i>{{ education.institution }}
+                            </p>
+                            {% if education.board_or_university %}
+                            <p style="color: var(--accent-color); margin: 0.3rem 0 0 0; font-size: 0.85rem;">
+                                {{ education.board_or_university }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        <span class="badge bg-success">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {% if education.start_year and education.end_year %}
+                                {{ education.start_year }} - {{ education.end_year }}
+                            {% elif education.end_year %}
+                                {{ education.end_year }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    {% if education.description %}
+                    <div style="padding: 1rem 0; border-top: 1px solid rgba(100, 255, 218, 0.1); margin-top: 1rem;">
+                        <p style="color: var(--text-light); line-height: 1.6; margin: 0;">{{ education.description }}</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="preview-actions" style="margin-top: 1rem;">
+                        <button class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editEducationModal{{ education.id }}">
+                            <i class="fas fa-edit me-2"></i>Edit
+                        </button>
+                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#deleteEducationModal{{ education.id }}" style="background: rgba(255, 107, 107, 0.1); border: 2px solid var(--danger-color); color: var(--danger-color);">
+                            <i class="fas fa-trash me-2"></i>Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="editEducationModal{{ education.id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content custom-modal">
+                        <form method="POST" action="{% url 'update_education' education.id %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-edit me-2"></i>Edit Education
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="form-floating mb-4">
+                                    <input type="text" name="degree" class="form-control custom-input" 
+                                        value="{{ education.degree }}" placeholder="Degree" required>
+                                    <label>Degree *</label>
+                                </div>
+
+                                <div class="form-floating mb-4">
+                                    <input type="text" name="institution" class="form-control custom-input" 
+                                        value="{{ education.institution }}" placeholder="Institution" required>
+                                    <label>Institution *</label>
+                                </div>
+
+                                <div class="form-floating mb-4">
+                                    <input type="text" name="board_or_university" class="form-control custom-input" 
+                                        value="{{ education.board_or_university|default:'' }}" placeholder="Board/University">
+                                    <label>Board/University</label>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" name="start_year" class="form-control custom-input" 
+                                                value="{{ education.start_year|default:'' }}" placeholder="Start Year">
+                                            <label>Start Year</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" name="end_year" class="form-control custom-input" 
+                                                value="{{ education.end_year|default:'' }}" placeholder="End Year">
+                                            <label>End Year</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-floating mb-4">
+                                    <textarea name="description" class="form-control custom-input" 
+                                        placeholder="Description" style="height: 120px">{{ education.description|default:'' }}</textarea>
+                                    <label>Description</label>
+                                </div>
+
+                                <div class="form-floating mb-4">
+                                    <input type="number" name="order" class="form-control custom-input" 
+                                        value="{{ education.order }}" placeholder="Display Order" min="0">
+                                    <label>Display Order</label>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary-custom">
+                                    <i class="fas fa-save me-2"></i>Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deleteEducationModal{{ education.id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content custom-modal">
+                        <div class="modal-header" style="border-bottom: 1px solid rgba(255, 107, 107, 0.2);">
+                            <h5 class="modal-title" style="color: var(--danger-color);">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Delete Education
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p style="color: var(--text-light); font-size: 1.1rem;">
+                                Are you sure you want to delete <strong style="color: var(--text-white);">"{{ education.degree }}"</strong>?
+                            </p>
+                            <p style="color: var(--danger-color); margin-top: 1rem;">
+                                <i class="fas fa-exclamation-circle me-2"></i>This action cannot be undone.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <form method="POST" action="{% url 'delete_education' education.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn" style="background: var(--danger-color); color: white; padding: 0.7rem 1.5rem; border-radius: 8px; border: none; font-weight: 600;">
+                                    <i class="fas fa-trash me-2"></i>Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if not educations %}
+        <div class="content-preview-card text-center" style="padding: 3rem;">
+            <i class="fas fa-graduation-cap" style="font-size: 4rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text-light);">No Education Records Yet</h3>
+            <p style="color: var(--text-light); margin-top: 1rem;">Click "Add Education" to get started.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Add Education Modal -->
+    <div class="modal fade" id="addEducationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+                <form method="POST" action="{% url 'add_education' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-plus me-2"></i>Add New Education
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-floating mb-4">
+                            <input type="text" name="degree" class="form-control custom-input" 
+                                placeholder="Degree" required>
+                            <label>Degree *</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="text" name="institution" class="form-control custom-input" 
+                                placeholder="Institution" required>
+                            <label>Institution *</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="text" name="board_or_university" class="form-control custom-input" 
+                                placeholder="Board/University">
+                            <label>Board/University</label>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="start_year" class="form-control custom-input" 
+                                        placeholder="Start Year">
+                                    <label>Start Year</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="end_year" class="form-control custom-input" 
+                                        placeholder="End Year">
+                                    <label>End Year</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <textarea name="description" class="form-control custom-input" 
+                                placeholder="Description" style="height: 120px"></textarea>
+                            <label>Description</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="number" name="order" class="form-control custom-input" 
+                                value="0" placeholder="Display Order" min="0">
+                            <label>Display Order</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Add Education
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/manageeducation.js' %}"></script>
+
+</body>
+</html>

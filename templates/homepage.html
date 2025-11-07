@@ -5,12 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arjun K M - Software Engineer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#home">ARJUN K M</a>
@@ -27,32 +26,13 @@
                     <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Profile
-                        </a>
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
-                                    <i class="fas fa-user-shield"></i>
-                                    <span>Admin Login</span>
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="fas fa-user-shield"></i><span>Admin Login</span></a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="#theme">
-                                    <i class="fas fa-palette"></i>
-                                    <span>Theme Settings</span>
-                                </a>
-                            </li>
-                            
+                            <li><a class="dropdown-item" href="#theme"><i class="fas fa-palette"></i><span>Theme Settings</span></a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="#help">
-                                    <i class="fas fa-question-circle"></i>
-                                    <span>Help & Support</span>
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item" href="#help"><i class="fas fa-question-circle"></i><span>Help & Support</span></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -60,67 +40,42 @@
         </div>
     </nav>
 
-    <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">
-                        <i class="fas fa-shield-halved"></i>
-                        Admin Login
-                    </h5>
+                    <h5 class="modal-title" id="loginModalLabel"><i class="fas fa-shield-halved"></i> Admin Login</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
                     {% if messages %}
                         {% for message in messages %}
                             {% if 'login' in message.tags %}
                             <div class="alert alert-danger" role="alert" id="loginErrorAlert">
-                                <i class="fas fa-exclamation-circle me-2"></i>
-                                {{ message }}
+                                <i class="fas fa-exclamation-circle me-2"></i>{{ message }}
                             </div>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-
                     <form id="loginForm" action="{% url 'admin_login' %}" method="POST" autocomplete="off">
                         {% csrf_token %}
                         <div class="login-form-group">
                             <label for="username">Username</label>
                             <div class="login-input-wrapper">
-                                <input 
-                                    type="text" 
-                                    class="login-form-control" 
-                                    id="username"
-                                    name="username"
-                                    placeholder="Enter your username"
-                                    autocomplete="off"
-                                    required
-                                >
+                                <input type="text" class="login-form-control" id="username" name="username" placeholder="Enter your username" autocomplete="off" required>
                                 <i class="fas fa-user"></i>
                             </div>
                         </div>
-
                         <div class="login-form-group">
                             <label for="password">Password</label>
                             <div class="login-input-wrapper">
-                                <input 
-                                    type="password" 
-                                    class="login-form-control" 
-                                    id="password" 
-                                    name="password"
-                                    placeholder="Enter your password"
-                                    autocomplete="off"
-                                    required
-                                >
+                                <input type="password" class="login-form-control" id="password" name="password" placeholder="Enter your password" autocomplete="off" required>
                                 <i class="fas fa-lock"></i>
                                 <button type="button" class="password-toggle" onclick="togglePassword()">
                                     <i class="fas fa-eye" id="toggleIcon"></i>
                                 </button>
                             </div>
                         </div>
-
                         <div class="remember-forgot">
                             <label class="remember-me">
                                 <input type="checkbox" id="rememberMe">
@@ -128,12 +83,8 @@
                             </label>
                             <a href="#" class="forgot-password">Forgot Password?</a>
                         </div>
-
                         <button type="submit" class="login-btn">
-                            <span>
-                                <i class="fas fa-sign-in-alt"></i>
-                                Login
-                            </span>
+                            <span><i class="fas fa-sign-in-alt"></i> Login</span>
                         </button>
                     </form>
                 </div>
@@ -141,7 +92,6 @@
         </div>
     </div>
 
-   
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
@@ -151,7 +101,6 @@
                 <p id="heroDescription">{{ hero.description }}</p>
                 <div class="hero-buttons">
                     <a href="#contact" class="btn btn-custom">Get In Touch</a>
-                    
                     {% if hero.resume %}
                         <a href="{{ hero.resume.url }}" class="btn btn-custom" download>Download Resume</a>
                     {% else %}
@@ -162,40 +111,31 @@
         </div>
     </section>
 
-
     <div class="modal fade" id="accountLockedModal" tabindex="-1" aria-labelledby="accountLockedLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content locked-modal">
-            <div class="modal-body text-center p-4">
-                <div class="locked-icon-wrapper mb-3">
-                    <i class="fas fa-lock locked-icon"></i>
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content locked-modal">
+                <div class="modal-body text-center p-4">
+                    <div class="locked-icon-wrapper mb-3">
+                        <i class="fas fa-lock locked-icon"></i>
+                    </div>
+                    <h5 class="locked-title mb-3">Account Locked</h5>
+                    <p class="locked-message mb-3">Too many failed login attempts detected. Please wait before trying again.</p>
+                    <div class="countdown-wrapper mb-3">
+                        <div class="countdown-timer" id="compactCountdown">60:00</div>
+                        <small class="text-muted">Time remaining</small>
+                    </div>
+                    <div class="locked-info mb-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span>Lockout duration: 1 hour</span>
+                    </div>
+                    <button type="button" class="btn btn-custom-locked w-100" data-bs-dismiss="modal">
+                        <i class="fas fa-home me-2"></i><a style="color: white;text-decoration: none;" href="{% url 'homepage' %}">Return to Homepage</a>
+                    </button>
                 </div>
-                
-                <h5 class="locked-title mb-3">Account Locked</h5>
-                
-                <p class="locked-message mb-3">
-                    Too many failed login attempts detected. Please wait before trying again.
-                </p>
-                
-                <div class="countdown-wrapper mb-3">
-                    <div class="countdown-timer" id="compactCountdown">60:00</div>
-                    <small class="text-muted">Time remaining</small>
-                </div>
-                
-                <div class="locked-info mb-3">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <span>Lockout duration: 1 hour</span>
-                </div>
-                
-                <button type="button" class="btn btn-custom-locked w-100" data-bs-dismiss="modal">
-                    <i class="fas fa-home me-2"><a style="color: white;text-decoration: none;" href="{% url 'homepage' %}"></i>Return to Homepage
-                </button>
             </div>
         </div>
     </div>
-</div>
 
-    <!-- About Section -->
     <section id="about">
         <div class="container">
             <h2 class="section-title fade-in">About Me</h2>
@@ -207,25 +147,20 @@
                     {% if hero.image %}
                     <img src="{{ hero.image.url }}" alt="My Profile" style="width:300px; height:300px; border-radius:10px;">
                     {% else %}
-                        <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-blue), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
-                            No Image
-                        </div>
+                        <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-blue), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">No Image</div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Skills Section -->
     <section id="skills">
         <div class="container">
             <h2 class="section-title fade-in">Skills & Technologies</h2>
             <div class="skills-grid fade-in">
                 {% for skill in skills %}
                 <div class="skill-card">
-                    <div class="skill-icon">
-                        <i class="{{ skill.icon }}"></i>
-                    </div>
+                    <div class="skill-icon"><i class="{{ skill.icon }}"></i></div>
                     <div class="skill-name">{{ skill.name }}</div>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" data-width="{{ skill.proficiency }}"></div>
@@ -240,16 +175,13 @@
         </div>
     </section>
 
-    <!-- Experience Section -->
     <section id="experience">
         <div class="container">
             <h2 class="section-title fade-in">Work Experience</h2>
             <div class="timeline fade-in">
                 {% for exp in experiences %}
                 <div class="timeline-item">
-                    <div class="timeline-date">
-                        {{ exp.start_date|date:"M Y" }} – {% if exp.is_current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}
-                    </div>
+                    <div class="timeline-date">{{ exp.start_date|date:"M Y" }} – {% if exp.is_current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}</div>
                     <div class="timeline-title">{{ exp.job_title }}</div>
                     <div class="timeline-company">
                         {% if exp.company_logo %}
@@ -259,9 +191,7 @@
                     </div>
                     <p>{{ exp.description }}</p>
                     {% if exp.technologies %}
-                    <div class="technologies-used">
-                        <strong>Technologies:</strong> {{ exp.technologies }}
-                    </div>
+                    <div class="technologies-used"><strong>Technologies:</strong> {{ exp.technologies }}</div>
                     {% endif %}
                 </div>
                 {% empty %}
@@ -274,37 +204,37 @@
     </section>
 
     <section id="projects">
-    <div class="container">
-        <h2 class="section-title fade-in">Featured Projects</h2>
-        <div class="projects-grid fade-in">
-            {% for project in projects %}
-            <div class="project-card" data-bs-toggle="modal" data-bs-target="#projectModal{{ project.id }}">
-                <div class="project-image">
-                    {% if project.image %}
-                        <img src="{{ project.image.url }}" alt="{{ project.title }}">
-                    {% else %}
-                        <i class="{{ project.icon_class }}"></i>
-                    {% endif %}
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">{{ project.title }}</h3>
-                    <p class="project-description">{{ project.description }}</p>
-                    <div class="tech-tags">
-                        {% for tech in project.get_tech_list %}
-                        <span class="tech-tag">{{ tech }}</span>
-                        {% endfor %}
+        <div class="container">
+            <h2 class="section-title fade-in">Featured Projects</h2>
+            <div class="projects-grid fade-in">
+                {% for project in projects %}
+                <div class="project-card" data-modal-target="#projectModal{{ project.id }}">
+                    <div class="project-image">
+                        {% if project.image %}
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                        {% else %}
+                            <i class="{{ project.icon_class }}"></i>
+                        {% endif %}
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <p class="project-description">{{ project.description }}</p>
+                        <div class="tech-tags">
+                            {% for tech in project.get_tech_list %}
+                            <span class="tech-tag">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
+                {% empty %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">No featured projects available yet.</p>
+                </div>
+                {% endfor %}
             </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p class="text-muted">No featured projects available yet.</p>
-            </div>
-            {% endfor %}
         </div>
-    </div>
+    </section>
 
-    <!-- Project Modals (Outside the grid) -->
     {% for project in projects %}
     <div class="modal fade" id="projectModal{{ project.id }}" tabindex="-1" aria-labelledby="projectModalLabel{{ project.id }}" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -321,14 +251,11 @@
                 <div class="modal-body">
                     {% if project.image %}
                     <div class="mb-3">
-                        <img src="{{ project.image.url }}" alt="{{ project.title }}" 
-                             style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px;">
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px;">
                     </div>
                     {% endif %}
-
                     <h6 style="color: var(--accent); margin-bottom: 1rem;">Project Overview</h6>
                     <p style="color: var(--text-light); line-height: 1.8;">{{ project.detailed_description|default:project.description }}</p>
-
                     {% if project.start_date or project.end_date %}
                     <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Timeline</h6>
                     <p style="color: var(--text-light);">
@@ -336,14 +263,12 @@
                         {% if project.end_date %} - {{ project.end_date|date:"M Y" }}{% elif project.status == 'in_progress' %} - Present{% endif %}
                     </p>
                     {% endif %}
-
                     <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Technologies Used</h6>
                     <div class="tech-tags">
                         {% for tech in project.get_tech_list %}
                         <span class="tech-tag">{{ tech }}</span>
                         {% endfor %}
                     </div>
-
                     {% if project.github_url or project.demo_url %}
                     <h6 style="color: var(--accent); margin-top: 2rem; margin-bottom: 1rem;">Links</h6>
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -367,42 +292,43 @@
         </div>
     </div>
     {% endfor %}
+    
+    <section id="education">
+    <div class="container">
+        <h2 class="section-title fade-in">Education</h2>
+        <div class="education-grid fade-in">
+            {% for education in educations %}
+            <div class="education-card">
+                <div class="education-degree">{{ education.degree }}</div>
+                <div class="education-institution">
+                    {% if education.board_or_university %}
+                        {{ education.board_or_university }}/{{ education.institution }}
+                    {% else %}
+                        {{ education.institution }}
+                    {% endif %}
+                </div>
+                <div class="education-year">
+                    {% if education.start_year and education.end_year %}
+                        {{ education.start_year }} - {{ education.end_year }}
+                    {% elif education.end_year %}
+                        {{ education.end_year }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+                {% if education.description %}
+                <p class="mt-2">{{ education.description }}</p>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="education-card">
+                <p class="text-center">No education records available yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </section>
 
-    <!-- Education Section -->
-    <section id="education">
-        <div class="container">
-            <h2 class="section-title fade-in">Education</h2>
-            <div class="education-grid fade-in">
-                <div class="education-card">
-                    <div class="education-degree">Master of Computer Applications (MCA)</div>
-                    <div class="education-institution">Kalam Technical University/College Of Engineering Cherthala</div>
-                    <div class="education-year">2022 - 2024</div>
-                    <p class="mt-2">Graduated with distinction. Specialized in Software Engineering and Advanced Algorithms. Completed thesis on Machine Learning applications in real-world scenarios.</p>
-                </div>
-                <div class="education-card">
-                    <div class="education-degree">B.Sc. Computer Science</div>
-                    <div class="education-institution">Calicut University/RSM SNDP College Koyilandi</div>
-                    <div class="education-year">2018 - 2021</div>
-                    <p class="mt-2">Graduated with distinction. Strong foundation in programming, data structures, algorithms, and database management systems.</p>
-                </div>
-                <div class="education-card">
-                    <div class="education-degree">Plus Two</div>
-                    <div class="education-institution">Kerala Board/Govt Higher Secondary Vatakara</div>
-                    <div class="education-year">2016 - 2018</div>
-                    <p class="mt-2">Completed higher secondary education with kerala Board/Govt</p>
-                </div>
-                <div class="education-card">
-                    <div class="education-degree">SSLC</div>
-                    <div class="education-institution">Kerala Board/Govt Technical School Vatakara</div>
-                    <div class="education-year">2015</div>
-                    <p class="mt-2">Completed technical education under kerala Board/Govt</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
     <section id="contact">
         <div class="container">
             <h2 class="section-title fade-in">Get In Touch</h2>
@@ -430,21 +356,11 @@
                         </div>
                     </div>
                     <div class="social-links">
-                        <a href="https://github.com/arjun3031" target="_blank" class="social-link">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://linkedin.com/in/arjun-k-m-12411022b" target="_blank" class="social-link">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="mailto:arjunkmvat@gmail.com" class="social-link">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
+                        <a href="https://github.com/arjun3031" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/arjun-k-m-12411022b" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="mailto:arjunkmvat@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                 </div>
                 <div class="contact-form">
@@ -470,43 +386,30 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer style="background: var(--secondary); padding: 2rem 0; text-align: center; border-top: 1px solid rgba(100, 255, 218, 0.1);">
         <div class="container">
             <p style="margin: 0; color: var(--text-light);">© 2025 Arjun K M</p>
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <button class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></button>
 
-    <!-- AI Chatbot -->
-    <button class="chat-button" id="chatButton">
-        <i class="fas fa-comments"></i>
-    </button>
+    <button class="chat-button" id="chatButton"><i class="fas fa-comments"></i></button>
 
     <div class="chat-container" id="chatContainer">
         <div class="chat-header">
             <div class="chat-header-left">
-                <div class="chat-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
+                <div class="chat-avatar"><i class="fas fa-robot"></i></div>
                 <div class="chat-header-info">
                     <h4>AI Assistant</h4>
                     <p>Ask me anything about Arjun!</p>
                 </div>
             </div>
-            <button class="chat-close-btn" id="chatCloseBtn">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="chat-close-btn" id="chatCloseBtn"><i class="fas fa-times"></i></button>
         </div>
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
-                <div class="message-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
+                <div class="message-avatar"><i class="fas fa-robot"></i></div>
                 <div class="message-content">
                     Hi! 👋 I'm Arjun's AI assistant. I can help you learn more about his skills, experience, and projects. What would you like to know?
                     <div class="quick-replies">
@@ -530,28 +433,85 @@
         <div class="chat-input-container">
             <div class="chat-input-wrapper">
                 <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
-                <button class="chat-send-btn" id="chatSendBtn">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+                <button class="chat-send-btn" id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const chatbotData = {
+            heroData: {
+                name: "{{ hero.name|escapejs }}",
+                subtitle: "{{ hero.subtitle|escapejs }}",
+                description: "{{ hero.description|escapejs }}"
+            },
+            skills: [
+                {% for skill in chatbot_skills %}
+                {
+                    name: "{{ skill.name|escapejs }}",
+                    category: "{{ skill.category|escapejs }}",
+                    proficiency: {{ skill.proficiency }},
+                    icon: "{{ skill.icon|escapejs }}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ],
+            skillsByCategory: {
+                {% for category, skills in chatbot_skills_by_category.items %}
+                "{{ category|escapejs }}": [
+                    {% for skill in skills %}
+                    "{{ skill|escapejs }}"{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ]{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            },
+            experiences: [
+                {% for exp in chatbot_experiences %}
+                {
+                    company: "{{ exp.company|escapejs }}",
+                    title: "{{ exp.title|escapejs }}",
+                    location: "{{ exp.location|escapejs }}",
+                    start_date: "{{ exp.start_date|escapejs }}",
+                    end_date: "{{ exp.end_date|escapejs }}",
+                    is_current: {{ exp.is_current|yesno:"true,false" }},
+                    description: "{{ exp.description|escapejs }}",
+                    technologies: "{{ exp.technologies|escapejs }}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ],
+            projects: [
+                {% for project in chatbot_projects %}
+                {
+                    title: "{{ project.title|escapejs }}",
+                    description: "{{ project.description|escapejs }}",
+                    technologies: [
+                        {% for tech in project.technologies %}
+                        "{{ tech|escapejs }}"{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    status: "{{ project.status|escapejs }}",
+                    github_url: "{{ project.github_url|escapejs }}",
+                    demo_url: "{{ project.demo_url|escapejs }}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        };
+    </script>
+    
     <script src="{% static 'js/home.js' %}"></script>
     
     <script>
-         document.addEventListener('DOMContentLoaded', function() {
-        {% if show_login_modal %}
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if show_login_modal %}
             var loginModalElement = document.getElementById('loginModal');
             if (loginModalElement) {
                 var loginModal = new bootstrap.Modal(loginModalElement);
                 loginModal.show();
-                console.log('Login modal shown due to error');
             }
-        {% endif %}
-        
-        {% if show_locked_modal %}
+            {% endif %}
+            
+            {% if show_locked_modal %}
             var lockedModalElement = document.getElementById('accountLockedModal');
             if (lockedModalElement) {
                 var lockedModal = new bootstrap.Modal(lockedModalElement, {
@@ -559,13 +519,12 @@
                     keyboard: false
                 });
                 lockedModal.show();
-                console.log('Account locked modal shown');
             }
-        {% endif %}
-        
-        {% if messages %}
-            {% for message in messages %}
-                {% if 'locked' in message.tags %}
+            {% endif %}
+            
+            {% if messages %}
+                {% for message in messages %}
+                    {% if 'locked' in message.tags %}
                     var lockedModalElement = document.getElementById('accountLockedModal');
                     if (lockedModalElement) {
                         var lockedModal = new bootstrap.Modal(lockedModalElement, {
@@ -574,21 +533,10 @@
                         });
                         lockedModal.show();
                     }
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        
-        var loginModalElement = document.getElementById('loginModal');
-        if (loginModalElement) {
-            loginModalElement.addEventListener('hidden.bs.modal', function () {
-                var errorAlert = document.getElementById('loginErrorAlert');
-                if (errorAlert) {
-                    errorAlert.remove();
-                }
-            });
-        }
-    });
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        });
     </script>
-    
 </body>
 </html>

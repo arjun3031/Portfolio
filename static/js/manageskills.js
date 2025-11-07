@@ -1,14 +1,11 @@
-// Mobile menu toggle functionality
 const mobileMenuToggle = document.getElementById('mobileMenuToggle');
 const sidebar = document.querySelector('.sidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-// Toggle sidebar on button click
 mobileMenuToggle.addEventListener('click', function() {
     sidebar.classList.toggle('active');
     sidebarOverlay.classList.toggle('active');
     
-    // Toggle icon between bars and times
     const icon = this.querySelector('i');
     if (sidebar.classList.contains('active')) {
         icon.classList.remove('fa-bars');
@@ -19,7 +16,6 @@ mobileMenuToggle.addEventListener('click', function() {
     }
 });
 
-// Close sidebar when clicking overlay
 sidebarOverlay.addEventListener('click', function() {
     sidebar.classList.remove('active');
     sidebarOverlay.classList.remove('active');
@@ -28,7 +24,6 @@ sidebarOverlay.addEventListener('click', function() {
     icon.classList.add('fa-bars');
 });
 
-// Close sidebar when clicking a nav link on mobile
 const navLinks = document.querySelectorAll('.sidebar .nav-link');
 navLinks.forEach(link => {
     link.addEventListener('click', function() {
@@ -42,7 +37,6 @@ navLinks.forEach(link => {
     });
 });
 
-// Proficiency slider for Add Skill Modal
 const skillProficiency = document.getElementById('skillProficiency');
 const proficiencyValue = document.getElementById('proficiencyValue');
 
@@ -52,7 +46,6 @@ if (skillProficiency && proficiencyValue) {
     });
 }
 
-// Proficiency slider for Edit Skill Modal
 const editSkillProficiency = document.getElementById('editSkillProficiency');
 const editProficiencyValue = document.getElementById('editProficiencyValue');
 
@@ -62,13 +55,11 @@ if (editSkillProficiency && editProficiencyValue) {
     });
 }
 
-// Populate Edit Modal with skill data
 const editSkillModal = document.getElementById('editSkillModal');
 if (editSkillModal) {
     editSkillModal.addEventListener('show.bs.modal', function(event) {
         const button = event.relatedTarget;
         
-        // Get data from button attributes
         const skillId = button.getAttribute('data-id');
         const skillName = button.getAttribute('data-name');
         const skillCategory = button.getAttribute('data-category');
@@ -76,7 +67,6 @@ if (editSkillModal) {
         const skillIcon = button.getAttribute('data-icon');
         const skillDescription = button.getAttribute('data-description');
         
-        // Populate form fields
         document.getElementById('editSkillId').value = skillId;
         document.getElementById('editSkillName').value = skillName;
         document.getElementById('editSkillCategory').value = skillCategory;
@@ -87,23 +77,19 @@ if (editSkillModal) {
     });
 }
 
-// Populate Delete Modal with skill data
 const deleteSkillModal = document.getElementById('deleteSkillModal');
 if (deleteSkillModal) {
     deleteSkillModal.addEventListener('show.bs.modal', function(event) {
         const button = event.relatedTarget;
         
-        // Get data from button attributes
         const skillId = button.getAttribute('data-id');
         const skillName = button.getAttribute('data-name');
         
-        // Populate hidden input and display name
         document.getElementById('deleteSkillId').value = skillId;
         document.getElementById('deleteSkillName').textContent = skillName;
     });
 }
 
-// Auto-dismiss alerts after 5 seconds
 document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(function(alert) {
@@ -114,14 +100,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Reset Add Skill form when modal is closed
 const addSkillModal = document.getElementById('addSkillModal');
 if (addSkillModal) {
     addSkillModal.addEventListener('hidden.bs.modal', function() {
         const form = this.querySelector('form');
         if (form) {
             form.reset();
-            // Reset proficiency display
             if (proficiencyValue) {
                 proficiencyValue.textContent = '50';
             }
@@ -132,7 +116,6 @@ if (addSkillModal) {
     });
 }
 
-// Form validation
 document.querySelectorAll('form').forEach(function(form) {
     form.addEventListener('submit', function(event) {
         if (!form.checkValidity()) {
@@ -143,7 +126,6 @@ document.querySelectorAll('form').forEach(function(form) {
     });
 });
 
-// Smooth scroll for better UX
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();

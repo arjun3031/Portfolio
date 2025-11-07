@@ -23,7 +23,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Mobile Menu Toggle */
 .mobile-menu-toggle {
     display: none;
     position: fixed;
@@ -59,7 +58,6 @@ body {
     display: block;
 }
 
-/* Sidebar */
 .sidebar {
     position: fixed;
     left: 0;
@@ -163,7 +161,6 @@ body {
     background: rgba(255, 107, 107, 0.1) !important;
 }
 
-/* Main Content */
 .main-content {
     margin-left: var(--sidebar-width);
     padding: 2rem;
@@ -205,14 +202,12 @@ body {
     box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
 }
 
-/* Experience Grid */
 .experience-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
 }
 
-/* Experience Card */
 .experience-card {
     background: rgba(17, 34, 64, 0.8);
     backdrop-filter: blur(10px);
@@ -361,7 +356,6 @@ body {
     color: white;
 }
 
-/* Empty State */
 .empty-state {
     grid-column: 1 / -1;
     text-align: center;
@@ -388,7 +382,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Custom Modal */
 .custom-modal {
     background: rgba(17, 34, 64, 0.98);
     backdrop-filter: blur(20px);
@@ -417,7 +410,6 @@ body {
     padding: 1.5rem 2rem;
 }
 
-/* Form Elements */
 .form-label {
     color: var(--text-light);
     font-weight: 500;
@@ -453,7 +445,6 @@ body {
     color: var(--text-light);
 }
 
-/* File Upload */
 .file-upload-wrapper {
     margin-bottom: 1.5rem;
 }
@@ -485,7 +476,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* Modal Buttons */
 .btn-primary-custom {
     background: linear-gradient(135deg, var(--accent-color), #4a90e2);
     border: none;
@@ -539,7 +529,6 @@ body {
     font-weight: 600;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
