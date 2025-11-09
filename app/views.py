@@ -13,7 +13,7 @@ from django.db.models import Avg, Count
 from django.utils import timezone
 from datetime import datetime, date
 import os
-import re
+import re, json
 import logging
 from django.db import models
 from datetime import timedelta
@@ -124,9 +124,163 @@ def get_homepage_context():
 
 @never_cache
 def homepage(request):
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        try:
+            data = json.loads(request.body)
+
+            name = data.get('name', '').strip()
+            email = data.get('email', '').strip()
+            message = data.get('message', '').strip()
+
+            if not name or not email or not message:
+                return JsonResponse({'status': 'error', 'message': 'All fields are required'})
+
+            if not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]+$', email):
+                return JsonResponse({'status': 'error', 'message': 'Invalid email address'})
+
+            if len(message.split()) > 1000:
+                return JsonResponse({'status': 'error', 'message': 'Message too long'})
+
+            ContactMessage.objects.create(
+                name=name,
+                email=email,
+                message=message
+            )
+
+            subject = f'New Contact Message from {name}'
+            plain_message = f"""
+New contact message:
+
+Name: {name}
+Email: {email}
+Message:
+{message}
+
+Sent on: {timezone.now().strftime("%Y-%m-%d %H:%M:%S")}
+"""
+            try:
+                send_mail(
+                    subject=subject,
+                    message=plain_message,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[settings.EMAIL_HOST_USER],
+                    fail_silently=False,
+                )
+            except Exception as email_error:
+                logger.error(f"Email sending failed: {str(email_error)}")
+
+            logger.info(f"Contact message saved from {email}")
+            return JsonResponse({'status': 'success', 'message': 'Message sent successfully!'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid data format'})
+        except Exception as e:
+            logger.error(f"Error processing contact form: {str(e)}")
+            return JsonResponse({'status': 'error', 'message': 'An error occurred'})
+
     context = get_homepage_context()
     return render(request, 'homepage.html', context)
 
+
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        user_email = request.POST.get('email', '').strip()
+        user_message = request.POST.get('message', '').strip()
+
+        if not name or not user_email or not user_message:
+            messages.error(request, "All fields are required")
+            return redirect('contact')
+
+        try:
+            ContactMessage.objects.create(
+                name=name,
+                email=user_email,
+                message=user_message
+            )
+
+            subject = "New Contact Form Message"
+            body = f"Message from: {name}\nEmail: {user_email}\n\n{user_message}"
+
+            send_mail(
+                subject,
+                body,
+                settings.EMAIL_HOST_USER,
+                ['personalrobot6@gmail.com'],
+                fail_silently=False,
+                reply_to=[user_email],
+            )
+            messages.success(request, "Message sent successfully!")
+        except Exception as e:
+            logger.error(f"Error in contact form: {str(e)}")
+            messages.error(request, f"Failed to send message: {e}")
+
+        return redirect('contact')
+
+    return render(request, 'contact.html')
+
+
+@never_cache
+def adminhome(request):
+    unread_count = ContactMessage.objects.filter(is_read=False).count()
+    recent_enquiries = ContactMessage.objects.all()[:10]
+
+    context = {
+        'unread_count': unread_count,
+        'recent_enquiries': recent_enquiries,
+        'total_views': ContactMessage.objects.count(),
+        'projects_count': 0,
+        'skills_count': 0,
+        'experiences_count': 0,
+    }
+
+    return render(request, 'adminhome.html', context)
+
+
+def get_enquiry_details(request, enquiry_id):
+    if request.method == 'GET':
+        try:
+            enquiry = get_object_or_404(ContactMessage, id=enquiry_id)
+
+            if not enquiry.is_read:
+                enquiry.is_read = True
+                enquiry.save()
+
+            data = {
+                'status': 'success',
+                'enquiry': {
+                    'id': enquiry.id,
+                    'name': enquiry.name,
+                    'email': enquiry.email,
+                    'message': enquiry.message,
+                    'created_at': enquiry.created_at.strftime('%B %d, %Y at %I:%M %p'),
+                    'is_read': enquiry.is_read
+                },
+                'unread_count': ContactMessage.objects.filter(is_read=False).count()
+            }
+            return JsonResponse(data)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
+def delete_enquiry(request, enquiry_id):
+    if request.method == 'POST':
+        try:
+            enquiry = get_object_or_404(ContactMessage, id=enquiry_id)
+            enquiry.delete()
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Enquiry deleted successfully',
+                'unread_count': ContactMessage.objects.filter(is_read=False).count(),
+                'total_count': ContactMessage.objects.count()
+            })
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 @never_cache
 @csrf_protect
@@ -973,3 +1127,5 @@ def delete_education(request, pk):
             messages.error(request, f'Error deleting education: {str(e)}')
     
     return redirect('manage_education')
+
+

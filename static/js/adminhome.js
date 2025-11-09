@@ -1,95 +1,237 @@
-  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
+const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const sidebar = document.querySelector('.sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-        mobileMenuToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
-            sidebarOverlay.classList.toggle('active');
-            
-            const icon = this.querySelector('i');
-            if (sidebar.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
+mobileMenuToggle.addEventListener('click', function() {
+    sidebar.classList.toggle('active');
+    sidebarOverlay.classList.toggle('active');
+    
+    const icon = this.querySelector('i');
+    if (sidebar.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+    } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+    }
+});
 
-        sidebarOverlay.addEventListener('click', function() {
+sidebarOverlay.addEventListener('click', function() {
+    sidebar.classList.remove('active');
+    sidebarOverlay.classList.remove('active');
+    const icon = mobileMenuToggle.querySelector('i');
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+});
+
+const navLinks = document.querySelectorAll('.sidebar .nav-menu a');
+navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
             const icon = mobileMenuToggle.querySelector('i');
             icon.classList.remove('fa-times');
             icon.classList.add('fa-bars');
-        });
+        }
+    });
+});
 
-        const navLinks = document.querySelectorAll('.sidebar .nav-menu a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('active');
-                    sidebarOverlay.classList.remove('active');
-                    const icon = mobileMenuToggle.querySelector('i');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-        });
+const adminAvatar = document.getElementById('adminAvatar');
+const profileDropdown = document.getElementById('profileDropdown');
 
-        const adminAvatar = document.getElementById('adminAvatar');
-        const profileDropdown = document.getElementById('profileDropdown');
+adminAvatar.addEventListener('click', function(e) {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('active');
+});
 
-        adminAvatar.addEventListener('click', function(e) {
-            e.stopPropagation();
-            profileDropdown.classList.toggle('active');
-        });
+document.addEventListener('click', function(e) {
+    if (!adminAvatar.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.remove('active');
+    }
+});
 
-        document.addEventListener('click', function(e) {
-            if (!adminAvatar.contains(e.target) && !profileDropdown.contains(e.target)) {
-                profileDropdown.classList.remove('active');
+const dropdownItems = document.querySelectorAll('.dropdown-item-custom');
+dropdownItems.forEach(item => {
+    item.addEventListener('click', function() {
+        profileDropdown.classList.remove('active');
+    });
+});
+
+window.addEventListener('load', () => {
+    document.querySelectorAll('.progress-bar').forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 100);
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    var changeModalEl = document.getElementById('changePasswordModal');
+    var changeModal = new bootstrap.Modal(changeModalEl);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const modal = urlParams.get('modal');
+
+    if (modal === 'change') {
+        changeModal.show();
+    }
+
+    changeModalEl.addEventListener('hidden.bs.modal', function () {
+        var alerts = changeModalEl.querySelectorAll('.alert');
+        alerts.forEach(alert => alert.remove());
+        var form = document.getElementById('changePasswordForm');
+        if (form) form.reset();
+    });
+
+    var forgotModalEl = document.getElementById('forgotPasswordModal');
+    forgotModalEl.addEventListener('hidden.bs.modal', function () {
+        var form = document.getElementById('forgotPasswordForm');
+        if (form) form.reset();
+    });
+});
+
+let currentEnquiryId = null;
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
-        });
+        }
+    }
+    return cookieValue;
+}
 
-        const dropdownItems = document.querySelectorAll('.dropdown-item-custom');
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function() {
-                profileDropdown.classList.remove('active');
-            });
-        });
+const csrftoken = getCookie('csrftoken');
 
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.progress-bar').forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
-            });
-        });
+function viewEnquiry(enquiryId) {
+    currentEnquiryId = enquiryId;
+    const detailModal = new bootstrap.Modal(document.getElementById('enquiryDetailModal'));
+    detailModal.show();
 
-        document.addEventListener("DOMContentLoaded", function() {
-            var changeModalEl = document.getElementById('changePasswordModal');
-            var changeModal = new bootstrap.Modal(changeModalEl);
+    fetch(`/adminhome/enquiry/${enquiryId}/`, {
+    method: 'GET',
+    headers: {
+        'X-CSRFToken': csrftoken
+     }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const enquiry = data.enquiry;
+            document.getElementById('enquiryDetailContent').innerHTML = `
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Name:</label>
+                    <p class="form-control-plaintext">${enquiry.name}</p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email:</label>
+                    <p class="form-control-plaintext">
+                        <a href="mailto:${enquiry.email}" class="text-decoration-none" style="color: var(--accent-color);">
+                            ${enquiry.email}
+                        </a>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Message:</label>
+                    <p class="form-control-plaintext" style="white-space: pre-wrap;">${enquiry.message}</p>
+                </div>
+                <div class="mb-0">
+                    <label class="form-label fw-bold">Received:</label>
+                    <p class="form-control-plaintext text-muted">${enquiry.created_at}</p>
+                </div>
+            `;
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const modal = urlParams.get('modal');
+            updateUnreadCount(data.unread_count);
 
-            if (modal === 'change') {
-                changeModal.show();
+            const enquiryItem = document.querySelector(`[data-enquiry-id="${enquiryId}"]`);
+            if (enquiryItem) {
+                enquiryItem.classList.remove('unread');
+                const badge = enquiryItem.querySelector('.badge');
+                if (badge) badge.remove();
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('enquiryDetailContent').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle me-2"></i>Failed to load enquiry details
+            </div>
+        `;
+    });
+}
+
+function deleteEnquiry() {
+    if (!currentEnquiryId) return;
+
+    if (!confirm('Are you sure you want to delete this enquiry?')) return;
+
+    fetch(`/adminhome/enquiry/${currentEnquiryId}/delete/`, {
+    method: 'POST',
+    headers: {
+        'X-CSRFToken': csrftoken
+        }
+    })
+
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            bootstrap.Modal.getInstance(document.getElementById('enquiryDetailModal')).hide();
+
+            const enquiryItem = document.querySelector(`[data-enquiry-id="${currentEnquiryId}"]`);
+            if (enquiryItem) {
+                enquiryItem.remove();
             }
 
-            changeModalEl.addEventListener('hidden.bs.modal', function () {
-                var alerts = changeModalEl.querySelectorAll('.alert');
-                alerts.forEach(alert => alert.remove());
-                var form = document.getElementById('changePasswordForm');
-                if (form) form.reset();
-            });
+            updateUnreadCount(data.unread_count);
+            document.getElementById('totalEnquiries').textContent = data.total_count;
 
-            var forgotModalEl = document.getElementById('forgotPasswordModal');
-            forgotModalEl.addEventListener('hidden.bs.modal', function () {
-                var form = document.getElementById('forgotPasswordForm');
-                if (form) form.reset();
-            });
-        });
-          
+            const enquiriesList = document.getElementById('enquiriesList');
+            if (enquiriesList.children.length === 0) {
+                enquiriesList.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No enquiries yet</p>
+                    </div>
+                `;
+            }
+        } else {
+            alert('Failed to delete enquiry');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to delete enquiry');
+    });
+}
+
+function updateUnreadCount(count) {
+    const topBarBadge = document.getElementById('topBarBadge');
+    const modalBadge = document.getElementById('modalBadge');
+
+    if (count > 0) {
+        if (topBarBadge) {
+            topBarBadge.textContent = count;
+            topBarBadge.style.display = 'inline-block';
+        } else {
+            const btn = document.querySelector('[data-bs-target="#enquiriesModal"]');
+            btn.insertAdjacentHTML('beforeend', `<span class="notification-badge" id="topBarBadge">${count}</span>`);
+        }
+
+        if (modalBadge) {
+            modalBadge.textContent = count + ' New';
+        }
+    } else {
+        if (topBarBadge) topBarBadge.remove();
+        if (modalBadge) modalBadge.remove();
+    }
+}

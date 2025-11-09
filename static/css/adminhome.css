@@ -705,3 +705,174 @@ body {
         padding: 1rem;
     }
 }
+
+/* Notification Badge */
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Enquiry Items */
+.enquiry-item {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.enquiry-item:hover {
+    background: rgba(67, 233, 123, 0.05);
+    transform: translateX(5px);
+}
+
+.enquiry-item.unread {
+    background: rgba(67, 233, 123, 0.1);
+    border-left: 3px solid var(--accent-color);
+}
+
+.enquiry-item:last-child {
+    border-bottom: none;
+}
+
+/* Enquiry Badge */
+.enquiry-badge {
+    background: var(--accent-color);
+    color: var(--bg-dark);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Modal Styling */
+.enquiry-modal .modal-content {
+    background: var(--bg-card);
+    color: var(--text-white);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.enquiry-modal .modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(67, 233, 123, 0.05);
+}
+
+.enquiry-modal .modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(67, 233, 123, 0.05);
+}
+
+.enquiry-modal .form-label {
+    color: var(--accent-color);
+}
+
+.enquiry-modal .form-control-plaintext {
+    color: var(--text-white);
+}
+
+.delete-btn {
+    background: #ff4444;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 68, 68, 0.3);
+}
+
+.fa-inbox {
+    opacity: 0.3;
+}
+
+@media (max-width: 768px) {
+    .enquiry-item {
+        padding: 12px;
+    }
+    
+    .modal-lg {
+        max-width: 95%;
+    }
+}
+
+ .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: bold;
+            min-width: 18px;
+            text-align: center;
+        }
+        .enquiry-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .enquiry-item:hover {
+            background: rgba(67, 233, 123, 0.05);
+        }
+        .enquiry-item.unread {
+            background: rgba(67, 233, 123, 0.1);
+            border-left: 3px solid var(--accent-color);
+        }
+        .enquiry-badge {
+            background: var(--accent-color);
+            color: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .enquiry-modal .modal-content {
+            background: var(--bg-card);
+            color: var(--text-white);
+        }
+        .enquiry-modal .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .enquiry-modal .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .delete-btn {
+            background: #ff4444;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .delete-btn:hover {
+            background: #cc0000;
+        }

@@ -36,6 +36,10 @@ urlpatterns = [
     path('update-education/<int:pk>/', views.update_education, name='update_education'),
     path('delete-education/<int:pk>/', views.delete_education, name='delete_education'),
 
+    path('contact/', views.contact_view, name='contact'),
+    path('adminhome/enquiry/<int:enquiry_id>/', views.get_enquiry_details, name='get_enquiry_details'),
+    path('adminhome/enquiry/<int:enquiry_id>/delete/', views.delete_enquiry, name='delete_enquiry'),
+
     
 ]
 

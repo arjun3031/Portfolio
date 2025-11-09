@@ -2,9 +2,11 @@ const texts = ['Software Engineer', 'Full Stack Developer', 'Problem Solver', 'T
 let textIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
-const typingElement = document.getElementById('typingText');
+const typingElement = document.getElementById('heroSubtitle');
 
 function type() {
+    if (!typingElement) return;
+    
     const currentText = texts[textIndex];
     
     if (isDeleting) {
@@ -27,6 +29,9 @@ function type() {
     }
 }
 
+if (typingElement) {
+    setTimeout(type, 1000);
+}
 setTimeout(type, 1000);
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -127,27 +132,54 @@ document.getElementById("contactForm").addEventListener("submit", function(e) {
     }
 
     if (isValid) {
-        fetch("", {
+        const submitButton = document.querySelector('#contactForm button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitButton.disabled = true;
+
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch(window.location.href, {
             method: "POST",
             headers: {
-                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
-                "Content-Type": "application/json"
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": csrfToken,
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             },
-            body: JSON.stringify({ name, email, message })
+            body: JSON.stringify({ 
+                name: name, 
+                email: email, 
+                message: message 
+            }),
+            credentials: 'same-origin'
         })
-        .then(res => res.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+
             if (data.status === "success") {
-                document.getElementById("formMessage").innerText = "Thank you! We will get back to you soon.";
+                document.getElementById("formMessage").innerHTML = '<i class="fas fa-check-circle"></i> ' + (data.message || 'Message sent successfully!');
+                document.getElementById("formMessage").classList.remove("text-danger");
+                document.getElementById("formMessage").classList.add("text-success");
                 document.getElementById("contactForm").reset();
             } else {
-                document.getElementById("formMessage").innerText = "Something went wrong. Please try again.";
+                document.getElementById("formMessage").innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + (data.message || 'Something went wrong');
                 document.getElementById("formMessage").classList.remove("text-success");
                 document.getElementById("formMessage").classList.add("text-danger");
             }
         })
         .catch(err => {
-            document.getElementById("formMessage").innerText = "Something went wrong. Please try again.";
+            console.error('Fetch Error:', err);
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+            document.getElementById("formMessage").innerHTML = '<i class="fas fa-exclamation-circle"></i> Network error. Please check your connection and try again.';
             document.getElementById("formMessage").classList.remove("text-success");
             document.getElementById("formMessage").classList.add("text-danger");
         });
