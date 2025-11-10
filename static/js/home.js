@@ -452,7 +452,7 @@ const knowledgeBase = {
         }
     },
     theri: {
-        keywords: ['fuck you', 'bitch', 'nayinte mone', 'kunne', 'patti', 'chette', 'thendi', 'poda', 'shotte'],
+        keywords: ['fuck you', 'bitch', 'nayinte mone', 'kunne', 'patti', 'chette', 'thendi', 'poda', 'shotte', 'punde','pinda','punda','myr','myra','maira','shonne','monne','fck u','fk u','fck you','fk yu','fuck off','fuccker','suck','ass hole','polayadi','pundachi','pndachi','kurippe','thndi','patti','nynte mone','nynte mone','nayinte mon','sucker','koothichi','fuck offff','fucccck','fckk','fcukk'],
         response: function() {
             return `Your Dad`
         }

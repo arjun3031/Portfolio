@@ -27,6 +27,8 @@ from django.utils.html import strip_tags
 from django.conf import settings
 from django.urls import reverse
 from axes.helpers import get_client_ip_address
+from django.views.decorators.http import require_POST
+
 
 logger = logging.getLogger('app')
 
@@ -180,107 +182,6 @@ Sent on: {timezone.now().strftime("%Y-%m-%d %H:%M:%S")}
 
     context = get_homepage_context()
     return render(request, 'homepage.html', context)
-
-
-def contact_view(request):
-    if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        user_email = request.POST.get('email', '').strip()
-        user_message = request.POST.get('message', '').strip()
-
-        if not name or not user_email or not user_message:
-            messages.error(request, "All fields are required")
-            return redirect('contact')
-
-        try:
-            ContactMessage.objects.create(
-                name=name,
-                email=user_email,
-                message=user_message
-            )
-
-            subject = "New Contact Form Message"
-            body = f"Message from: {name}\nEmail: {user_email}\n\n{user_message}"
-
-            send_mail(
-                subject,
-                body,
-                settings.EMAIL_HOST_USER,
-                ['personalrobot6@gmail.com'],
-                fail_silently=False,
-                reply_to=[user_email],
-            )
-            messages.success(request, "Message sent successfully!")
-        except Exception as e:
-            logger.error(f"Error in contact form: {str(e)}")
-            messages.error(request, f"Failed to send message: {e}")
-
-        return redirect('contact')
-
-    return render(request, 'contact.html')
-
-
-@never_cache
-def adminhome(request):
-    unread_count = ContactMessage.objects.filter(is_read=False).count()
-    recent_enquiries = ContactMessage.objects.all()[:10]
-
-    context = {
-        'unread_count': unread_count,
-        'recent_enquiries': recent_enquiries,
-        'total_views': ContactMessage.objects.count(),
-        'projects_count': 0,
-        'skills_count': 0,
-        'experiences_count': 0,
-    }
-
-    return render(request, 'adminhome.html', context)
-
-
-def get_enquiry_details(request, enquiry_id):
-    if request.method == 'GET':
-        try:
-            enquiry = get_object_or_404(ContactMessage, id=enquiry_id)
-
-            if not enquiry.is_read:
-                enquiry.is_read = True
-                enquiry.save()
-
-            data = {
-                'status': 'success',
-                'enquiry': {
-                    'id': enquiry.id,
-                    'name': enquiry.name,
-                    'email': enquiry.email,
-                    'message': enquiry.message,
-                    'created_at': enquiry.created_at.strftime('%B %d, %Y at %I:%M %p'),
-                    'is_read': enquiry.is_read
-                },
-                'unread_count': ContactMessage.objects.filter(is_read=False).count()
-            }
-            return JsonResponse(data)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)})
-
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-
-def delete_enquiry(request, enquiry_id):
-    if request.method == 'POST':
-        try:
-            enquiry = get_object_or_404(ContactMessage, id=enquiry_id)
-            enquiry.delete()
-
-            return JsonResponse({
-                'status': 'success',
-                'message': 'Enquiry deleted successfully',
-                'unread_count': ContactMessage.objects.filter(is_read=False).count(),
-                'total_count': ContactMessage.objects.count()
-            })
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)})
-
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 @never_cache
 @csrf_protect
@@ -457,6 +358,9 @@ def adminhome(request):
         messages.error(request, "You do not have permission to access this area.")
         return redirect('homepage')
     
+    unread_count = ContactMessage.objects.filter(is_read=False).count()
+    recent_enquiries = ContactMessage.objects.all().order_by('-created_at')[:10]
+    
     skills_count = Skill.objects.filter(is_active=True).count()
     experiences_count = WorkExperience.objects.all().count()
     projects_count = Project.objects.filter(is_active=True).count()
@@ -499,6 +403,10 @@ def adminhome(request):
         last_updated = hero.updated_at
     
     context = {
+        'unread_count': unread_count,
+        'recent_enquiries': recent_enquiries,
+        'total_views': ContactMessage.objects.count(),
+        
         'skills_count': skills_count,
         'experiences_count': experiences_count,
         'projects_count': projects_count,
@@ -510,10 +418,74 @@ def adminhome(request):
         'current_company': current_company,
         'total_duration': total_duration,
         'last_updated': last_updated,
-        'total_views': 0,
     }
     
     return render(request, 'adminhome.html', context)
+
+# @login_required(login_url='admin_login')
+# @never_cache
+# def adminhome(request):
+#     if not request.user.is_superuser:
+#         messages.error(request, "You do not have permission to access this area.")
+#         return redirect('homepage')
+    
+#     skills_count = Skill.objects.filter(is_active=True).count()
+#     experiences_count = WorkExperience.objects.all().count()
+#     projects_count = Project.objects.filter(is_active=True).count()
+#     top_skills = Skill.objects.filter(is_active=True).order_by('-proficiency')[:5]
+    
+#     recent_experiences = WorkExperience.objects.all().order_by('-start_date')[:5]
+#     recent_projects = Project.objects.filter(is_active=True).order_by('-created_at')[:5]
+    
+#     skills_by_category = Skill.objects.filter(is_active=True).values('category').annotate(count=Count('category'))
+    
+#     avg_prof = Skill.objects.filter(is_active=True).aggregate(Avg('proficiency'))
+#     average_proficiency = avg_prof['proficiency__avg'] or 0
+    
+#     current_experience = WorkExperience.objects.filter(is_current=True).first()
+#     current_company = current_experience.company_name if current_experience else None
+    
+#     total_months = 0
+#     for exp in WorkExperience.objects.all():
+#         start = exp.start_date
+#         end = exp.end_date if exp.end_date else date.today()
+        
+#         months_diff = (end.year - start.year) * 12 + (end.month - start.month)
+#         total_months += months_diff
+    
+#     years = total_months // 12
+#     months = total_months % 12
+    
+#     if years > 0 and months > 0:
+#         total_duration = f"{years}y {months}m"
+#     elif years > 0:
+#         total_duration = f"{years} year{'s' if years > 1 else ''}"
+#     elif months > 0:
+#         total_duration = f"{months} month{'s' if months > 1 else ''}"
+#     else:
+#         total_duration = "0 months"
+    
+#     last_updated = None
+#     hero = HeroContent.objects.last()
+#     if hero and hero.updated_at:
+#         last_updated = hero.updated_at
+    
+#     context = {
+#         'skills_count': skills_count,
+#         'experiences_count': experiences_count,
+#         'projects_count': projects_count,
+#         'top_skills': top_skills,
+#         'recent_experiences': recent_experiences,
+#         'recent_projects': recent_projects,
+#         'skills_by_category': skills_by_category,
+#         'average_proficiency': average_proficiency,
+#         'current_company': current_company,
+#         'total_duration': total_duration,
+#         'last_updated': last_updated,
+#         'total_views': 0,
+#     }
+    
+#     return render(request, 'adminhome.html', context)
 
 
 @login_required(login_url='admin_login')
@@ -1128,4 +1100,116 @@ def delete_education(request, pk):
     
     return redirect('manage_education')
 
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        user_email = request.POST.get('email', '').strip()
+        user_message = request.POST.get('message', '').strip()
 
+        if not name or not user_email or not user_message:
+            messages.error(request, "All fields are required")
+            return redirect('contact')
+
+        try:
+            ContactMessage.objects.create(
+                name=name,
+                email=user_email,
+                message=user_message
+            )
+
+            subject = "New Contact Form Message"
+            body = f"Message from: {name}\nEmail: {user_email}\n\n{user_message}"
+
+            send_mail(
+                subject,
+                body,
+                settings.EMAIL_HOST_USER,
+                ['personalrobot6@gmail.com'],
+                fail_silently=False,
+                reply_to=[user_email],
+            )
+            messages.success(request, "Message sent successfully!")
+        except Exception as e:
+            logger.error(f"Error in contact form: {str(e)}")
+            messages.error(request, f"Failed to send message: {e}")
+
+        return redirect('contact')
+
+    return render(request, 'contact.html')
+
+
+def get_enquiry_details(request, enquiry_id):
+    if request.method == 'GET':
+        try:
+            enquiry = get_object_or_404(ContactMessage, id=enquiry_id)
+
+            if not enquiry.is_read:
+                enquiry.is_read = True
+                enquiry.save()
+
+            data = {
+                'status': 'success',
+                'enquiry': {
+                    'id': enquiry.id,
+                    'name': enquiry.name,
+                    'email': enquiry.email,
+                    'message': enquiry.message,
+                    'created_at': enquiry.created_at.strftime('%B %d, %Y at %I:%M %p'),
+                    'is_read': enquiry.is_read
+                },
+                'unread_count': ContactMessage.objects.filter(is_read=False).count()
+            }
+            return JsonResponse(data)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@require_POST
+def delete_enquiry(request, enquiry_id):
+    """Delete a contact enquiry"""
+    
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'You must be logged in to perform this action.'
+        }, status=401)
+    
+    if not request.user.is_superuser:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'You do not have permission to perform this action.'
+        }, status=403)
+    
+    try:
+        enquiry = ContactMessage.objects.get(id=enquiry_id)
+        enquiry_name = enquiry.name
+        enquiry_email = enquiry.email
+        
+        enquiry.delete()
+        
+        unread_count = ContactMessage.objects.filter(is_read=False).count()
+        total_count = ContactMessage.objects.count()
+        
+        logger.info(f"Enquiry deleted: {enquiry_name} ({enquiry_email}) by {request.user.username}")
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Enquiry deleted successfully',
+            'unread_count': unread_count,
+            'total_count': total_count
+        })
+        
+    except ContactMessage.DoesNotExist:
+        logger.error(f"Enquiry {enquiry_id} not found")
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Enquiry not found'
+        }, status=404)
+        
+    except Exception as e:
+        logger.error(f"Error deleting enquiry {enquiry_id}: {str(e)}")
+        return JsonResponse({
+            'status': 'error',
+            'message': f'An error occurred: {str(e)}'
+        }, status=500)

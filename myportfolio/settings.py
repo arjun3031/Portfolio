@@ -2,23 +2,19 @@
 from pathlib import Path
 import os
 from django.contrib import messages
+from decouple import config
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lycz&q+-#*01*()h68f!=3-p5a$qc8*jn$w+!5%0!!8*3i8)=8'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'axes',  # Django Axes for login attempt tracking
+    'axes', 
     'app'
 ]
 
@@ -39,9 +35,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'axes.middleware.AxesMiddleware',  # Must be after AuthenticationMiddleware
+    'axes.middleware.AxesMiddleware', 
     'app.middlewares.NoCacheMiddleware',
-    'app.middlewares.SessionSecurityMiddleware',  # Custom security middleware
+    'app.middlewares.SessionSecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'myportfolio.urls'
@@ -67,11 +63,11 @@ WSGI_APPLICATION = 'myportfolio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'portfolio_db',
-        'USER': 'root',
-        'PASSWORD': 'arjun3031',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
@@ -104,71 +100,52 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Session cookies security
-SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to session cookie
-SESSION_COOKIE_SAMESITE = 'Strict'  # CSRF protection
-SESSION_COOKIE_AGE = 3600  # 1 hour (in seconds)
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Clear session on browser close
-SESSION_SAVE_EVERY_REQUEST = True  # Reset timeout on each request
-
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax' 
+SESSION_COOKIE_AGE = 3600
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
 SESSION_COOKIE_SECURE = False
 
-# Session engine
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
-
-
-CSRF_COOKIE_HTTPONLY = True  # Prevent JavaScript access
-CSRF_COOKIE_SAMESITE = 'Strict'
-CSRF_USE_SESSIONS = True  # Store CSRF token in session instead of cookie
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_USE_SESSIONS = False
 CSRF_FAILURE_VIEW = 'app.views.csrf_failure'
 
 CSRF_COOKIE_SECURE = False 
 
-# XSS Protection
 SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-# For development, set these to False. For production with HTTPS, set to True
-SECURE_SSL_REDIRECT = False  # Redirect HTTP to HTTPS
-SECURE_HSTS_SECONDS = 0  # HTTP Strict Transport Security (set to 31536000 in production)
+SECURE_SSL_REDIRECT = False 
+SECURE_HSTS_SECONDS = 0  
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
 
 
-# Lock account after 5 failed attempts
 AXES_FAILURE_LIMIT = 5
 
-# Lock duration: 1 hour
-AXES_COOLOFF_TIME = 1  # In hours
+AXES_COOLOFF_TIME = 1  
 
-# Lock out on failure
 AXES_LOCK_OUT_AT_FAILURE = True
 
-# Reset failed attempts on successful login
 AXES_RESET_ON_SUCCESS = True
 
-# Lock by combination of username and IP
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 
-# Username form field
 AXES_USERNAME_FORM_FIELD = 'username'
 
-# Enable axes in admin
 AXES_ENABLE_ADMIN = True
 
-# Verbose logging
 AXES_VERBOSE = True
 
-# Custom lockout template
 AXES_LOCKOUT_TEMPLATE = 'account_locked.html'
 
-# Custom lockout URL
 AXES_LOCKOUT_URL = '/locked/'
 
-# Only track user failures (not anonymous)
 AXES_ONLY_USER_FAILURES = False
 
 
@@ -242,30 +219,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# email
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'personalrobot6@gmail.com'
-# EMAIL_HOST_PASSWORD = 'gpng xznc cjjo xyik'
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-# SERVER_EMAIL = EMAIL_HOST_USER
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'personalrobot6@gmail.com'
-EMAIL_HOST_PASSWORD = 'lljzbwaqfegluxmb'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
-
-#Password reset time (1Hr)
 PASSWORD_RESET_TIMEOUT = 3600
-
-# message
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'debug',
@@ -281,9 +244,8 @@ CACHES = {
     }
 }
 
-# Cache middleware settings
 CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 0  # Disable caching
+CACHE_MIDDLEWARE_SECONDS = 0
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 

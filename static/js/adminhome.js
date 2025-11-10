@@ -171,20 +171,56 @@ function viewEnquiry(enquiryId) {
 }
 
 function deleteEnquiry() {
-    if (!currentEnquiryId) return;
+    if (!currentEnquiryId) {
+        console.error('No enquiry ID set');
+        alert('No enquiry selected');
+        return;
+    }
 
     if (!confirm('Are you sure you want to delete this enquiry?')) return;
 
+    const csrftoken = getCookie('csrftoken');
+    
+    console.log('=== DELETE DEBUG ===');
+    console.log('Enquiry ID:', currentEnquiryId);
+    console.log('CSRF Token:', csrftoken);
+    console.log('URL:', `/adminhome/enquiry/${currentEnquiryId}/delete/`);
+    
+    if (!csrftoken) {
+        alert('Security token missing. Please refresh the page.');
+        return;
+    }
+
     fetch(`/adminhome/enquiry/${currentEnquiryId}/delete/`, {
-    method: 'POST',
-    headers: {
-        'X-CSRFToken': csrftoken
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest'
         }
     })
-
-    .then(response => response.json())
-    .then(data => {
+    .then(response => {
+        console.log('Response Status:', response.status);
+        console.log('Response OK:', response.ok);
+        console.log('Response Headers:', [...response.headers.entries()]);
+        
+        return response.text().then(text => {
+            console.log('Raw Response:', text);
+            
+            try {
+                const data = JSON.parse(text);
+                return { status: response.status, ok: response.ok, data: data };
+            } catch (e) {
+                console.error('Failed to parse JSON:', e);
+                throw new Error(`Server returned invalid JSON. Status: ${response.status}, Response: ${text.substring(0, 200)}`);
+            }
+        });
+    })
+    .then(({ status, ok, data }) => {
+        console.log('Parsed Data:', data);
+        
         if (data.status === 'success') {
+            console.log('✓ Delete successful');
+            
             bootstrap.Modal.getInstance(document.getElementById('enquiryDetailModal')).hide();
 
             const enquiryItem = document.querySelector(`[data-enquiry-id="${currentEnquiryId}"]`);
@@ -204,15 +240,22 @@ function deleteEnquiry() {
                     </div>
                 `;
             }
+            
+            alert('Enquiry deleted successfully!');
         } else {
-            alert('Failed to delete enquiry');
+            console.error('✗ Delete failed:', data.message);
+            alert(data.message || 'Failed to delete enquiry');
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to delete enquiry');
+        console.error('=== ERROR ===');
+        console.error('Error Type:', error.name);
+        console.error('Error Message:', error.message);
+        console.error('Full Error:', error);
+        alert('Failed to delete enquiry: ' + error.message);
     });
 }
+
 
 function updateUnreadCount(count) {
     const topBarBadge = document.getElementById('topBarBadge');
