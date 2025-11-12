@@ -27,7 +27,7 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 - **Projects Showcase** - Detailed portfolio of completed projects
 - **Education Details** - Academic qualifications and certifications
 - **Contact Section** - Direct contact information and inquiry form
-- **AI-Powered Chatbot** - Interactive assistant for visitors to:
+- **Chatbot** - Interactive assistant for visitors to:
   - Query skills and expertise
   - Learn about projects and experience
   - Access education details
