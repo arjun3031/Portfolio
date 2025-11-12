@@ -6,6 +6,51 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 
 ---
 
+## Features
+
+###  User-Facing Features
+- **Dynamic Home Page** - Professional portfolio introduction with engaging content about career highlights
+- **Skills Section** - Comprehensive display of technical expertise with proficiency levels
+- **Experience Timeline** - Professional work history and career progression
+- **Projects Showcase** - Detailed portfolio of completed projects
+- **Education Details** - Academic qualifications and certifications
+- **Contact Section** - Direct contact information and inquiry form
+- **Chatbot** - Interactive assistant for visitors to:
+  - Query skills and expertise
+  - Learn about projects and experience
+  - Access education details
+  - Retrieve contact information and location
+  - Engage with fun facts about the developer
+- **Responsive Design** - Optimized for desktop, tablet, and mobile viewing
+- **Inquiry System** - Allow visitors to send messages for professional inquiries
+
+###  Admin Panel Features
+- **Secure Authentication** - Account lockout mechanism (1-hour lockout after invalid credentials)
+- **Dashboard Overview** - View inquiry messages with unread message counts
+- **Content Management**
+  - Add, edit, update, and delete portfolio content
+  - Manage images and media assets
+  - Update professional information
+- **Skills Management** - Add, edit, update, and delete skills by category
+- **Experience Management** - Manage professional work history
+- **Project Management** - Create and maintain project portfolio
+- **Education Management** - Add educational qualifications and certifications
+- **Security Features**
+  - Password reset functionality
+  - Forgot password recovery
+  - Session management with auto-logout
+- **Metadata Tracking** - View publication dates and author information
+
+### Security Features
+- VAPT (Vulnerability Assessment & Penetration Testing) compliant
+- Input validation and sanitization
+- Account lockout protection against brute force attacks
+- Session management with timeout handling
+- Secure password reset mechanism
+- CSRF protection
+- SQL injection prevention
+
+---
 ## Screenshots
 
 ### Homepage
@@ -65,57 +110,10 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 *Professional portfolio Managing Education like add, edit, update and delete*
 
 ### Change Password
-![Portfolio Password](assets/Changpassword.png)
+![Portfolio Password](assets/Chanegpassword.png)
 *Professional portfolio for change password of admin*
 
 ---
-
-## Features
-
-###  User-Facing Features
-- **Dynamic Home Page** - Professional portfolio introduction with engaging content about career highlights
-- **Skills Section** - Comprehensive display of technical expertise with proficiency levels
-- **Experience Timeline** - Professional work history and career progression
-- **Projects Showcase** - Detailed portfolio of completed projects
-- **Education Details** - Academic qualifications and certifications
-- **Contact Section** - Direct contact information and inquiry form
-- **Chatbot** - Interactive assistant for visitors to:
-  - Query skills and expertise
-  - Learn about projects and experience
-  - Access education details
-  - Retrieve contact information and location
-  - Engage with fun facts about the developer
-- **Responsive Design** - Optimized for desktop, tablet, and mobile viewing
-- **Inquiry System** - Allow visitors to send messages for professional inquiries
-
-###  Admin Panel Features
-- **Secure Authentication** - Account lockout mechanism (1-hour lockout after invalid credentials)
-- **Dashboard Overview** - View inquiry messages with unread message counts
-- **Content Management**
-  - Add, edit, update, and delete portfolio content
-  - Manage images and media assets
-  - Update professional information
-- **Skills Management** - Add, edit, update, and delete skills by category
-- **Experience Management** - Manage professional work history
-- **Project Management** - Create and maintain project portfolio
-- **Education Management** - Add educational qualifications and certifications
-- **Security Features**
-  - Password reset functionality
-  - Forgot password recovery
-  - Session management with auto-logout
-- **Metadata Tracking** - View publication dates and author information
-
-### Security Features
-- VAPT (Vulnerability Assessment & Penetration Testing) compliant
-- Input validation and sanitization
-- Account lockout protection against brute force attacks
-- Session management with timeout handling
-- Secure password reset mechanism
-- CSRF protection
-- SQL injection prevention
-
----
-
 ## Technology Stack
 
 | Category | Technologies |
