@@ -9,11 +9,11 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 ## Screenshots
 
 ### Homepage
-![Portfolio Homepage](assets/home.png)
+![Portfolio Homepage](assets/Home.png)
 *Professional portfolio homepage with introduction, skills overview, and call-to-action buttons*
 
 ### Admin Dashboard
-![Admin Dashboard](assets/admin.png)
+![Admin Dashboard](assets/Admin.png)
 *Admin panel dashboard showing inquiry statistics, skills overview, and management options*
 
 ---
