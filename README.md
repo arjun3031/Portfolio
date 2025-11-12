@@ -12,9 +12,61 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 ![Portfolio Homepage](assets/Home.png)
 *Professional portfolio homepage with introduction, skills overview, and call-to-action buttons*
 
+### About
+![Portfolio About](assets/Home.png)
+*Professional portfolio About section*
+
+### Skill Section
+![Portfolio Skill](assets/homeskills.png)
+*Professional portfolio Skill section for view all added skills*
+
+### Experience Section
+![Portfolio Experience](assets/Homeexp.png)
+*Professional portfolio Experience section for view all added experience*
+
+### Education & Project Section
+![Portfolio Education](assets/Homeedu.png)
+*Professional portfolio Education section for view all added Educations and projects*
+
+### Chatbot
+![Portfolio Chatbot](assets/Chatbot.png)
+*Professional portfolio Chatbot*
+
+### Loginpage
+![Portfolio Loginpage](assets/Login.png)
+*Professional portfolio Login with page for admin login*
+
 ### Admin Dashboard
 ![Admin Dashboard](assets/Admin.png)
 *Admin panel dashboard showing inquiry statistics, skills overview, and management options*
+
+### View Enquiry Messages
+![Admin Messages](assets/Messages.png)
+*Admin panel dashboard showing inquiry statistics and messages*
+
+### Manage Content
+![Portfolio Content](assets/Manage.png)
+*Professional portfolio Managing content like edit, update and delete*
+
+### Manage Skills
+![Portfolio Skills](assets/Skills.png)
+*Professional portfolio Managing Skills like add new skills, edit, update and delete*
+
+### Manage Experience
+![Portfolio Experience](assets/Experience.png)
+*Professional portfolio Managing Experience like add, edit, update and delete*
+
+### Manage Project
+![Portfolio Project](assets/Project.png)
+*Professional portfolio Managing Project like add, edit, update and delete*
+
+### Manage Education
+![Portfolio Education](assets/Education.png)
+*Professional portfolio Managing Education like add, edit, update and delete*
+
+### Change Password
+![Portfolio Password](assets/Changpassword.png)
+*Professional portfolio for change password of admin*
 
 ---
 
