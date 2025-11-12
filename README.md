@@ -4,6 +4,22 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 
 **Live Demo:** [https://arjunkm3031.pythonanywhere.com/](https://arjunkm3031.pythonanywhere.com/)
 
+A modern, feature-rich portfolio website built with Django, Python, and contemporary web technologies. Showcasing professional skills, experience, projects, and education with a secure admin panel and interactive chatbot.
+
+**Live Demo:** [https://arjunkm3031.pythonanywhere.com/](https://arjunkm3031.pythonanywhere.com/)
+
+---
+
+## 📸 Screenshots
+
+### Homepage
+![Portfolio Homepage](assets/homepage.png)
+*Professional portfolio homepage with introduction, skills overview, and call-to-action buttons*
+
+### Admin Dashboard
+![Admin Dashboard](assets/admin-dashboard.png)
+*Admin panel dashboard showing inquiry statistics, skills overview, and management options*
+
 ---
 
 ## ✨ Features
@@ -58,10 +74,11 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 |----------|---------------|
 | **Backend** | Django, Python |
 | **Frontend** | HTML5, CSS3, Bootstrap, JavaScript |
-| **Database** | MySQL |
+| **Database** | MySQL (MySQL Workbench) |
+| **IDE** | Visual Studio Code |
 | **AI/Chatbot** | Conversational AI Integration |
 | **Hosting** | PythonAnywhere |
-| **Security** | VAPT-Compliant Architecture |
+| **Security** | VAPT-Compliant Architecture |# 🚀 Arjun K M - Professional Portfolio Website
 
 ---
 
