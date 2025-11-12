@@ -13,7 +13,7 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 *Professional portfolio homepage with introduction, skills overview, and call-to-action buttons*
 
 ### About
-![Portfolio About](assets/Home.png)
+![Portfolio About](assets/About.png)
 *Professional portfolio About section*
 
 ### Skill Section
@@ -24,9 +24,9 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 ![Portfolio Experience](assets/Homeexp.png)
 *Professional portfolio Experience section for view all added experience*
 
-### Education & Project Section
+### Project & Education Section
 ![Portfolio Education](assets/Homeedu.png)
-*Professional portfolio Education section for view all added Educations and projects*
+*Professional portfolio Education section for view all added Projects and Educations*
 
 ### Chatbot
 ![Portfolio Chatbot](assets/Chatbot.png)
