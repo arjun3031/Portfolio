@@ -4,13 +4,9 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 
 **Live Demo:** [https://arjunkm3031.pythonanywhere.com/](https://arjunkm3031.pythonanywhere.com/)
 
-A modern, feature-rich portfolio website built with Django, Python, and contemporary web technologies. Showcasing professional skills, experience, projects, and education with a secure admin panel and interactive chatbot.
-
-**Live Demo:** [https://arjunkm3031.pythonanywhere.com/](https://arjunkm3031.pythonanywhere.com/)
-
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 ### Homepage
 ![Portfolio Homepage](assets/homepage.png)
@@ -22,9 +18,9 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 
 ---
 
-## ✨ Features
+## Features
 
-### 👤 User-Facing Features
+###  User-Facing Features
 - **Dynamic Home Page** - Professional portfolio introduction with engaging content about career highlights
 - **Skills Section** - Comprehensive display of technical expertise with proficiency levels
 - **Experience Timeline** - Professional work history and career progression
@@ -40,7 +36,7 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 - **Responsive Design** - Optimized for desktop, tablet, and mobile viewing
 - **Inquiry System** - Allow visitors to send messages for professional inquiries
 
-### 🔐 Admin Panel Features
+###  Admin Panel Features
 - **Secure Authentication** - Account lockout mechanism (1-hour lockout after invalid credentials)
 - **Dashboard Overview** - View inquiry messages with unread message counts
 - **Content Management**
@@ -57,7 +53,7 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
   - Session management with auto-logout
 - **Metadata Tracking** - View publication dates and author information
 
-### 🛡️ Security Features
+### Security Features
 - VAPT (Vulnerability Assessment & Penetration Testing) compliant
 - Input validation and sanitization
 - Account lockout protection against brute force attacks
@@ -68,7 +64,7 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Category | Technologies |
 |----------|---------------|
@@ -82,7 +78,7 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 
 ---
 
-## 📋 Project Structure
+## Project Structure
 
 ```
 portfolio-website/
@@ -108,7 +104,7 @@ portfolio-website/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Python 3.8+
@@ -163,7 +159,7 @@ portfolio-website/
 
 ---
 
-## 📱 User Interface
+## User Interface
 
 ### Public Portfolio Pages
 - **Home** - Professional introduction and overview
@@ -186,7 +182,7 @@ portfolio-website/
 
 ---
 
-## 🔒 Security Implementation
+## Security Implementation
 
 - **Authentication** - Secure login with credential validation
 - **Authorization** - Role-based access control (Admin only)
@@ -211,7 +207,7 @@ The interactive chatbot assists visitors by providing information about:
 
 ---
 
-## 📊 Key Statistics
+## Key Statistics
 
 - **Skills:** 5+ technical proficiencies
 - **Experiences:** 2+ professional positions
@@ -222,7 +218,7 @@ The interactive chatbot assists visitors by providing information about:
 
 ---
 
-## 🔄 Admin Workflow
+## Admin Workflow
 
 1. **Login** - Access admin panel with secure credentials
 2. **Dashboard** - Monitor incoming inquiries and statistics
@@ -234,7 +230,7 @@ The interactive chatbot assists visitors by providing information about:
 
 ---
 
-## 🎨 Responsive Design
+## Responsive Design
 
 The portfolio is fully responsive and optimized for:
 - 🖥️ Desktop (1920px and above)
@@ -244,7 +240,7 @@ The portfolio is fully responsive and optimized for:
 
 ---
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - **Theme Customization** - Dark/Light mode toggle and color themes
 - **Advanced AI Integration** - GPT-powered chatbot for enhanced conversations
@@ -257,7 +253,7 @@ The portfolio is fully responsive and optimized for:
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 The website is currently deployed on **PythonAnywhere** and is accessible at:
 ```
@@ -275,7 +271,7 @@ https://arjunkm3031.pythonanywhere.com/
 
 ---
 
-## 📝 Usage Guide
+## Usage Guide
 
 ### For Visitors
 1. Browse portfolio sections to learn about skills and experience
@@ -293,7 +289,7 @@ https://arjunkm3031.pythonanywhere.com/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, suggestions, and improvements are welcome! Please feel free to:
 - Report issues or bugs
@@ -303,7 +299,7 @@ Contributions, suggestions, and improvements are welcome! Please feel free to:
 
 ---
 
-## 📧 Contact & Inquiry
+## Contact & Inquiry
 
 - **Website:** [https://arjunkm3031.pythonanywhere.com/](https://arjunkm3031.pythonanywhere.com/)
 - **Contact Form:** Available on the website
@@ -311,21 +307,21 @@ Contributions, suggestions, and improvements are welcome! Please feel free to:
 
 ---
 
-## 📄 License
+## License
 
 This project is created for professional portfolio purposes. All rights reserved.
 
 ---
 
-## 👨‍💻 About
+## About
 
 This portfolio website showcases professional expertise in Software Engineering with a focus on building exceptional digital experiences using modern technologies and best practices.
 
-**Developed with ❤️ using Django & Python**
+**Developed with using Django & Python**
 
 ---
 
-## 📈 Performance & SEO
+## Performance & SEO
 
 - Fast loading times with optimized assets
 - Mobile-first responsive design
