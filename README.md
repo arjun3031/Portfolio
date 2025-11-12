@@ -72,9 +72,8 @@ A modern, feature-rich portfolio website built with Django, Python, and contempo
 | **Frontend** | HTML5, CSS3, Bootstrap, JavaScript |
 | **Database** | MySQL (MySQL Workbench) |
 | **IDE** | Visual Studio Code |
-| **AI/Chatbot** | Conversational AI Integration |
 | **Hosting** | PythonAnywhere |
-| **Security** | VAPT-Compliant Architecture |# 🚀 Arjun K M - Professional Portfolio Website
+| **Security** | VAPT-Compliant Architecture |# Arjun K M - Professional Portfolio Website
 
 ---
 
